@@ -1,24 +1,17 @@
 package application;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import logic.Triple;
-import logic.TryObj;
+import logic.gameObject;
 
 import java.util.Random;
 
@@ -28,15 +21,18 @@ public class Main extends Application {
     private static Button summonPlayer;
     private static Button switchLight;
     private static Button timeUp;
-    public int frames = 10;
-    public String title = "try";
-    public static int width = 1820;
-    public static int height = 980;
+    //public static int playerPerspectiveDegrees =
+    public static double playerPerspectiveRadians = Math.toRadians(50 >> 1);
+    public static double tanTheta = Math.tan(playerPerspectiveRadians);
+    public static int frames = 10;
+    public static String title = "try";
+    public static int width = 1800;
+    public static int height = 1000;
     public static Random random = new Random();
     Canvas canvas = new Canvas();
     static Pane pane = new Pane();
-    //GraphicsContext ctx = canvas.getGraphicsContext2D();
-    //private static final Image background = new Image("FieldBackground.png");
+    GraphicsContext ctx = canvas.getGraphicsContext2D();
+    private static final Image background = new Image("file:res/image/Background.png");
 
     public static void main(String[] args) {
         launch(args);
@@ -46,42 +42,40 @@ public class Main extends Application {
         //canvas.setHeight(height);
         //canvas.setWidth(width);
         VBox root = new VBox();
+        BackgroundImage backgroundImg = new BackgroundImage(background, null, null, null, null);
+        //BackgroundImage backgroundImg=new BackgroundImage(background,null,null,null,new BackgroundSize(width,height,false,false,false,false));
+        pane.setBackground(new Background(backgroundImg));
+        pane.setPrefSize(width, height);
         root.getChildren().addAll(pane);
+        //root.setBackground(new Background(new BackgroundFill(null,null,null)));
         stage.setTitle(title);
         Scene scene = new Scene(root, width, height);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP -> playerV.setZ(1);
-                case DOWN -> playerV.setZ(-1);
+                case UP, W -> playerV.setZ(-1);
+                case DOWN, S -> playerV.setZ(1);
             }
             switch (event.getCode()) {
-                case RIGHT -> playerV.setX(1);
-                case LEFT -> playerV.setX(-1);
+                case RIGHT, D -> playerV.setX(1);
+                case LEFT, A -> playerV.setX(-1);
             }
+            //TODO: if press E then obj play animation and disappear trigger new obj
         });
 
         scene.setOnKeyReleased(event -> {
             switch (event.getCode()) {
-                case DOWN:
-                    playerV.setZ(0);
-                    break;//playerV.set(0,1,0); break;
-                case UP:
-                    playerV.setZ(0);
-                    break;//playerV.set(0,-1,0); break;
-                case RIGHT:
-                    playerV.setX(0);
-                    break;//playerV.set(1,0,0); break;
-                case LEFT:
-                    playerV.setX(0);
-                    break;//playerV.set(-1,0,0); break;
-                case SHIFT: //playerV.set(0,0,1); break;
+                case DOWN, UP, W, S -> playerV.setZ(0);
+                case RIGHT, LEFT, A, D -> playerV.setX(0);
             }
         });
         stage.setScene(scene);
         stage.show();
-        threadMain.create();
-        threadMain.create();
-        threadMain.create();
+        //gameObject leftTree= new gameObject();
+        for (int i = 0; i < 10; i++) {
+            threadMain.create();
+        }
+//        threadMain.create();
+//        threadMain.create();
 		/*HBox controlTab = new HBox();
 		controlTab.setAlignment(Pos.CENTER);
 		summonPlayer = new Button("Summon Player");
@@ -113,14 +107,14 @@ public class Main extends Application {
 		canvas.requestFocus();*/
     }
 
-    protected static void drawIMG(TryObj obj) {
+    protected static void drawIMG(gameObject obj) {
         ImageView im = obj.getImageView();
         removeFromPane(im);
         //if(!obj.isOnScreen())return;
 //        im.resizeRelocate((double) (obj.getX()), (double) (obj.getY()), (double) (obj.getZ()), (double) (obj.getZ()));
-		im.relocate((double)(obj.getX()-obj.getZ())/2, (double)(obj.getY()-obj.getZ())/2);
-		im.setFitHeight(obj.getZ());
-		im.setFitWidth(obj.getZ());
+        im.relocate((obj.getX() - obj.getZ()) / 2, (obj.getY() - obj.getZ()) / 2);
+        im.setFitHeight(obj.getZ());
+        im.setFitWidth(obj.getZ());
 //        System.out.println(im.getFitHeight());
         addToPane(im);
 
