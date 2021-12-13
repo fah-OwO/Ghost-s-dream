@@ -2,36 +2,25 @@ package application;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import logic.Triple;
-import logic.gameObject;
-
-import java.util.Random;
+import logic.*;
 
 public class Main extends Application {
-    static Triple playerV = new Triple(0, 0, 0);
+    public static Player player = new Player();
     ThreadMain threadMain = new ThreadMain();
-    private static Button summonPlayer;
-    private static Button switchLight;
-    private static Button timeUp;
-    //public static int playerPerspectiveDegrees =
-    public static double playerPerspectiveRadians = Math.toRadians(50 >> 1);
-    public static double tanTheta = Math.tan(playerPerspectiveRadians);
-    public static int frames = 10;
+    public static double tanTheta = Math.tan(Player.getPerspectiveRadians());
+    public static int frames = 60;
     public static String title = "try";
-    public static int width = 1800;
+    public static int width = 1920;//1800;
     public static int height = 1000;
-    public static Random random = new Random();
-    Canvas canvas = new Canvas();
+    public static double metrePerPixels = (double) 4 / height;
+    //    public static double pixelsPerMetre=height/4;
     static Pane pane = new Pane();
-    GraphicsContext ctx = canvas.getGraphicsContext2D();
     private static final Image background = new Image("file:res/image/Background.png");
 
     public static void main(String[] args) {
@@ -39,83 +28,58 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        //canvas.setHeight(height);
-        //canvas.setWidth(width);
+        //player.getStarted();
         VBox root = new VBox();
         BackgroundImage backgroundImg = new BackgroundImage(background, null, null, null, null);
-        //BackgroundImage backgroundImg=new BackgroundImage(background,null,null,null,new BackgroundSize(width,height,false,false,false,false));
         pane.setBackground(new Background(backgroundImg));
         pane.setPrefSize(width, height);
         root.getChildren().addAll(pane);
-        //root.setBackground(new Background(new BackgroundFill(null,null,null)));
         stage.setTitle(title);
         Scene scene = new Scene(root, width, height);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP, W -> playerV.setZ(-1);
-                case DOWN, S -> playerV.setZ(1);
+                case UP, W -> player.accZ(-1);
+                case DOWN, S -> player.accZ(1);
+                case SHIFT -> player.setRunning(true);
             }
             switch (event.getCode()) {
-                case RIGHT, D -> playerV.setX(1);
-                case LEFT, A -> playerV.setX(-1);
+                case RIGHT, D -> player.accX(-1);
+                case LEFT, A -> player.accX(1);
             }
             //TODO: if press E then obj play animation and disappear trigger new obj
         });
 
         scene.setOnKeyReleased(event -> {
             switch (event.getCode()) {
-                case DOWN, UP, W, S -> playerV.setZ(0);
-                case RIGHT, LEFT, A, D -> playerV.setX(0);
+                case DOWN, UP, W, S -> player.accZ(0);
+                case RIGHT, LEFT, A, D -> player.accX(0);
+                case SHIFT -> player.setRunning(false);
             }
         });
         stage.setScene(scene);
         stage.show();
-        //gameObject leftTree= new gameObject();
-        for (int i = 0; i < 10; i++) {
-            threadMain.create();
+        double treeCount = 100;
+        for (double i = 1; i <= treeCount; i++) {
+//            GameObject object =new DecorateGameObject();//GameObject();
+            GameObject object = new GameObject();
+            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / treeCount);
+//            object.spawnAnywhere();
+            threadMain.create(object);
         }
-//        threadMain.create();
-//        threadMain.create();
-		/*HBox controlTab = new HBox();
-		controlTab.setAlignment(Pos.CENTER);
-		summonPlayer = new Button("Summon Player");
-		switchLight = new Button("Red Light");
-		timeUp = new Button("Time Up");
-		controlTab.getChildren().addAll(summonPlayer, switchLight, timeUp);
-		summonPlayer.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				//playerField.addPlayer();
-				//threadMain.initalizeNewPlayer(playerField.getPlayerCount()-1);
-				threadMain.create();
-			}
-		});
-		switchLight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				playerV.set(1,0,0);//playerField.killAllRunPlayer();
-			}
-		});
-
-		timeUp.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				playerV.set(-1,0,0);
-			}
-		});
-
-		canvas.requestFocus();*/
+        GameObject questObject = new QuestObject("file:res/image/mystic.jpg");
+        questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
+//            object.spawnAnywhere();
+        threadMain.create(questObject);
+        threadMain.start();
     }
 
-    protected static void drawIMG(gameObject obj) {
+    protected static void drawIMG(GameObject obj) {
         ImageView im = obj.getImageView();
+        Triple pos = obj.getPos();
         removeFromPane(im);
-        //if(!obj.isOnScreen())return;
-//        im.resizeRelocate((double) (obj.getX()), (double) (obj.getY()), (double) (obj.getZ()), (double) (obj.getZ()));
-        im.relocate((obj.getX() - obj.getZ()) / 2, (obj.getY() - obj.getZ()) / 2);
-        im.setFitHeight(obj.getZ());
-        im.setFitWidth(obj.getZ());
-//        System.out.println(im.getFitHeight());
+        im.relocate((pos.getX() - pos.getZ() + width) / 2, (pos.getY() - pos.getZ()) / 2);
+        im.setFitHeight(pos.getZ());
+//        im.setFitWidth(obj.getZ());
         addToPane(im);
 
     }
@@ -148,6 +112,6 @@ public class Main extends Application {
     }
 
     public static Triple getPlayerV() {
-        return playerV;
+        return player.getSpeed();
     }
 }

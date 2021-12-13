@@ -6,10 +6,15 @@ public class Triple {
     public double x;
     public double y;
     public double z;
-    static Random random = new Random();
+    private static final CustomRandom random = new CustomRandom();
+    private static final double lowNum = 0.001;
 
     public Triple() {
         x = y = z = 0;
+    }
+
+    public Triple(double i) {
+        x = y = z = i;
     }
 
     public Triple(double x, double y, double z) {
@@ -48,6 +53,14 @@ public class Triple {
         return newTriple;
     }
 
+    public void near0() {
+        if (x < lowNum && x > -lowNum) x = 0;
+        if (y < lowNum && y > -lowNum) y = 0;
+        if (z < lowNum && z > -lowNum) z = 0;
+
+
+    }
+
     boolean isBetween(Triple buttom_left, Triple top_right) {
         return !(x < buttom_left.x) && !(y < buttom_left.y) && !(z < buttom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
 //        if (x < buttom_left.x || y < buttom_left.y || z < buttom_left.z) return false;
@@ -55,11 +68,11 @@ public class Triple {
 //        return true;
     }
 
-    Triple randomBetween(Triple l, Triple r) {//this is same as upper but l and r is more readable
-        Triple newTriple = new Triple(x, y, z);
-        newTriple.x = random.nextDouble(r.x - l.x + 1) + l.x;
-        newTriple.y = random.nextDouble(r.y - l.y + 1) + l.y;
-        newTriple.z = random.nextDouble(r.z - l.z + 1) + l.z;
+    public static Triple randomBetween(Triple l, Triple r) {//this is same as upper but l and r is more readable
+        Triple newTriple = new Triple();
+        newTriple.x = (double) random.randomBetween(l.x, r.x);
+        newTriple.y = (double) random.randomBetween(l.y, r.y);
+        newTriple.z = (double) random.randomBetween(l.z, r.z);
         return newTriple;
     }
 
