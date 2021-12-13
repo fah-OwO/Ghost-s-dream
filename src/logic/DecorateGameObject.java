@@ -1,23 +1,31 @@
 package logic;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class DecorateGameObject extends GameObject {
     private static String url = "file:res/image/Tree1.png";
     private static Image decorateImage = new Image(url);
+    private static final ObservableList<DecorateGameObject> decorateObjs = FXCollections.observableArrayList();
 
-    //    private ImageView decorateImageView;
     public DecorateGameObject() {
         super();
-        imageView.setImage(decorateImage);// = new ImageView(url);
-//        image=null;
-//        imageView.setPreserveRatio(true);
+        imageView.setImage(decorateImage);
+        decorateObjs.add(this);
     }
 
-//    @Override
-//    public ImageView getImageView() {
-////        decorateImageView.setPreserveRatio(true);
-//        return decorateImageView;
-//    }
+    public static void setUrl(String url) {
+        DecorateGameObject.url = url;
+        decorateImage = new Image(url);
+        for (DecorateGameObject decorateObj : decorateObjs) {
+            decorateObj.imageView.setImage(decorateImage);
+        }
+    }
+
+    @Override
+    protected void onRemove() {
+        super.onRemove();
+        decorateObjs.remove(this);
+    }
 }

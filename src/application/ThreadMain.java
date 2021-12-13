@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ThreadMain {
     private final Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
-    private static final ObservableList<GameObject> objs = FXCollections.observableArrayList();
-    private ScheduledExecutorService executorService;
+    private final ObservableList<GameObject> objs = FXCollections.observableArrayList();
+    private final ScheduledExecutorService executorService;
 
     public ThreadMain() {
         executorService = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -31,19 +31,16 @@ public class ThreadMain {
 
     protected void create(GameObject obj) {
         objs.add(obj);
-//        objs.sort(objComparator);
     }
 
     public void start() {
         for (GameObject obj : objs)
             Main.addToPane(obj.getImageView());
-        executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000/(double)(Main.frames)), TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000 / (double) (Main.frames)), TimeUnit.MILLISECONDS);
     }
 
     private void updateObj() {
 
-//        objs.sort(objComparator);
-        //SortedList<TryObj> SortedObjs = new SortedList<>(objs,objComparator);
         Main.player.update();
         for (GameObject obj : objs) {
             obj.update();

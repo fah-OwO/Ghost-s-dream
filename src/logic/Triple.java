@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.Random;
-
 public class Triple {
     public double x;
     public double y;
@@ -57,22 +55,17 @@ public class Triple {
         if (x < lowNum && x > -lowNum) x = 0;
         if (y < lowNum && y > -lowNum) y = 0;
         if (z < lowNum && z > -lowNum) z = 0;
-
-
     }
 
     boolean isBetween(Triple buttom_left, Triple top_right) {
         return !(x < buttom_left.x) && !(y < buttom_left.y) && !(z < buttom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
-//        if (x < buttom_left.x || y < buttom_left.y || z < buttom_left.z) return false;
-//        if (x > top_right.x || y > top_right.y || z > top_right.z) return false;
-//        return true;
     }
 
-    public static Triple randomBetween(Triple l, Triple r) {//this is same as upper but l and r is more readable
+    public static Triple randomBetween(Triple l, Triple r) {
         Triple newTriple = new Triple();
-        newTriple.x = (double) random.randomBetween(l.x, r.x);
-        newTriple.y = (double) random.randomBetween(l.y, r.y);
-        newTriple.z = (double) random.randomBetween(l.z, r.z);
+        newTriple.x = random.randomBetween(l.x, r.x);
+        newTriple.y = random.randomBetween(l.y, r.y);
+        newTriple.z = random.randomBetween(l.z, r.z);
         return newTriple;
     }
 

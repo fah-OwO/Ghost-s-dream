@@ -27,13 +27,8 @@ public class GameObject {
     final static double minZ = 20;
     private static final ObservableList<GameObject> objects = FXCollections.observableArrayList();
     private final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
-//    static final double fieldSize=100;
-//    final static Triple leftCoord=new Triple(-fieldSize,(Main.height),-fieldSize);
-//    final static Triple rightCoord=new Triple(fieldSize,(Main.height),fieldSize);
 
     public GameObject() {
-//        image = new Image("file:res/image/Tree1.png");
-//        imageView = new ImageView(image);
         imageView = new ImageView("file:res/image/Tree1.png");
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
@@ -53,51 +48,38 @@ public class GameObject {
     private void move(Triple v) {
         if (v.equals(new Triple(0, 0, 0))) return;
         co = co.add(v);
-        pos = coordinate2screenPos();//pos2coordinate();
-        System.out.println(pos.x + " " + pos.z);
+        pos = coordinate2screenPos();
     }
 
     public void update() {
         if (respawnable && !onScreen) spawn();
         move(Main.getPlayerV().mul(speed));
-        if (pos.getZ() < minZ / 2) despawn();
-        else if (pos.getZ() > maxSize || pos.getX() + pos.getZ() < -Main.width - acceptableBorder || pos.getX() - pos.getZ() > Main.width + acceptableBorder)//edit this line if u spawn image with width>height
+        if (pos.getZ() < minZ / 2 ||
+                pos.getZ() > maxSize ||
+                pos.getX() + pos.getZ() < -Main.width - acceptableBorder ||
+                pos.getX() - pos.getZ() > Main.width + acceptableBorder)//edit this line if u spawn image with width>height
             despawn();
     }
 
     public void spawnAnywhere() {
         onScreen = true;
-//        pos.set(rand.nextInt(Main.width * 2), (Main.height), rand.nextInt(Main.width / 10) + minZ);
         co = pos2coordinate();
-//        co=Triple.randomBetween(leftCoord,rightCoord);//co.set(rand.nextDouble(Main.width * 2), (Main.height), rand.nextInt(maxSize)+1);
-//        pos=coordinate2screenPos();
     }
 
     public void spawnAnywhereFromRealZ(double z) {
         onScreen = true;
         double w = getMaxRealWidthFromZ(z);
-        co.set(rand.randomBetween(-w, w), (Main.height), z);
+        co.set(rand.randomBetween(-w, w), 0, z);
         pos = coordinate2screenPos();
-//        co=Triple.randomBetween(leftCoord,rightCoord);//co.set(rand.nextDouble(Main.width * 2), (Main.height), rand.nextInt(maxSize)+1);
-//        pos=coordinate2screenPos();
     }
 
     public void spawn() {
         onScreen = true;
-//        spawnAnywhere();
-        pos.set(rand.randomBetween(-Main.width, Main.width), (Main.height), minZ);
+        pos.set(rand.randomBetween(-Main.width, Main.width), 0, minZ);
         co = pos2coordinate();
     }
-//    public void spawnFront(){
-//        pos.set(rand.nextInt(Main.width * 2), (Main.height), 40);
-//    }
-//    public void spawnLeft(){
-//        double size=rand.nextDouble(maxSize)+1;
-//        pos.set(rand.nextInt(Main.width * 2), (Main.height), 40);
-//    }
 
     public void despawn() {
-        System.out.println(co + "despawn" + pos);
         onScreen = false;
         pos.set(0, -Main.height * 2, 1);
         co = pos2coordinate();
@@ -134,6 +116,18 @@ public class GameObject {
         return screenPos;
     }
 
+    protected void onRemove() {
+        objects.remove(this);
+    }
+
+    public Triple getCoIRL() {
+        return co.mul(Main.metrePerPixels);
+    }
+
+    public double getHeightIRL() {
+        return pos.z * Main.metrePerPixels;
+    }
+
     public static double getMaxRealZ() {
         return k / minZ;
     }
@@ -145,10 +139,6 @@ public class GameObject {
     public static ObservableList<GameObject> getObjects() {
         objects.sort(objComparator);
         return objects;
-    }
-
-    public boolean isRespawnable() {
-        return respawnable;
     }
 
     public void setRespawnable(boolean respawnable) {
@@ -170,44 +160,18 @@ public class GameObject {
 
     //https://pinetools.com/invert-image-colors
     //https://onlinepngtools.com/create-transparent-png
-    public void setImage(String url, double maxPercentSize) {
-//        image = new Image(url);
-//        imageView = new ImageView(image);
+    public void setImage(String url, double metre) {
         imageView.setImage(new Image(url));
+        maxSize = (int) (metre / Main.metrePerPixels);
         imageView.setPreserveRatio(true);
-        //maxSize = (int) (0.01 * maxPercentSize * Main.width);
-    }
-
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
     }
 
     public boolean isOnScreen() {
         return onScreen;
     }
 
-    public double getX() {
-        return pos.getX();
-    }
-
-    public void setX(int x) {
-        pos.setX(x);
-    }
-
-    public double getY() {
-        return pos.getY();
-    }
-
-    public void setY(int y) {
-        pos.setY(y);
-    }
-
     public double getZ() {
         return pos.getZ();
-    }
-
-    public void setZ(int z) {
-        pos.setZ(z);
     }
 
     public Triple getPos() {
