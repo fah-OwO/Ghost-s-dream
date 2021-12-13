@@ -20,11 +20,10 @@ public class GameObject {
     boolean destruct;
     GameObject triggeredObj;
     Triple spawnRangeLeft, spawnRangeRight;
-    static double k = 1;
-    static CustomRandom rand = new CustomRandom();
-    static double speed = 0.001 / Main.frames;
     final static int acceptableBorder = 10;
     final static double minZ = 20;
+    public static double k = 1;
+    private static final CustomRandom rand = new CustomRandom();
     private static final ObservableList<GameObject> objects = FXCollections.observableArrayList();
     private final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
@@ -48,12 +47,12 @@ public class GameObject {
     private void move(Triple v) {
         if (v.equals(new Triple(0, 0, 0))) return;
         co = co.add(v);
-        pos = coordinate2screenPos();
+        pos = coordinate2screenPos(co);
     }
 
     public void update() {
         if (respawnable && !onScreen) spawn();
-        move(Main.getPlayerV().mul(speed));
+        move(Main.getPlayerV());
         if (pos.getZ() < minZ / 2 ||
                 pos.getZ() > maxSize ||
                 pos.getX() + pos.getZ() < -Main.width - acceptableBorder ||
@@ -63,26 +62,33 @@ public class GameObject {
 
     public void spawnAnywhere() {
         onScreen = true;
-        co = pos2coordinate();
+        co = pos2coordinate(pos);
     }
 
     public void spawnAnywhereFromRealZ(double z) {
         onScreen = true;
         double w = getMaxRealWidthFromZ(z);
         co.set(rand.randomBetween(-w, w), 0, z);
-        pos = coordinate2screenPos();
+        pos = coordinate2screenPos(co);
+    }
+
+    public void spawnAnywhereFromPosZ(double z) {
+        pos.set(0, 0, z);
+        z = pos2coordinate(pos).z;
+        double w = getMaxRealWidthFromZ(z);
+        co.set(rand.randomBetween(-w, w), 0, z);
     }
 
     public void spawn() {
         onScreen = true;
         pos.set(rand.randomBetween(-Main.width, Main.width), 0, minZ);
-        co = pos2coordinate();
+        co = pos2coordinate(pos);
     }
 
     public void despawn() {
         onScreen = false;
         pos.set(0, -Main.height * 2, 1);
-        co = pos2coordinate();
+        co = pos2coordinate(pos);
         if (!respawnable) {
             destruct = true;
             objects.remove(this);
@@ -99,7 +105,7 @@ public class GameObject {
         return 0;
     }
 
-    private Triple pos2coordinate() {
+    public static Triple pos2coordinate(Triple pos) {
         Triple realPos = new Triple();
         realPos.z = Math.sqrt(1 + Math.pow(Main.tanTheta * (pos.getX()) / Main.width, 2)) * k / pos.getZ();
         realPos.y = pos.getY();
@@ -107,7 +113,7 @@ public class GameObject {
         return realPos;
     }
 
-    private Triple coordinate2screenPos() {
+    public static Triple coordinate2screenPos(Triple co) {
         double w = Main.width;
         Triple screenPos = new Triple();
         screenPos.x = (co.x * w) / (co.z * Main.tanTheta);

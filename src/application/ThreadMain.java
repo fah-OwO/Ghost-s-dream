@@ -34,8 +34,11 @@ public class ThreadMain {
     }
 
     public void start() {
+        Main.accelerate(0.01, 0);
         for (GameObject obj : objs)
             Main.addToPane(obj.getImageView());
+        updateObj();
+        Main.accelerate(0, 0);
         executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000 / (double) (Main.frames)), TimeUnit.MILLISECONDS);
     }
 

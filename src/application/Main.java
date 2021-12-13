@@ -13,7 +13,7 @@ public class Main extends Application {
     ThreadMain threadMain = new ThreadMain();
     public static Player player = new Player();
     public static String title = "";
-    public static int frames = 60;
+    public static final int frames = 100;
     public static int width = 1920;
     public static int height = 1000;
     public static double tanTheta = Math.tan(Player.getPerspectiveRadians());
@@ -51,14 +51,15 @@ public class Main extends Application {
                 case DOWN, UP, W, S -> player.accZ(0);
                 case RIGHT, LEFT, A, D -> player.accX(0);
                 case SHIFT -> player.setRunning(false);
+                case ESCAPE -> stage.close();
             }
         });
         stage.setScene(scene);
         stage.show();
-
         double treeCount = 100;
         for (double i = 1; i <= treeCount; i++) {
             GameObject object = new DecorateGameObject();
+//            object.spawnAnywhereFromPosZ(toPixel(1.5));
             object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / treeCount);
             threadMain.create(object);
         }
@@ -89,5 +90,43 @@ public class Main extends Application {
 
     public static Triple getPlayerV() {
         return player.getSpeed();
+    }
+
+    public static double coordToMetre(double z) {
+        return 1 / toMetre(1 / z);
+//        z=GameObject.coordinate2screenPos(new Triple(0, 0, z)).z;
+//        z = toMetre(z);
+//        return GameObject.pos2coordinate(new Triple(0, 0, z)).z;
+    }
+
+    public static double metreToCoord(double z) {
+        return 1 / toPixel(1 / z);
+    }
+
+//    public static double getDistanceInMetre(GameObject gameObject) {
+//        Triple pos = gameObject.getPos();
+//        double z = toMetre(pos.z);
+//        return GameObject.pos2coordinate(new Triple(0, 0, z)).z;
+//    }
+
+    public static Triple toMetre(Triple pos) {
+        return pos.mul(metrePerPixels);
+    }
+
+    public static double toMetre(double i) {
+        return i * (metrePerPixels);
+    }
+
+    public static Triple toPixel(Triple pos) {
+        return pos.mul(1 / metrePerPixels);
+    }
+
+    public static double toPixel(double i) {
+        return i / (metrePerPixels);
+    }
+
+    public static void accelerate(double x, double z) {
+        player.accX(x);
+        player.accZ(z);
     }
 }

@@ -51,6 +51,10 @@ public class Triple {
         return newTriple;
     }
 
+    public double getSize(){return Math.sqrt(x*x+y*y+z*z);}
+
+    public Triple resizeTo(double size){return this.mul(size/getSize());}
+
     public void near0() {
         if (x < lowNum && x > -lowNum) x = 0;
         if (y < lowNum && y > -lowNum) y = 0;
