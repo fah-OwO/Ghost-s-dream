@@ -6,9 +6,7 @@ import javafx.collections.ObservableList;
 import logic.DecorateGameObject;
 import logic.GameObject;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static util.Util.*;
 
@@ -18,15 +16,23 @@ public class ThreadMain {
 
     public ThreadMain() {
         setPause(true);
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(r -> {
-            final Thread thread = new Thread(r);
+        ScheduledThreadPoolExecutor threadPoolExecutor = new ScheduledThreadPoolExecutor(4, r -> {
+            Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setDaemon(true);
             return thread;
         });
         long refreshPeriod = (1000 / (frames));
-        executorService.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
-        //https://stackoverflow.com/questions/14897194/stop-threads-before-close-my-javafx-program
-        //https://stackoverflow.com/questions/50296223/executorservice-with-daemon-threads-explicit-shutdown
+        threadPoolExecutor.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+        threadPoolExecutor.scheduleAtFixedRate(this::updateSound, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+        //https://stackoverflow.com/questions/13883293/turning-an-executorservice-to-daemon-in-java
+    }
+
+    private void updateSound() {
+        double rate = player.isRunning() ? player.getRunningMul() : 1;
+        if (!player.isMoving() || rate != walkingSound.getRate()) walkingSound.stop();
+        else if (!walkingSound.isPlaying()) walkingSound.play();
+        walkingSound.setRate(rate);
+
     }
 
     public void create() {
@@ -56,12 +62,13 @@ public class ThreadMain {
 
     private void updateObj() {
         if (pause) return;
+        player.update();
         updateObjsPos();
         updateScreen();
     }
 
+
     private void updateObjsPos() {
-        player.update();
         for (GameObject obj : objs) {
             obj.update();
         }

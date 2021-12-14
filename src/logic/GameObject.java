@@ -36,7 +36,6 @@ public class GameObject {
     }
 
     private void move(Triple v) {
-        if (v.equals(new Triple(0, 0, 0))) return;
         co = co.add(v);
         pos = coordinate2screenPos(co);
     }
@@ -46,7 +45,7 @@ public class GameObject {
             spawn();
             deploy();
         }
-        move(getPlayerV());
+        if(player.isMoving())move(player.getSpeed());
         if (pos.getZ() < minZ / 2 ||
                 pos.getZ() > maxSize ||
                 pos.getX() + pos.getZ() < -width - acceptableBorder ||
@@ -57,6 +56,9 @@ public class GameObject {
     public void spawnAtCoord(Triple coord) {
         co=coord;
         pos = coordinate2screenPos(co);
+    }
+    public void spawnAnywhere(){
+        spawnAnywhereFromRealZ(rand.randomBetween(1,getMaxRealZ()));
     }
     public void spawnAnywhereFromRealZ(double z) {
         double w = getMaxRealWidthFromRealZ(z);
@@ -124,6 +126,11 @@ public class GameObject {
     //https://onlinepngtools.com/create-transparent-png
     public void setImage(String url, double metre) {
         imageView.setImage(new Image(url));
+        maxSize = (int) (metre / metrePerPixels);
+        imageView.setPreserveRatio(true);
+    }
+    public void setImage(Image image, double metre) {
+        imageView.setImage(image);
         maxSize = (int) (metre / metrePerPixels);
         imageView.setPreserveRatio(true);
     }

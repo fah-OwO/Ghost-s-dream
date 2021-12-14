@@ -51,9 +51,13 @@ public class Triple {
         return newTriple;
     }
 
-    public double getSize(){return Math.sqrt(x*x+y*y+z*z);}
+    public double getSize() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
 
-    public Triple resizeTo(double size){return this.mul(size/getSize());}
+    public Triple resizeTo(double size) {
+        return this.mul(size / getSize());
+    }
 
     public void near0() {
         if (x < lowNum && x > -lowNum) x = 0;
@@ -71,6 +75,10 @@ public class Triple {
         newTriple.y = random.randomBetween(l.y, r.y);
         newTriple.z = random.randomBetween(l.z, r.z);
         return newTriple;
+    }
+
+    public boolean is0() {
+        return x == 0 && y == 0 && z == 0;
     }
 
     @Override

@@ -2,6 +2,7 @@ package util;
 
 import application.ThreadMain;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import logic.GameObject;
 import logic.Player;
 
@@ -16,7 +17,8 @@ public class Util {
     public static final int height = 1000;
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
     public static final double metrePerPixels = (double) 1 / height;
-    public static final int frames = 100;
+    public static final int frames = 50;//100;
+    public static final AudioClip walkingSound=new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
     public static final Image TREE = new Image("file:res/image/Tree1.png");
     public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final CustomRandom rand = new CustomRandom();
