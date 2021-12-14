@@ -3,6 +3,7 @@ package logic;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import util.Triple;
 
 public class QuestObject extends GameObject {
     private Runnable runnable;
@@ -12,7 +13,7 @@ public class QuestObject extends GameObject {
     public QuestObject(String url) {
         super();
         super.setImage(url, 50);
-        //questObjs.add(this);
+        questObjs.add(this);
     }
 
 
@@ -21,7 +22,8 @@ public class QuestObject extends GameObject {
     }
 
     public static void setActiveRange(double range) {
-        activeRange = new Triple(1, 0, 1).mul(range);
+        activeRange = new Triple(1, 0, 1);
+        activeRange = activeRange.mul(range);
     }
 
     public Triple getActiveRange() {
@@ -30,6 +32,7 @@ public class QuestObject extends GameObject {
 
     public static void run() {
         for (QuestObject obj : questObjs) {
+            System.out.println(obj.co);
             if (obj.co.isBetween(activeRange.mul(-1), activeRange)) {
                 Platform.runLater(obj.runnable);
                 questObjs.remove(obj);

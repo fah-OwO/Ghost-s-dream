@@ -1,4 +1,4 @@
-package logic;
+package util;
 
 public class Triple {
     public double x;
@@ -61,8 +61,8 @@ public class Triple {
         if (z < lowNum && z > -lowNum) z = 0;
     }
 
-    boolean isBetween(Triple buttom_left, Triple top_right) {
-        return !(x < buttom_left.x) && !(y < buttom_left.y) && !(z < buttom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
+    public boolean isBetween(Triple bottom_left, Triple top_right) {
+        return !(x < bottom_left.x) && !(y < bottom_left.y) && !(z < bottom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
     }
 
     public static Triple randomBetween(Triple l, Triple r) {

@@ -1,11 +1,14 @@
 package logic;
 
 import application.Main;
+import util.Triple;
+
+import static util.Util.*;
 
 public class Player {
     private static final double resistanceMul = 0.7;//maxSpeed(1-res)=acceleration
-    private static final double accelerationMul = 0.05;
-    private static final double speedMul = 0.07 * 0.01 / Main.frames / (resistanceMul);
+    private static double accelerationMul = 0.05;
+    private static final double speedMul = 0.07 * 0.01 / frames / (resistanceMul);
     private static final double runningMul = 4;
     private static final double PerspectiveRadians = Math.toRadians(50 >> 1);
     private boolean running;
@@ -37,6 +40,10 @@ public class Player {
         Triple newSpeed = speed.mul(resistanceMul).add(currentAcceleration);
         newSpeed.near0();
         speed = newSpeed;
+    }
+
+    public void setWalkSpeed(double maxSpeed) {
+        accelerationMul = maxSpeed * (1 - resistanceMul);
     }
 
     public Triple getSpeed() {

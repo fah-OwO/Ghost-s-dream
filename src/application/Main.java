@@ -8,16 +8,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
+import util.Triple;
+
+import static util.Util.*;
 
 public class Main extends Application {
-    ThreadMain threadMain = new ThreadMain();
-    public static Player player = Player.getInstance();
-    public static String title = "";
-    public static final int frames = 50;
-    public static int width = 1920;
-    public static int height = 1000;
-    public static double tanTheta = Math.tan(Player.getPerspectiveRadians());
-    public static double metrePerPixels = (double) 1 / height;
     private static final Pane pane = new Pane();
     private static final Image background = new Image("file:res/image/Background.png");
 
@@ -63,10 +58,12 @@ public class Main extends Application {
             object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / treeCount);
             threadMain.create(object);
         }
+        QuestObject.setActiveRange(metreToCoord(1.5));//1 metre
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setRunnable(() -> System.out.println("nice"));
-        QuestObject.setActiveRange(metreToCoord(1.5));//1 metre
+//        questObject.setRunnable(() -> System.out.println("nice"));
+        questObject.setRunnable(() -> threadMain.clear());
+        player.setWalkSpeed(1);
         threadMain.create(questObject);
         threadMain.start();
 
@@ -89,45 +86,6 @@ public class Main extends Application {
         pane.getChildren().remove(imageview);
     }
 
-    public static Triple getPlayerV() {
-        return player.getSpeed();
-    }
 
-    public static double coordToMetre(double z) {
-        return z *height;/// metrePerPixels;//1 / toMetre(1 / z);
-//        z=GameObject.coordinate2screenPos(new Triple(0, 0, z)).z;
-//        z = toMetre(z);
-//        return GameObject.pos2coordinate(new Triple(0, 0, z)).z;
-    }
 
-    public static double metreToCoord(double z) {
-        return z/height;//metrePerPixels * z;//1 / toPixel(1 / z);
-    }
-
-//    public static double getDistanceInMetre(GameObject gameObject) {
-//        Triple pos = gameObject.getPos();
-//        double z = toMetre(pos.z);
-//        return GameObject.pos2coordinate(new Triple(0, 0, z)).z;
-//    }
-
-    public static Triple toMetre(Triple pos) {
-        return pos.mul(metrePerPixels);
-    }
-
-    public static double toMetre(double i) {
-        return i * (metrePerPixels);
-    }
-
-    public static Triple toPixel(Triple pos) {
-        return pos.mul(1 / metrePerPixels);
-    }
-
-    public static double toPixel(double i) {
-        return i / (metrePerPixels);
-    }
-
-    public static void accelerate(double x, double z) {
-        player.accX(x);
-        player.accZ(z);
-    }
 }
