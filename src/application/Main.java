@@ -11,13 +11,13 @@ import logic.*;
 
 public class Main extends Application {
     ThreadMain threadMain = new ThreadMain();
-    public static Player player = new Player();
+    public static Player player = Player.getInstance();
     public static String title = "";
-    public static final int frames = 100;
+    public static final int frames = 50;
     public static int width = 1920;
     public static int height = 1000;
     public static double tanTheta = Math.tan(Player.getPerspectiveRadians());
-    public static double metrePerPixels = (double) 4 / height;
+    public static double metrePerPixels = (double) 1 / height;
     private static final Pane pane = new Pane();
     private static final Image background = new Image("file:res/image/Background.png");
 
@@ -59,13 +59,14 @@ public class Main extends Application {
         double treeCount = 100;
         for (double i = 1; i <= treeCount; i++) {
             GameObject object = new DecorateGameObject();
-//            object.spawnAnywhereFromPosZ(toPixel(1.5));
+//            object.spawnAnywhereFromRealZ(metreToCoord(2));
             object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / treeCount);
             threadMain.create(object);
         }
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setRunnable(() -> System.out.println("nice"));
+        QuestObject.setActiveRange(metreToCoord(1.5));//1 metre
         threadMain.create(questObject);
         threadMain.start();
 
@@ -93,14 +94,14 @@ public class Main extends Application {
     }
 
     public static double coordToMetre(double z) {
-        return 1 / toMetre(1 / z);
+        return z *height;/// metrePerPixels;//1 / toMetre(1 / z);
 //        z=GameObject.coordinate2screenPos(new Triple(0, 0, z)).z;
 //        z = toMetre(z);
 //        return GameObject.pos2coordinate(new Triple(0, 0, z)).z;
     }
 
     public static double metreToCoord(double z) {
-        return 1 / toPixel(1 / z);
+        return z/height;//metrePerPixels * z;//1 / toPixel(1 / z);
     }
 
 //    public static double getDistanceInMetre(GameObject gameObject) {

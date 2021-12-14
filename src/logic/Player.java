@@ -11,9 +11,15 @@ public class Player {
     private boolean running;
     private Triple speed = new Triple();
     private final Triple acceleration = new Triple();
+    private static Player instance;
 
-    public Player() {
+    private Player() {
         running = false;
+    }
+
+    public static Player getInstance() {
+        if (instance == null) instance = new Player();
+        return instance;
     }
 
     public void accX(double x) {

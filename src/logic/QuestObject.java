@@ -7,12 +7,12 @@ import javafx.collections.ObservableList;
 public class QuestObject extends GameObject {
     private Runnable runnable;
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
-    private static final Triple activeRange = new Triple(-5, 0, -5);
+    private static Triple activeRange = new Triple(1, 0, 1);
 
     public QuestObject(String url) {
         super();
         super.setImage(url, 50);
-        questObjs.add(this);
+        //questObjs.add(this);
     }
 
 
@@ -20,9 +20,17 @@ public class QuestObject extends GameObject {
         this.runnable = runnable;
     }
 
+    public static void setActiveRange(double range) {
+        activeRange = new Triple(1, 0, 1).mul(range);
+    }
+
+    public Triple getActiveRange() {
+        return activeRange;
+    }
+
     public static void run() {
         for (QuestObject obj : questObjs) {
-            if (obj.co.isBetween(activeRange, activeRange.mul(-1))) {
+            if (obj.co.isBetween(activeRange.mul(-1), activeRange)) {
                 Platform.runLater(obj.runnable);
                 questObjs.remove(obj);
                 break;

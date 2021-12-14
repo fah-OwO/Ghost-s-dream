@@ -14,6 +14,7 @@ public class ThreadMain {
     private final Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
     private final ObservableList<GameObject> objs = FXCollections.observableArrayList();
     private final ScheduledExecutorService executorService;
+    private static boolean pause = true;
 
     public ThreadMain() {
         executorService = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -40,10 +41,20 @@ public class ThreadMain {
         updateObj();
         Main.accelerate(0, 0);
         executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000 / (double) (Main.frames)), TimeUnit.MILLISECONDS);
+        setPause(false);
+    }
+
+    public void clear() {
+        setPause(true);
+        for (GameObject obj : objs) {
+            Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
+        }
+        objs.clear();
+        setPause(false);
     }
 
     private void updateObj() {
-
+        if (pause) return;
         Main.player.update();
         for (GameObject obj : objs) {
             obj.update();
@@ -54,8 +65,14 @@ public class ThreadMain {
                 Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
                 objs.remove(obj);
                 if (obj.getTriggeredObj() != null) objs.add(obj.getTriggeredObj());
-            } else
-                Platform.runLater(() -> Main.drawIMG(obj));
+            } else {
+                if (obj.isOnScreen()) Platform.runLater(() -> Main.drawIMG(obj));
+                else Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
+            }
         }
+    }
+
+    public static void setPause(boolean pause) {
+        ThreadMain.pause = pause;
     }
 }
