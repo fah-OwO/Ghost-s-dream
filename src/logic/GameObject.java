@@ -1,15 +1,12 @@
 package logic;
 
-import application.Main;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import util.CustomRandom;
 import util.Triple;
 
-import java.util.Comparator;
+
 import static util.Util.*;
 
 public class GameObject {
@@ -23,9 +20,6 @@ public class GameObject {
     GameObject triggeredObj;
     private final static int acceptableBorder = 10;
     private final static double minZ = 20;
-    private static final CustomRandom rand = new CustomRandom();
-    private static final ObservableList<GameObject> objects = FXCollections.observableArrayList();
-    private final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
     public GameObject() {
         imageView = new ImageView("file:res/image/Tree1.png");
@@ -39,7 +33,6 @@ public class GameObject {
         triggeredObj = null;
         destruct = false;
         spawn();
-        objects.add(this);
     }
 
     private void move(Triple v) {
@@ -49,7 +42,10 @@ public class GameObject {
     }
 
     public void update() {
-        if (respawnable && !onScreen) spawn();
+        if (respawnable && !onScreen) {
+            spawn();
+            deploy();
+        }
         move(getPlayerV());
         if (pos.getZ() < minZ / 2 ||
                 pos.getZ() > maxSize ||
@@ -59,13 +55,15 @@ public class GameObject {
     }
 
     public void spawnAnywhere() {
-        onScreen = true;
         co = pos2coordinate(pos);
     }
 
+    public void spawnAtCoord(Triple coord) {
+        co=coord;
+        pos = coordinate2screenPos(co);
+    }
     public void spawnAnywhereFromRealZ(double z) {
-        onScreen = true;
-        double w = getMaxRealWidthFromZ(z);
+        double w = getMaxRealWidthFromRealZ(z);
         co.set(rand.randomBetween(-w, w), 0, z);
         pos = coordinate2screenPos(co);
     }
@@ -73,60 +71,52 @@ public class GameObject {
     public void spawnAnywhereFromPosZ(double z) {
         pos.set(0, 0, z);
         z = pos2coordinate(pos).z;
-        double w = getMaxRealWidthFromZ(z);
+        double w = getMaxRealWidthFromRealZ(z);
         co.set(rand.randomBetween(-w, w), 0, z);
     }
 
     public void spawn() {
-        onScreen = true;
         pos.set(rand.randomBetween(-width, width), 0, minZ);
         co = pos2coordinate(pos);
     }
 
+    public void deploy() {
+        setOnScreen(true);
+    }
+
     public void despawn() {
-        onScreen = false;
+        setOnScreen(false);
         pos.set(0, -height * 2, 1);
         co = pos2coordinate(pos);
-        if (!respawnable) {
-            destruct = true;
-            objects.remove(this);
-        }
+        if (!respawnable) destruct();
     }
 
     public boolean shouldBeDestructed() {
         return destruct;
     }
 
-    public int objIsOnLeftMiddleOrRight() {
-        if (pos.getX() < 0) return -1;
-        if (pos.getX() > 0) return 1;
-        return 0;
-    }
 
+    protected void onAdd() {
+        //if (!objects.contains(this)) objects.add(this);
+    }
 
     protected void onRemove() {
-        objects.remove(this);
+        //objects.remove(this);
     }
 
-    public Triple getCoIRL() {
-        return co.mul(metrePerPixels);
-    }
-
-    public double getHeightIRL() {
-        return pos.z * metrePerPixels;
-    }
 
     public static double getMaxRealZ() {
         return k / minZ;
     }
 
-    public static double getMaxRealWidthFromZ(double z) {
+    public static double getMaxRealWidthFromRealZ(double z) {
         return z * tanTheta;
     }
 
     public static ObservableList<GameObject> getObjects() {
-        objects.sort(objComparator);
-        return objects;
+        return null;
+//        objects.sort(objComparator);
+//        return objects;
     }
 
     public void setRespawnable(boolean respawnable) {
@@ -154,6 +144,13 @@ public class GameObject {
         imageView.setPreserveRatio(true);
     }
 
+    public void setOnScreen(boolean onScreen) {
+        if (onScreen) onAdd();
+        else onRemove();//objects.add(this);
+        this.onScreen = onScreen;
+    }
+
+
     public boolean isOnScreen() {
         return onScreen;
     }
@@ -166,8 +163,17 @@ public class GameObject {
         return pos;
     }
 
-    public void destruct(){
-        destruct=true;
+    public void destruct() {
+        destruct = true;
         onRemove();
+    }
+
+    @Override
+    public String toString() {
+        return "GameObject{" +
+                "co=" + co +
+                ", pos=" + pos +
+                ", onScreen=" + onScreen +
+                '}';
     }
 }

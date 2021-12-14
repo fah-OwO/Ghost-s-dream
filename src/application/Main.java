@@ -8,6 +8,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
+import story.BaseChapter;
+import story.ExampleChapter;
 import util.Triple;
 
 import static util.Util.*;
@@ -21,6 +23,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
+        initiate();
         VBox root = new VBox();
         BackgroundImage backgroundImg = new BackgroundImage(background, null, null, null, null);
         pane.setBackground(new Background(backgroundImg));
@@ -40,7 +43,6 @@ public class Main extends Application {
             }
             if (event.getCode().equals(KeyCode.E)) QuestObject.run();
         });
-
         scene.setOnKeyReleased(event -> {
             switch (event.getCode()) {
                 case DOWN, UP, W, S -> player.accZ(0);
@@ -49,23 +51,10 @@ public class Main extends Application {
                 case ESCAPE -> stage.close();
             }
         });
+        BaseChapter exampleChap = new ExampleChapter();
+        exampleChap.run();
         stage.setScene(scene);
         stage.show();
-        double treeCount = 100;
-        for (double i = 1; i <= treeCount; i++) {
-            GameObject object = new DecorateGameObject();
-//            object.spawnAnywhereFromRealZ(metreToCoord(2));
-            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / treeCount);
-            threadMain.create(object);
-        }
-        QuestObject.setActiveRange(metreToCoord(1.5));//1 metre
-        QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
-        questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-//        questObject.setRunnable(() -> System.out.println("nice"));
-        questObject.setRunnable(() -> threadMain.clear());
-        player.setWalkSpeed(1);
-        threadMain.create(questObject);
-        threadMain.start();
 
     }
 
@@ -85,7 +74,6 @@ public class Main extends Application {
     public static void removeFromPane(ImageView imageview) {
         pane.getChildren().remove(imageview);
     }
-
 
 
 }

@@ -6,10 +6,10 @@ import util.Triple;
 import static util.Util.*;
 
 public class Player {
-    private static final double resistanceMul = 0.7;//maxSpeed(1-res)=acceleration
-    private static double accelerationMul = 0.05;
-    private static final double speedMul = 0.07 * 0.01 / frames / (resistanceMul);
-    private static final double runningMul = 4;
+    private static final double resistanceMul = 0.8;//maxSpeed(1-res)=acceleration
+    private static double accelerationMul = 1;
+    private static final double speedMul = metreToCoord(1) * (1 - resistanceMul) / frames / (resistanceMul);
+    private static final double runningMul = 2;
     private static final double PerspectiveRadians = Math.toRadians(50 >> 1);
     private boolean running;
     private Triple speed = new Triple();
@@ -58,4 +58,12 @@ public class Player {
         return PerspectiveRadians;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "running=" + running +
+                ", speed=" + speed +
+                ", acceleration=" + acceleration +
+                '}';
+    }
 }

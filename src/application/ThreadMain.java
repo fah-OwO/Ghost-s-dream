@@ -3,6 +3,7 @@ package application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import logic.DecorateGameObject;
 import logic.GameObject;
 
 import java.util.Comparator;
@@ -13,12 +14,12 @@ import java.util.concurrent.TimeUnit;
 import static util.Util.*;
 
 public class ThreadMain {
-    private final Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
     private final ObservableList<GameObject> objs = FXCollections.observableArrayList();
     private final ScheduledExecutorService executorService;
-    private static boolean pause = true;
+    private boolean pause = true;
 
     public ThreadMain() {
+        setPause(true);
         executorService = Executors.newSingleThreadScheduledExecutor(r -> {
             final Thread thread = new Thread(r);
             thread.setDaemon(true);
@@ -28,22 +29,20 @@ public class ThreadMain {
         //https://stackoverflow.com/questions/50296223/executorservice-with-daemon-threads-explicit-shutdown
     }
 
-    protected void create() {
-        create(new GameObject());
+    public void create() {
+        create(new DecorateGameObject());
     }
 
-    protected void create(GameObject obj) {
+    public void create(GameObject obj) {
         objs.add(obj);
     }
 
     public void start() {
-        accelerate(0.01, 0);
-//        for (GameObject obj : objs)
-//            Main.addToPane(obj.getImageView());
+        setPause(false);
+        accelerate(0, 0.1);
         updateObj();
         accelerate(0, 0);
         executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000 / (double) (frames)), TimeUnit.MILLISECONDS);
-        setPause(false);
     }
 
     public void clear() {
@@ -75,7 +74,14 @@ public class ThreadMain {
         }
     }
 
-    public static void setPause(boolean pause) {
-        ThreadMain.pause = pause;
+    public void setPause(boolean p) {
+        pause = p;
+    }
+
+    @Override
+    public String toString() {
+        return "ThreadMain{" +
+                "objs=" + objs +
+                '}';
     }
 }

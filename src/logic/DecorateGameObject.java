@@ -8,6 +8,7 @@ public class DecorateGameObject extends GameObject {
     private static String url = "file:res/image/Tree1.png";
     private static Image decorateImage = new Image(url);
     private static final ObservableList<DecorateGameObject> decorateObjs = FXCollections.observableArrayList();
+    //for changing image purpose only, so if it still exist but not on screen it 'd be change too
 
     public DecorateGameObject() {
         super();
@@ -23,9 +24,17 @@ public class DecorateGameObject extends GameObject {
         }
     }
 
+    public static void setImage(Image image) {
+        DecorateGameObject.url = null;
+        decorateImage =image;
+        for (DecorateGameObject decorateObj : decorateObjs) {
+            decorateObj.imageView.setImage(decorateImage);
+        }
+    }
+
     @Override
-    protected void onRemove() {
-        super.onRemove();
+    public void destruct() {
         decorateObjs.remove(this);
+        super.destruct();
     }
 }
