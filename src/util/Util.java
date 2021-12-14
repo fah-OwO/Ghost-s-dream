@@ -45,7 +45,6 @@ public class Util {
         return screenPos;
     }
 
-
     public static double coordToMetre(double z) {
         return z * height;
     }

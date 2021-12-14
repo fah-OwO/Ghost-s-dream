@@ -26,12 +26,12 @@ public class Main extends Application {
     public void start(Stage stage) {
         initiate();
         VBox root = new VBox();
+        Scene scene = new Scene(root, width, height);
+        stage.setTitle(title);
+        root.getChildren().addAll(pane);
         BackgroundImage backgroundImg = new BackgroundImage(background, null, null, null, null);
         pane.setBackground(new Background(backgroundImg));
         pane.setPrefSize(width, height);
-        root.getChildren().addAll(pane);
-        stage.setTitle(title);
-        Scene scene = new Scene(root, width, height);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP, W -> player.accZ(-1);
@@ -68,6 +68,11 @@ public class Main extends Application {
         addToPane(im);
     }
 
+    public static void clearScreen() {
+        threadMain.clear();
+        pane.getChildren().clear();
+    }
+
     public static void addToPane(ImageView imageview) {
         pane.getChildren().add(imageview);
     }
@@ -76,14 +81,13 @@ public class Main extends Application {
         pane.getChildren().remove(imageview);
     }
 
-    public static void setUpperBackground(Image image){
-        WritableImage newImage=new WritableImage(image.getPixelReader(),0,0,width,height/2);
-        ImageView imageView=new ImageView(newImage);
+    public static void setUpperBackground(Image image) {
+        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, height / 2);
+        ImageView imageView = new ImageView(newImage);
 //        WritableImage anewImage=new WritableImage(imageView.getPixelReader(),0,0,width,height/2);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         addToPane(imageView);
     }
-
 
 }

@@ -4,7 +4,6 @@ public class Triple {
     public double x;
     public double y;
     public double z;
-    private static final CustomRandom random = new CustomRandom();
     private static final double lowNum = 0.001;
 
     public Triple() {
@@ -67,14 +66,6 @@ public class Triple {
 
     public boolean isBetween(Triple bottom_left, Triple top_right) {
         return !(x < bottom_left.x) && !(y < bottom_left.y) && !(z < bottom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
-    }
-
-    public static Triple randomBetween(Triple l, Triple r) {
-        Triple newTriple = new Triple();
-        newTriple.x = random.randomBetween(l.x, r.x);
-        newTriple.y = random.randomBetween(l.y, r.y);
-        newTriple.z = random.randomBetween(l.z, r.z);
-        return newTriple;
     }
 
     public boolean is0() {

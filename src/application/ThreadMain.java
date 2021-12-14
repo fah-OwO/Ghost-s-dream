@@ -5,13 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import logic.DecorateGameObject;
 import logic.GameObject;
+import logic.Player;
 
 import java.util.concurrent.*;
 
 import static util.Util.*;
 
 public class ThreadMain {
-    private final ObservableList<GameObject> objs = FXCollections.observableArrayList();
+    private final ObservableList<GameObject> objects = FXCollections.observableArrayList();
     private boolean pause = true;
 
     public ThreadMain() {
@@ -27,60 +28,55 @@ public class ThreadMain {
         //https://stackoverflow.com/questions/13883293/turning-an-executorservice-to-daemon-in-java
     }
 
-    private void updateSound() {
-        double rate = player.isRunning() ? player.getRunningMul() : 1;
-        if (!player.isMoving() || rate != walkingSound.getRate()) walkingSound.stop();
-        else if (!walkingSound.isPlaying()) walkingSound.play();
-        walkingSound.setRate(rate);
-
-    }
-
-    public void create() {
-        create(new DecorateGameObject());
-    }
-
     public void create(GameObject obj) {
-        objs.add(obj);
+        objects.add(obj);
     }
 
     public void start() {
         accelerate(0, 0.1);
-        updateObjsPos();
+        updateObjectsPos();
         accelerate(0, 0);
         setPause(false);
     }
 
     public void clear() {
         setPause(true);
-//        delay(refreshPeriod);
-        for (GameObject obj : objs) {
+        for (GameObject obj : objects) {
             obj.destruct();
             Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
         }
-        objs.clear();
+        objects.clear();
     }
 
     private void updateObj() {
         if (pause) return;
         player.update();
-        updateObjsPos();
+        updateObjectsPos();
         updateScreen();
     }
 
-
-    private void updateObjsPos() {
-        for (GameObject obj : objs) {
-            obj.update();
+    private void updateSound() {
+        if (pause) {
+            walkingSound.stop();
+            return;
         }
+        double rate = player.isRunning() ? Player.getRunningMul() : 1;
+        if (!player.isMoving() || rate != walkingSound.getRate()) walkingSound.stop();
+        else if (!walkingSound.isPlaying()) walkingSound.play();
+        walkingSound.setRate(rate);
+    }
+
+    private void updateObjectsPos() {
+        for (GameObject obj : objects) obj.update();
     }
 
     private void updateScreen() {
-        objs.sort(objComparator);
-        for (GameObject obj : objs) {
+        objects.sort(objComparator);
+        for (GameObject obj : objects) {
             if (obj.shouldBeDestructed()) {
                 Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
-                objs.remove(obj);
-                if (obj.getTriggeredObj() != null) objs.add(obj.getTriggeredObj());
+                objects.remove(obj);
+                if (obj.getTriggeredObj() != null) objects.add(obj.getTriggeredObj());
             } else {
                 if (obj.isOnScreen()) Platform.runLater(() -> Main.drawIMG(obj));
                 else Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
@@ -95,7 +91,7 @@ public class ThreadMain {
     @Override
     public String toString() {
         return "ThreadMain{" +
-                "objs=" + objs +
+                "objs=" + objects +
                 '}';
     }
 }

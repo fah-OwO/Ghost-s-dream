@@ -1,6 +1,5 @@
 package logic;
 
-import application.Main;
 import util.Triple;
 
 import static util.Util.*;
@@ -25,14 +24,6 @@ public class Player {
         return instance;
     }
 
-    public void accX(double x) {
-        acceleration.x = x;
-    }
-
-    public void accZ(double z) {
-        acceleration.z = z;
-    }
-
     public void update() {
         Triple currentAcceleration = running ? acceleration.mul(runningMul) : acceleration;
         currentAcceleration = currentAcceleration.mul(accelerationMul);
@@ -41,8 +32,16 @@ public class Player {
         speed = newSpeed;
     }
 
-    public void setWalkSpeed(double maxSpeed) {
-        accelerationMul = maxSpeed * (1 - resistanceMul);
+    public boolean isMoving() {
+        return !speed.is0();
+    }
+
+    public void accX(double x) {
+        acceleration.x = x;
+    }
+
+    public void accZ(double z) {
+        acceleration.z = z;
     }
 
     public Triple getSpeed() {
@@ -51,18 +50,6 @@ public class Player {
 
     public void setRunning(boolean running) {
         this.running = running;
-    }
-
-    public static double getPerspectiveRadians() {
-        return PerspectiveRadians;
-    }
-
-    public double getRunningMul() {
-        return runningMul;
-    }
-
-    public boolean isMoving() {
-        return !speed.is0();
     }
 
     public boolean isRunning() {
@@ -76,5 +63,17 @@ public class Player {
                 ", speed=" + speed +
                 ", acceleration=" + acceleration +
                 '}';
+    }
+
+    public static void setWalkSpeed(double maxSpeed) {
+        accelerationMul = maxSpeed * (1 - resistanceMul);
+    }
+
+    public static double getPerspectiveRadians() {
+        return PerspectiveRadians;
+    }
+
+    public static double getRunningMul() {
+        return runningMul;
     }
 }

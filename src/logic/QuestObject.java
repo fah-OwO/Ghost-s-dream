@@ -20,15 +20,14 @@ public class QuestObject extends GameObject {
         super.setImage(url, 50);
     }
 
+    public void setRunnable(Runnable runnable) {
+        this.runnable = runnable;
+    }
+
     @Override
     public void update() {
         super.update();
         if (passive && isInActiveRange()) individualRun();
-    }
-
-
-    public void setRunnable(Runnable runnable) {
-        this.runnable = runnable;
     }
 
 
@@ -40,9 +39,11 @@ public class QuestObject extends GameObject {
             }
         }
     }
+
     public boolean isInActiveRange() {
         return co.isBetween(activeRange.mul(-1), activeRange);
     }
+
     public void individualRun() {
         Platform.runLater(runnable);
         questObjs.remove(this);
@@ -51,7 +52,7 @@ public class QuestObject extends GameObject {
     @Override
     protected void onAdd() {
         super.onAdd();
-        if(!questObjs.contains(this)) questObjs.add(this);
+        if (!questObjs.contains(this)) questObjs.add(this);
     }
 
     @Override
@@ -67,9 +68,5 @@ public class QuestObject extends GameObject {
     public static void setActiveRange(double range) {
         activeRange = new Triple(1, 0, 1);
         activeRange = activeRange.mul(range);
-    }
-
-    public Triple getActiveRange() {
-        return activeRange;
     }
 }

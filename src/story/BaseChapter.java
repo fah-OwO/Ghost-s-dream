@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import static util.Util.*;
 
 public class BaseChapter {
-    Image upper;
-    QuestObject finalQuestObject;
-    Image decorateImage;
-    ObservableList<GameObject> gameObjectList;
-    static int amount = 100;
+    private Image upper;
+    private QuestObject finalQuestObject;
+    private Image decorateImage;
+    private final ObservableList<GameObject> gameObjectList;
+    protected static int amount = 100;
 
     public BaseChapter() {
         upper = null;
@@ -28,7 +28,7 @@ public class BaseChapter {
     }
 
     public void call() {
-        threadMain.clear();
+        Main.clearScreen();
         if (upper != null) Main.setUpperBackground(upper);
         if (finalQuestObject != null) {
             threadMain.create(finalQuestObject);
@@ -47,7 +47,6 @@ public class BaseChapter {
     public void run() {
         call();
     }
-
 
     public void generateDecorate(double amount) {
         for (double i = 1; i <= amount; i++) {

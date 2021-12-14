@@ -12,7 +12,7 @@ public class ExampleChapter extends BaseChapter {
         setDecorateImage(TREE);
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setRunnable(() -> threadMain.clear());
+        questObject.setRunnable(this::dupe);
         setFinalQuestObject(questObject);
         Image image = new Image("file:res/image/62872.jpg", height, width, true, true);
         for (int i = 0; i < 10; i++) {
