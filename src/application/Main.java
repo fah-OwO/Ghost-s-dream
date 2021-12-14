@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -73,6 +74,15 @@ public class Main extends Application {
 
     public static void removeFromPane(ImageView imageview) {
         pane.getChildren().remove(imageview);
+    }
+
+    public static void setUpperBackground(Image image){
+        WritableImage newImage=new WritableImage(image.getPixelReader(),0,0,width,height/2);
+        ImageView imageView=new ImageView(newImage);
+//        WritableImage anewImage=new WritableImage(imageView.getPixelReader(),0,0,width,height/2);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(width);
+        addToPane(imageView);
     }
 
 

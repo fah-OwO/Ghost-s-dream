@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import logic.DecorateGameObject;
 import logic.GameObject;
 
-import java.util.Comparator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,16 +14,17 @@ import static util.Util.*;
 
 public class ThreadMain {
     private final ObservableList<GameObject> objs = FXCollections.observableArrayList();
-    private final ScheduledExecutorService executorService;
     private boolean pause = true;
 
     public ThreadMain() {
         setPause(true);
-        executorService = Executors.newSingleThreadScheduledExecutor(r -> {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(r -> {
             final Thread thread = new Thread(r);
             thread.setDaemon(true);
             return thread;
         });
+        long refreshPeriod = (1000 / (frames));
+        executorService.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
         //https://stackoverflow.com/questions/14897194/stop-threads-before-close-my-javafx-program
         //https://stackoverflow.com/questions/50296223/executorservice-with-daemon-threads-explicit-shutdown
     }
@@ -38,29 +38,36 @@ public class ThreadMain {
     }
 
     public void start() {
-        setPause(false);
         accelerate(0, 0.1);
-        updateObj();
+        updateObjsPos();
         accelerate(0, 0);
-        executorService.scheduleAtFixedRate(this::updateObj, 0, (long) (1000 / (double) (frames)), TimeUnit.MILLISECONDS);
+        setPause(false);
     }
 
     public void clear() {
         setPause(true);
+//        delay(refreshPeriod);
         for (GameObject obj : objs) {
             obj.destruct();
             Platform.runLater(() -> Main.removeFromPane(obj.getImageView()));
         }
         objs.clear();
-        setPause(false);
     }
 
     private void updateObj() {
         if (pause) return;
+        updateObjsPos();
+        updateScreen();
+    }
+
+    private void updateObjsPos() {
         player.update();
         for (GameObject obj : objs) {
             obj.update();
         }
+    }
+
+    private void updateScreen() {
         objs.sort(objComparator);
         for (GameObject obj : objs) {
             if (obj.shouldBeDestructed()) {

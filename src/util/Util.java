@@ -8,8 +8,8 @@ import logic.Player;
 import java.util.Comparator;
 
 public class Util {
-    public static ThreadMain threadMain ;
-    public static Player player ;
+    public static ThreadMain threadMain;
+    public static Player player;
     public static final double k = 1;
     public static final String title = "";
     public static final int width = 1920;
@@ -18,13 +18,15 @@ public class Util {
     public static final double metrePerPixels = (double) 1 / height;
     public static final int frames = 100;
     public static final Image TREE = new Image("file:res/image/Tree1.png");
+    public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final CustomRandom rand = new CustomRandom();
     public final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
-    public static void initiate(){
+    public static void initiate() {
         player = Player.getInstance();
         threadMain = new ThreadMain();
     }
+
     public static Triple pos2coordinate(Triple pos) {
         Triple realPos = new Triple();
         realPos.z = Math.sqrt(1 + Math.pow(tanTheta * (pos.getX()) / width, 2)) * k / pos.getZ();
@@ -73,5 +75,12 @@ public class Util {
     public static void accelerate(double x, double z) {
         player.accX(x);
         player.accZ(z);
+    }
+
+    public static void delay(long l) {
+        try {
+            Thread.sleep(l);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

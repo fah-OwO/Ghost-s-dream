@@ -54,10 +54,6 @@ public class GameObject {
             despawn();
     }
 
-    public void spawnAnywhere() {
-        co = pos2coordinate(pos);
-    }
-
     public void spawnAtCoord(Triple coord) {
         co=coord;
         pos = coordinate2screenPos(co);
@@ -68,12 +64,6 @@ public class GameObject {
         pos = coordinate2screenPos(co);
     }
 
-    public void spawnAnywhereFromPosZ(double z) {
-        pos.set(0, 0, z);
-        z = pos2coordinate(pos).z;
-        double w = getMaxRealWidthFromRealZ(z);
-        co.set(rand.randomBetween(-w, w), 0, z);
-    }
 
     public void spawn() {
         pos.set(rand.randomBetween(-width, width), 0, minZ);
@@ -113,12 +103,6 @@ public class GameObject {
         return z * tanTheta;
     }
 
-    public static ObservableList<GameObject> getObjects() {
-        return null;
-//        objects.sort(objComparator);
-//        return objects;
-    }
-
     public void setRespawnable(boolean respawnable) {
         this.respawnable = respawnable;
     }
@@ -146,7 +130,7 @@ public class GameObject {
 
     public void setOnScreen(boolean onScreen) {
         if (onScreen) onAdd();
-        else onRemove();//objects.add(this);
+        else onRemove();
         this.onScreen = onScreen;
     }
 

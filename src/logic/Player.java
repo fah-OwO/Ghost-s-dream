@@ -36,7 +36,6 @@ public class Player {
     public void update() {
         Triple currentAcceleration = running ? acceleration.mul(runningMul) : acceleration;
         currentAcceleration = currentAcceleration.mul(accelerationMul);
-        //double currentResistanceMul = resistanceMul;//running ? 1 - (1 - resistanceMul) / runningMul : resistanceMul;
         Triple newSpeed = speed.mul(resistanceMul).add(currentAcceleration);
         newSpeed.near0();
         speed = newSpeed;
