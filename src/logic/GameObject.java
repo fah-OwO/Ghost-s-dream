@@ -1,6 +1,5 @@
 package logic;
 
-import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,31 +10,33 @@ import static util.Util.*;
 
 public class GameObject {
     protected ImageView imageView;
-    protected int maxSize;
     protected Triple co;//coordinate
     protected Triple pos;
+    protected double objectHeight;
     protected boolean onScreen;
     protected boolean respawnable;
     protected boolean destruct;
     protected GameObject triggeredObj;
+    protected final static double DEFAULT_HEIGHT = toMetre(height);
     private final static int acceptableBorder = 10;
     private final static double minZ = 20;
+    private final static int maxZ = height;
 
     public GameObject() {
-        imageView = new ImageView("file:res/image/Tree1.png");
+        imageView = new ImageView(TREE);
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
-        maxSize = height;
         co = new Triple();
         pos = new Triple();
+        objectHeight = height;
         respawnable = true;
         triggeredObj = null;
         destruct = false;
         spawn();
     }
 
-    private void move(Triple v) {
+    public void move(Triple v) {
         co = co.add(v);
         pos = coordinate2screenPos(co);
     }
@@ -45,11 +46,11 @@ public class GameObject {
             spawn();
             deploy();
         }
-        if (player.isMoving()) move(player.getSpeed());
-        if (pos.getZ() < minZ / 2 ||
-                pos.getZ() > maxSize ||
-                pos.getX() + pos.getZ() < -width - acceptableBorder ||
-                pos.getX() - pos.getZ() > width + acceptableBorder)
+        if (pos.z < minZ / 2 ||
+                co.z < 0 ||
+                pos.z > maxZ ||
+                pos.x + getObjectWidth() < -width - acceptableBorder ||
+                pos.x - getObjectWidth() > width + acceptableBorder)
             despawn();
     }
 
@@ -65,6 +66,31 @@ public class GameObject {
     }
 
     public void spawn() {
+        switch (rand.nextInt(3)) {
+            case 0 -> spawnLeft();
+            case 1 -> spawnRight();
+            case 2 -> spawnFront();
+        }
+    }
+
+    private void spawnLeft() {
+//        spawnRight();
+//        co.x *= -1;
+//        pos.x *= -1;
+    }
+
+    private void spawnRight() {
+////        co.x = 0;
+////        co.z = Math.random() * getMaxRealZ();
+////        System.out.println(co);
+////        pos = coordinate2screenPos(co);
+//        pos.z = rand.randomBetween(minZ, maxZ);
+//        pos.x = width;
+//        co = pos2coordinate(pos);
+//        System.out.println(pos);
+    }
+
+    private void spawnFront() {
         pos.set(rand.randomBetween(-width, width), 0, minZ);
         co = pos2coordinate(pos);
     }
@@ -96,14 +122,12 @@ public class GameObject {
     }
 
     public void setImage(String url, double metre) {
-        imageView.setImage(new Image(url));
-        maxSize = (int) (metre / metrePerPixels);
-        imageView.setPreserveRatio(true);
+        setImage(new Image(url), metre);
     }
 
     public void setImage(Image image, double metre) {
         imageView.setImage(image);
-        maxSize = (int) (metre / metrePerPixels);
+        setObjectHeight(metre);
         imageView.setPreserveRatio(true);
     }
 
@@ -143,7 +167,7 @@ public class GameObject {
     }
 
     public double getZ() {
-        return pos.getZ();
+        return pos.z;
     }
 
     public Triple getPos() {
@@ -163,5 +187,17 @@ public class GameObject {
     }
 
     protected void onRemove() {
+    }
+
+    public double getObjectHeight() {
+        return objectHeight * pos.z / height;
+    }
+
+    public double getObjectWidth() {
+        return getObjectHeight() / 2;
+    }
+
+    public void setObjectHeight(double objectHeight) {
+        this.objectHeight = toPixel(objectHeight);
     }
 }

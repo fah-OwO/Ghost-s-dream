@@ -15,10 +15,11 @@ public class Util {
     public static final String title = "";
     public static final int width = 1920;
     public static final int height = 1000;
+    public static final int horizonLine = height / 2;
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
-    public static final double metrePerPixels = (double) 1 / height;
+    public static final double metrePerPixels = (double) 4 / height;
     public static final int frames = 50;//100;
-    public static final AudioClip walkingSound=new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
+    public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
     public static final Image TREE = new Image("file:res/image/Tree1.png");
     public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final CustomRandom rand = new CustomRandom();
@@ -31,9 +32,9 @@ public class Util {
 
     public static Triple pos2coordinate(Triple pos) {
         Triple realPos = new Triple();
-        realPos.z = Math.sqrt(1 + Math.pow(tanTheta * (pos.getX()) / width, 2)) * k / pos.getZ();
-        realPos.y = pos.getY();
-        realPos.x = realPos.z * tanTheta * (pos.getX()) / width;
+        realPos.z = Math.sqrt(1 + Math.pow(tanTheta * (pos.x) / width, 2)) * k / pos.z;
+        realPos.y = pos.y;
+        realPos.x = realPos.z * tanTheta * (pos.x) / width;
         return realPos;
     }
 
@@ -44,6 +45,8 @@ public class Util {
         screenPos.z = k / Math.sqrt(co.x * co.x + co.z * co.z);
         return screenPos;
     }
+
+    public static double convertZ(double z){return k/z;}//convert between pos and co
 
     public static double coordToMetre(double z) {
         return z * height;

@@ -17,7 +17,7 @@ public class QuestObject extends GameObject {
     public QuestObject(String url) {
         super();
         passive = false;
-        super.setImage(url, 50);
+        super.setImage(url,DEFAULT_HEIGHT);
     }
 
     public void setRunnable(Runnable runnable) {

@@ -15,15 +15,15 @@ public class Triple {
     }
 
     public Triple(double x, double y, double z) {
-        setX(x);
-        setY(y);
-        setZ(z);
+        this.x=x;
+        this.y=y;
+        this.z=z;
     }
 
     public void set(double x, double y, double z) {
-        setX(x);
-        setY(y);
-        setZ(z);
+        this.x=x;
+        this.y=y;
+        this.z=z;
     }
 
     public Triple add(Triple t) {
@@ -79,20 +79,20 @@ public class Triple {
 
         Triple triple = (Triple) o;
 
-        if (Double.compare(triple.getX(), getX()) != 0) return false;
-        if (Double.compare(triple.getY(), getY()) != 0) return false;
-        return Double.compare(triple.getZ(), getZ()) == 0;
+        if (Double.compare(triple.x, x) != 0) return false;
+        if (Double.compare(triple.y, y) != 0) return false;
+        return Double.compare(triple.z, z) == 0;
     }
 
     @Override
     public int hashCode() {
         int result;
         long temp;
-        temp = Double.doubleToLongBits(getX());
+        temp = Double.doubleToLongBits(x);
         result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getY());
+        temp = Double.doubleToLongBits(y);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getZ());
+        temp = Double.doubleToLongBits(z);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
@@ -104,29 +104,5 @@ public class Triple {
                 ", y=" + y +
                 ", z=" + z +
                 ')';
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
     }
 }

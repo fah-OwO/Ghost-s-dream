@@ -3,7 +3,6 @@ package application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import logic.DecorateGameObject;
 import logic.GameObject;
 import logic.Player;
 
@@ -33,9 +32,7 @@ public class ThreadMain {
     }
 
     public void start() {
-        accelerate(0, 0.1);
         updateObjectsPos();
-        accelerate(0, 0);
         setPause(false);
     }
 
@@ -51,7 +48,7 @@ public class ThreadMain {
     private void updateObj() {
         if (pause) return;
         player.update();
-        updateObjectsPos();
+        if (player.isMoving()) updateObjectsPos();
         updateScreen();
     }
 
@@ -67,7 +64,10 @@ public class ThreadMain {
     }
 
     private void updateObjectsPos() {
-        for (GameObject obj : objects) obj.update();
+        for (GameObject obj : objects) {
+            obj.move(player.getSpeed());
+            obj.update();
+        }
     }
 
     private void updateScreen() {
@@ -90,8 +90,6 @@ public class ThreadMain {
 
     @Override
     public String toString() {
-        return "ThreadMain{" +
-                "objs=" + objects +
-                '}';
+        return "ThreadMain{" + "objs=" + objects + '}';
     }
 }

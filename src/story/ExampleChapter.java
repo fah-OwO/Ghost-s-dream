@@ -17,7 +17,7 @@ public class ExampleChapter extends BaseChapter {
         Image image = new Image("file:res/image/62872.jpg", height, width, true, true);
         for (int i = 0; i < 10; i++) {
             GameObject gameObject = new GameObject();
-            gameObject.setImage(image, 1);//setImage("file:res/image/62872.jpg",1);
+            gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             addGameObject(gameObject);
         }
     }

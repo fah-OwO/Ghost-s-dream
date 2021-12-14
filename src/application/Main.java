@@ -34,7 +34,7 @@ public class Main extends Application {
         pane.setPrefSize(width, height);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case UP, W -> player.accZ(-1);
+                case UP, W, G -> player.accZ(-1);
                 case DOWN, S -> player.accZ(1);
                 case SHIFT -> player.setRunning(true);
             }
@@ -63,8 +63,8 @@ public class Main extends Application {
         ImageView im = obj.getImageView();
         Triple pos = obj.getPos();
         removeFromPane(im);
-        im.relocate((pos.getX() - pos.getZ() + width) / 2, (height - pos.getZ()) / 2);
-        im.setFitHeight(pos.getZ());
+        im.relocate((pos.x - pos.z + width) / 2, (height - horizonLine) + pos.z / 2 - obj.getObjectHeight());
+        im.setFitHeight(obj.getObjectHeight());
         addToPane(im);
     }
 
@@ -82,9 +82,8 @@ public class Main extends Application {
     }
 
     public static void setUpperBackground(Image image) {
-        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, height / 2);
+        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, (int) Math.min(image.getHeight(), height - horizonLine));
         ImageView imageView = new ImageView(newImage);
-//        WritableImage anewImage=new WritableImage(imageView.getPixelReader(),0,0,width,height/2);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         addToPane(imageView);

@@ -38,8 +38,6 @@ public class BaseChapter {
             threadMain.create(object);
             object.deploy();
         }
-        if (upper != null)
-            DecorateGameObject.setImage(decorateImage);
         generateDecorate(amount);
         threadMain.start();
     }
@@ -48,13 +46,20 @@ public class BaseChapter {
         call();
     }
 
-    public void generateDecorate(double amount) {
-        for (double i = 1; i <= amount; i++) {
-            GameObject object = new DecorateGameObject();
-            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * i / amount);
+    public void spreadObject(ObservableList<GameObject> gameObjectList) {
+        int i = 0, amount = gameObjectList.size();
+        for (GameObject object : gameObjectList) {
+            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * ++i / amount);
             threadMain.create(object);
             object.deploy();
         }
+    }
+
+    public void generateDecorate(double amount) {
+        if (decorateImage != null) DecorateGameObject.setImage(decorateImage);
+        ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
+        for (int i = 0; i < amount; i++) gameObjectList.add(new DecorateGameObject());
+        spreadObject(gameObjectList);
     }
 
     public GameObject getFinalQuestObject() {
