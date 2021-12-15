@@ -1,15 +1,17 @@
 package story;
 
+import application.Main;
 import javafx.scene.image.Image;
 import logic.GameObject;
 import logic.QuestObject;
+import util.MediaData;
 
 import static util.Util.*;
 
 public class ExampleChapter extends BaseChapter {
     public ExampleChapter() {
         setUpper(EVENING);
-        setDecorateImage(TREE);
+        setDecorateImage(MediaData.getTree());
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setRunnable(this::dupe);
@@ -23,7 +25,9 @@ public class ExampleChapter extends BaseChapter {
     }
 
     public void dupe() {
+        this.shutdown();
         ExampleChapter exampleChapter = new ExampleChapter();
         exampleChapter.run();
+        Main.changeRoot(exampleChapter.getRoot());
     }
 }
