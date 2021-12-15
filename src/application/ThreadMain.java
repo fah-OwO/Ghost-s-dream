@@ -3,6 +3,7 @@ package application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -44,7 +45,6 @@ public class ThreadMain {
 
     public void start() {
         if (!start) {
-            long refreshPeriod = (1000 / (frames));
             threadPoolExecutor.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
             threadPoolExecutor.scheduleAtFixedRate(this::updateSound, 0, refreshPeriod, TimeUnit.MILLISECONDS);
             start = true;
@@ -114,7 +114,7 @@ public class ThreadMain {
         ImageView im = obj.getImageView();
         Triple pos = obj.getPos();
         removeFromPane(im);
-        im.relocate((pos.x - pos.z + width) / 2, (height - horizonLine) + pos.z / 2 - obj.getObjectHeight());
+        im.relocate((pos.x - pos.z + width) / 2, (height - horizonLine) + pos.z / 2 - obj.getObjectHeight()- pos.y);
         im.setFitHeight(obj.getObjectHeight());
         addToPane(im);
     }

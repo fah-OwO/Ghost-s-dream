@@ -18,6 +18,7 @@ public class Util {
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
     public static final double metrePerPixels = (double) 2 / height;
     public static final int frames = 50;//100;
+    public static final long refreshPeriod = (1000 / (frames));
     public static final CustomRandom rand = new CustomRandom();
     public final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 

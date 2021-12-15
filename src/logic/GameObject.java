@@ -20,7 +20,7 @@ public class GameObject {
     protected boolean destruct;
     protected GameObject triggeredObj;
     protected final static double DEFAULT_HEIGHT = toMetre(height);
-    private final static double acceptableBorder = 0.8;
+    private final static double acceptableBorder = 0.5;
     private final static double minZ = 20;
     private final static int maxZ = height;
 
@@ -51,7 +51,7 @@ public class GameObject {
         if (pos.z < minZ * acceptableBorder ||
                 co.z < 0 ||
                 pos.z > maxZ ||
-                Math.abs((pos.x+getObjectWidth()/2)* acceptableBorder) > width + acceptableBorder)
+                Math.abs((pos.x + getObjectWidth() / 2) * acceptableBorder) > width + acceptableBorder)
             despawn();
     }
 
@@ -97,7 +97,7 @@ public class GameObject {
     }
 
     public void spawnAnywhere() {
-        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ)+metreToCoord(1), getMaxRealZ()));
+        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + metreToCoord(1), getMaxRealZ()));
     }
 
     public void spawnAnywhereFromRealZ(double z) {
@@ -127,7 +127,8 @@ public class GameObject {
     }
 
     public void setImage(Image image, double metre) {
-        imageView.setImage(image);
+        if (image != null)
+            imageView.setImage(image);
         setObjectHeight(metre);
         imageView.setPreserveRatio(true);
     }
@@ -201,5 +202,14 @@ public class GameObject {
     public void setObjectHeight(double objectHeight) {
         if (objectHeight == 0) this.objectHeight = height;
         else this.objectHeight = toPixel(objectHeight);
+    }
+
+    public void setCo(Triple triple) {
+        co = triple;
+        pos = coordinate2screenPos(co);
+    }
+
+    public void setPosY(double y) {
+        co.y = pos.y = y;
     }
 }

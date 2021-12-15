@@ -11,22 +11,36 @@ import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 import util.MediaData;
+import util.Triple;
 
 import static util.Util.*;
 
 public class ExampleChapter extends BaseChapter {
     public ExampleChapter() {
+        amount=50;
         setUpper(MediaData.EVENING);
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setRunnable(() -> changeChapter(new ExampleChapter()));
+        questObject.setConsumer((obj) -> changeChapter(new ExampleChapter()));
         setFinalQuestObject(questObject);
-
-        Image image = MediaData.getImage("file:res/image/62872.jpg");//new Image("file:res/image/62872.jpg", height, width, true, true);
-        for (int i = 0; i < 10; i++) {
-            GameObject gameObject = new GameObject();
-            gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
-            addGameObject(gameObject);
+        for (int i = 0; i < 100; i++) {
+            QuestObject squid = new QuestObject("file:res/image/squid.png");
+            squid.setActiveRange(7.5);
+            squid.setPassive(true);
+            squid.setConsumer((obj)->{
+                Thread thread =new Thread(()->{
+                    //obj.setCo(new Triple(0 ,0 ,metreToCoord(10)));
+                    for (int j = 0; j < height; j+=10) {
+                        delay(refreshPeriod);
+                        obj.setPosY(j);
+                    }
+//                    obj.despawn();
+                });
+                thread.start();
+                    });
+            squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
+            squid.spawnAnywhere();
+            addGameObject(squid);
         }
         StackPane pane = new StackPane();
         Text gameOverText = new Text("Game Over");
@@ -34,13 +48,9 @@ public class ExampleChapter extends BaseChapter {
         gameOverText.setFont(new Font(height / 3.0));
         pane.getChildren().add(gameOverText);
         StackPane.setAlignment(gameOverText, Pos.CENTER);
-        for (int i = 0; i < 100; i++) {
-            QuestObject trap = new QuestObject(null);
-            trap.setImage(MediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
-            trap.setPassive(true);
-            trap.setActiveRange(1);
-            trap.spawnAnywhere();
-            trap.setRunnable(() -> {
+        for (int i = 0; i < 10; i++) {
+            QuestObject trap = QuestObject.createTrap();
+            trap.setConsumer((obj) -> {
                 shutdown();
                 Main.changeRoot(pane);
                 Thread thread = new Thread(() -> {

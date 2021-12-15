@@ -10,7 +10,7 @@ import static util.Util.*;
 public class MediaData {
 
     public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
-    public static final Image BLACK = new Image("file:res/image/Background.png");
+    public static final Image BLACK = new Image("file:res/image/Background.png",1,1,false,false);
     public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final Image TRAP = new Image("file:res/image/Trap.png");//<a href='https://www.freepik.com/vectors/cartoon'>Cartoon vector created by pch.vector - www.freepik.com</a>
     private static final Map<String, Image> imageDatabase = new HashMap<>();
