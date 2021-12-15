@@ -22,7 +22,7 @@ public class ExampleChapter extends BaseChapter {
         questObject.setConsumer((obj) -> changeChapter(new ExampleChapter()));
         setFinalQuestObject(questObject);
         for (int i = 0; i < 100; i++) {
-            QuestObject squid = new QuestObject("file:res/image/squid.png");
+            QuestObject squid = new QuestObject("file:res/image/sq43.png");
             squid.setActiveRange(7.5);
             squid.setPassive(true);
             squid.setConsumer((obj) -> {

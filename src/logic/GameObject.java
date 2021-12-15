@@ -17,7 +17,6 @@ public class GameObject {
     protected boolean onScreen;
     protected boolean respawnable;
     protected boolean destruct;
-    protected GameObject triggeredObj;
     protected final static double DEFAULT_HEIGHT = toMetre(height);
     private final static double acceptableBorder = 0.5;
     private final static double minZ = 20;
@@ -32,7 +31,6 @@ public class GameObject {
         pos = new Triple();
         objectHeight = height;
         respawnable = true;
-        triggeredObj = null;
         destruct = false;
         spawn();
     }
@@ -116,10 +114,6 @@ public class GameObject {
 
     //https://pinetools.com/invert-image-colors
     //https://onlinepngtools.com/create-transparent-png
-    public void setTriggeredObj(GameObject triggeredObj) {
-        setRespawnable(false);
-        this.triggeredObj = triggeredObj;
-    }
 
     public void setImage(String url, double metre) {
         setImage(MediaData.getImage(url), metre);
@@ -155,9 +149,6 @@ public class GameObject {
         this.respawnable = respawnable;
     }
 
-    public GameObject getTriggeredObj() {
-        return triggeredObj;
-    }
 
     public ImageView getImageView() {
         return imageView;
