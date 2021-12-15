@@ -11,6 +11,7 @@ public class Player {
     private static final double runningMul = 1.5;
     private static final double PerspectiveRadians = Math.toRadians(50 >> 1);
     private boolean running;
+    //    private boolean onGround;
     private Triple speed = new Triple();
     private final Triple acceleration = new Triple();
     private static Player instance;
@@ -56,6 +57,10 @@ public class Player {
         return running;
     }
 
+    public boolean isOnGround() {
+        return speed.y == 0;//onGround;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -75,5 +80,9 @@ public class Player {
 
     public static double getRunningMul() {
         return runningMul;
+    }
+
+    public void jump() {
+//        if (isOnGround()) acceleration.y = -1;
     }
 }

@@ -13,21 +13,23 @@ import util.Triple;
 
 import java.util.concurrent.*;
 
+import static util.MediaData.walkingSound;
 import static util.Util.*;
 
 public class ThreadMain {
     private final Player player;
+    private double horizonLine = height / 2.0;
     private final ObservableList<GameObject> objects = FXCollections.observableArrayList();
     private boolean pause = true;
     private boolean start;
     private final Pane pane;
     private final ScheduledThreadPoolExecutor threadPoolExecutor;
 
-    public ThreadMain(Pane pane,Player player) {
+    public ThreadMain(Pane pane, Player player) {
         setPause(true);
         start = false;
         this.pane = pane;
-        this.player=player;
+        this.player = player;
         threadPoolExecutor = new ScheduledThreadPoolExecutor(4, r -> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setDaemon(true);
@@ -63,7 +65,7 @@ public class ThreadMain {
 
     private void updateObj() {
         if (pause) return;
-        player.update();
+        updatePlayer();
         if (player.isMoving()) updateObjectsPos();
         updateScreen();
     }
@@ -79,7 +81,15 @@ public class ThreadMain {
         walkingSound.setRate(rate);
     }
 
+    private void updatePlayer() {
+        player.update();
+        Triple speed = player.getSpeed();
+        horizonLine -= speed.y;
+        speed.y = 0;
+    }
+
     private void updateObjectsPos() {
+        player.update();
         for (GameObject obj : objects) {
             obj.move(player.getSpeed());
             obj.update();
@@ -129,6 +139,8 @@ public class ThreadMain {
     public void shutdown() {
         setPause(true);
         threadPoolExecutor.shutdown();
+        updateObj();
+        updateSound();
         clear();
     }
 

@@ -36,13 +36,12 @@ public class Main extends Application {
             switch (event.getCode()) {
                 case UP, W, G -> player.accZ(-1);
                 case DOWN, S -> player.accZ(1);
-                case SHIFT -> player.setRunning(true);
-            }
-            switch (event.getCode()) {
                 case RIGHT, D -> player.accX(-1);
                 case LEFT, A -> player.accX(1);
+                case SHIFT -> player.setRunning(true);
+                case E -> QuestObject.run();
+                case SPACE ->player.jump();
             }
-            if (event.getCode().equals(KeyCode.E)) QuestObject.run();
         });
         scene.setOnKeyReleased(event -> {
             switch (event.getCode()) {

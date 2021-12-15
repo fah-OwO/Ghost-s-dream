@@ -12,12 +12,12 @@ public class QuestObject extends GameObject {
     private boolean passive;
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
     //for activate purpose so it must be on screen
-    private static Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
+    private Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
 
     public QuestObject(String url) {
         super();
         passive = false;
-        super.setImage(url,DEFAULT_HEIGHT);
+        if(url!=null)super.setImage(url,DEFAULT_HEIGHT);
     }
 
     public void setRunnable(Runnable runnable) {
@@ -65,8 +65,8 @@ public class QuestObject extends GameObject {
         this.passive = passive;
     }
 
-    public static void setActiveRange(double range) {
+    public void setActiveRange(double metre) {
         activeRange = new Triple(1, 0, 1);
-        activeRange = activeRange.mul(range);
+        activeRange = activeRange.mul(metreToCoord(metre));
     }
 }

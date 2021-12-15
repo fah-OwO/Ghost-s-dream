@@ -6,24 +6,31 @@ import javafx.scene.media.AudioClip;
 import logic.GameObject;
 import logic.Player;
 
+import java.io.File;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Util {
     public static final double k = 1;
     public static final String title = "";
     public static final int width = 1920;
     public static final int height = 1000;
-    public static final int horizonLine = height / 2;
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
-    public static final double metrePerPixels = (double) 4 / height;
+    public static final double metrePerPixels = (double) 2 / height;
     public static final int frames = 50;//100;
-    public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
-    public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final CustomRandom rand = new CustomRandom();
     public final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
     public static void initiate() {
-        MediaData.addTree("file:res/image/Tree1.png");
+        for (int i = 1; i <= 4; i++) {
+            MediaData.addTree("file:res/image/tree/3"+i+".png");//https://www.cgchan.com/cantree
+
+        }
+//        File folder=new File("res/image/tree");
+//        for (final File file : Objects.requireNonNull(folder.listFiles())) {
+//            if(!file.isDirectory())MediaData.addTree(file.getAbsolutePath());
+//        }
+//        MediaData.addTree("file:res/image/Tree1.png");
     }
 
     public static Triple pos2coordinate(Triple pos) {

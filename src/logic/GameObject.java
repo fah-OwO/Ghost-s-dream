@@ -20,7 +20,7 @@ public class GameObject {
     protected boolean destruct;
     protected GameObject triggeredObj;
     protected final static double DEFAULT_HEIGHT = toMetre(height);
-    private final static int acceptableBorder = 10;
+    private final static double acceptableBorder = 0.8;
     private final static double minZ = 20;
     private final static int maxZ = height;
 
@@ -48,11 +48,10 @@ public class GameObject {
             spawn();
             deploy();
         }
-        if (pos.z < minZ / 2 ||
+        if (pos.z < minZ * acceptableBorder ||
                 co.z < 0 ||
                 pos.z > maxZ ||
-                pos.x + getObjectWidth() < -width - acceptableBorder ||
-                pos.x - getObjectWidth() > width + acceptableBorder)
+                Math.abs((pos.x+getObjectWidth()/2)* acceptableBorder) > width + acceptableBorder)
             despawn();
     }
 
@@ -98,7 +97,7 @@ public class GameObject {
     }
 
     public void spawnAnywhere() {
-        spawnAnywhereFromRealZ(rand.randomBetween(1, getMaxRealZ()));
+        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ)+metreToCoord(1), getMaxRealZ()));
     }
 
     public void spawnAnywhereFromRealZ(double z) {
@@ -200,6 +199,7 @@ public class GameObject {
     }
 
     public void setObjectHeight(double objectHeight) {
-        this.objectHeight = toPixel(objectHeight);
+        if (objectHeight == 0) this.objectHeight = height;
+        else this.objectHeight = toPixel(objectHeight);
     }
 }

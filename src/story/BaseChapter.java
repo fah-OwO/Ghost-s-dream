@@ -9,14 +9,11 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import logic.DecorateGameObject;
 import logic.GameObject;
 import logic.Player;
 import logic.QuestObject;
 import util.MediaData;
 
-
-import java.util.ArrayList;
 
 import static util.Util.*;
 
@@ -25,7 +22,6 @@ public class BaseChapter {
     private final ThreadMain threadMain;
     private Image upper;
     private QuestObject finalQuestObject;
-    private Image decorateImage;
     private final ObservableList<GameObject> gameObjectList;
     protected static int amount = 100;
 
@@ -38,7 +34,6 @@ public class BaseChapter {
         threadMain = new ThreadMain(pane, Player.getInstance());
         upper = null;
         finalQuestObject = null;
-        decorateImage = MediaData.getTree();
         gameObjectList = FXCollections.observableArrayList();
     }
 
@@ -57,6 +52,12 @@ public class BaseChapter {
         threadMain.start();
     }
 
+    public void changeChapter(BaseChapter chapter) {
+        this.shutdown();
+        chapter.run();
+        Main.changeRoot(chapter.getRoot());
+    }
+
     public void run() {
         call();
     }
@@ -71,9 +72,12 @@ public class BaseChapter {
     }
 
     public void generateDecorate(double amount) {
-        if (decorateImage != null) DecorateGameObject.setImage(decorateImage);
         ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
-        for (int i = 0; i < amount; i++) gameObjectList.add(new DecorateGameObject());
+        for (int i = 0; i < amount; i++) {
+            GameObject decorateGameObject = new GameObject();
+            decorateGameObject.setImage(MediaData.getTree(), 4);
+            gameObjectList.add(decorateGameObject);
+        }
         spreadObject(gameObjectList);
     }
 
@@ -93,14 +97,6 @@ public class BaseChapter {
 
     public void setFinalQuestObject(QuestObject finalQuestObject) {
         this.finalQuestObject = finalQuestObject;
-    }
-
-    public Image getDecorateImage() {
-        return decorateImage;
-    }
-
-    public void setDecorateImage(Image decorateImage) {
-        this.decorateImage = decorateImage;
     }
 
     public void setUpper(Image upper) {
