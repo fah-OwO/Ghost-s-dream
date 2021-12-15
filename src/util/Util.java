@@ -24,14 +24,9 @@ public class Util {
 
     public static void initiate() {
         for (int i = 1; i <= 4; i++) {
-            MediaData.addTree("file:res/image/tree/3"+i+".png");//https://www.cgchan.com/cantree
+            MediaData.addTree("file:res/image/tree/3" + i + ".png");//https://www.cgchan.com/cantree
 
         }
-//        File folder=new File("res/image/tree");
-//        for (final File file : Objects.requireNonNull(folder.listFiles())) {
-//            if(!file.isDirectory())MediaData.addTree(file.getAbsolutePath());
-//        }
-//        MediaData.addTree("file:res/image/Tree1.png");
     }
 
     public static Triple pos2coordinate(Triple pos) {
@@ -50,7 +45,9 @@ public class Util {
         return screenPos;
     }
 
-    public static double convertZ(double z){return k/z;}//convert between pos and co
+    public static double convertZ(double z) {
+        return k / z;
+    }//convert between pos and co
 
     public static double coordToMetre(double z) {
         return z * height;
@@ -82,5 +79,9 @@ public class Util {
             Thread.sleep(l);
         } catch (InterruptedException ignored) {
         }
+    }
+
+    public static double getCoDistance(Triple co1, Triple co2) {
+        return co1.add(co2.mul(-1)).getSize();
     }
 }

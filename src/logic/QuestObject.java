@@ -15,12 +15,12 @@ public class QuestObject extends GameObject {
     private boolean passive;
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
     //for activate purpose so it must be on screen
-    private Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
+    private double activeRange = metreToCoord(1.5);//private Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
 
     public QuestObject(String url) {
         super();
         passive = false;
-        if(url!=null)super.setImage(url,DEFAULT_HEIGHT);
+        if (url != null) super.setImage(url, DEFAULT_HEIGHT);
     }
 
     public void setConsumer(Consumer<GameObject> consumer) {
@@ -29,8 +29,8 @@ public class QuestObject extends GameObject {
 
     @Override
     public void update() {
-        super.update();
         if (passive && isInActiveRange()) individualRun();
+        super.update();
     }
 
 
@@ -44,11 +44,11 @@ public class QuestObject extends GameObject {
     }
 
     public boolean isInActiveRange() {
-        return co.isBetween(activeRange.mul(-1), activeRange);
+        return getCoDistance(Player.getPlayerCo(), co) < activeRange;
     }
 
     public void individualRun() {
-        Platform.runLater(()->consumer.accept(this));
+        Platform.runLater(() -> consumer.accept(this));
         questObjs.remove(this);
     }
 
@@ -69,15 +69,14 @@ public class QuestObject extends GameObject {
     }
 
     public void setActiveRange(double metre) {
-        activeRange = new Triple(1, 0, 1);
-        activeRange = activeRange.mul(metreToCoord(metre));
+        activeRange = metreToCoord(metre);
     }
 
-    public static QuestObject createTrap(){
-        QuestObject trap=new QuestObject(null);
+    public static QuestObject createTrap() {
+        QuestObject trap = new QuestObject(null);
         trap.setImage(MediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
         trap.setPassive(true);
-        trap.setActiveRange(0.5);
+        trap.setActiveRange(1);
         trap.spawnAnywhere();
         return trap;
     }

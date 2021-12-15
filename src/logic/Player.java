@@ -5,6 +5,7 @@ import util.Triple;
 import static util.Util.*;
 
 public class Player {
+    private static final Triple playerCo = new Triple(0, 0, metreToCoord(0));
     private static final double resistanceMul = 0.8;//maxSpeed(1-res)=acceleration
     private static double accelerationMul = 1;
     private static final double speedMul = metreToCoord(1) * (1 - resistanceMul) / frames / (resistanceMul);
@@ -85,4 +86,40 @@ public class Player {
     public void jump() {
 //        if (isOnGround()) acceleration.y = -1;
     }
+
+    public static Triple getPlayerCo() {
+        return playerCo;
+    }
+    public boolean isWalkLeft() {
+        return speed.x > 0.0;
+    }
+
+    public boolean isWalkRight() {
+        return speed.x < 0.0;
+    }
+
+    public boolean isWalkFoward() {
+        return speed.z < 0.0;
+    }
+
+    public boolean isWalkBack() {
+        return speed.z > 0.0;
+    }
+//
+//    public void walkLeft() {
+//        accX(1);
+//    }
+//
+//    public void walkRight() {
+//        accX(-1);
+//    }
+//
+//    public void walkForward() {
+//        accZ(-1);
+//    }
+//
+//    public void walkBack() {
+//        accZ(1);
+//    }
+
 }

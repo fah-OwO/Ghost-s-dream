@@ -3,7 +3,6 @@ package story;
 import application.Main;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -11,13 +10,12 @@ import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 import util.MediaData;
-import util.Triple;
 
 import static util.Util.*;
 
 public class ExampleChapter extends BaseChapter {
     public ExampleChapter() {
-        amount=50;
+        amount = 50;
         setUpper(MediaData.EVENING);
         QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
@@ -27,17 +25,16 @@ public class ExampleChapter extends BaseChapter {
             QuestObject squid = new QuestObject("file:res/image/squid.png");
             squid.setActiveRange(7.5);
             squid.setPassive(true);
-            squid.setConsumer((obj)->{
-                Thread thread =new Thread(()->{
-                    //obj.setCo(new Triple(0 ,0 ,metreToCoord(10)));
-                    for (int j = 0; j < height; j+=10) {
+            squid.setConsumer((obj) -> {
+                Thread thread = new Thread(() -> {
+                    for (int j = 0; j < height; j += 10) {
                         delay(refreshPeriod);
-                        obj.setPosY(j);
+                        if (obj.isOnScreen()) obj.setPosY(j);
+                        else break;
                     }
-//                    obj.despawn();
                 });
                 thread.start();
-                    });
+            });
             squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             squid.spawnAnywhere();
             addGameObject(squid);

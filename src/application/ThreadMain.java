@@ -1,13 +1,14 @@
 package application;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import logic.GameObject;
 import logic.Player;
 import util.Triple;
@@ -67,7 +68,7 @@ public class ThreadMain {
         if (pause) return;
         updatePlayer();
         if (player.isMoving()) updateObjectsPos();
-        updateScreen();
+        Platform.runLater(this::updateScreen);//updateScreen();
     }
 
     private void updateSound() {
@@ -100,15 +101,24 @@ public class ThreadMain {
         objects.sort(objComparator);
         for (GameObject obj : objects) {
             if (obj.shouldBeDestructed()) {
-                Platform.runLater(() -> removeFromPane(obj.getImageView()));
+                removeFromPane(obj.getImageView());
                 objects.remove(obj);
                 if (obj.getTriggeredObj() != null) objects.add(obj.getTriggeredObj());
             } else {
-                if (obj.isOnScreen()) Platform.runLater(() -> drawIMG(obj));
-                else Platform.runLater(() -> removeFromPane(obj.getImageView()));
+                if (obj.isOnScreen()) drawIMG(obj);
+                else removeFromPane(obj.getImageView());
             }
         }
     }
+
+//    private void pauseScreenTillDoneTask(Runnable runnable){//https://stackoverflow.com/questions/29442625/javafx-splash-screen-not-showing
+//
+//        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+//        pause.setOnFinished(event -> {
+//            runnable.run();
+//        });
+//        pause.play();
+//    }
 
     private void drawIMG(GameObject obj) {
         ImageView im = obj.getImageView();

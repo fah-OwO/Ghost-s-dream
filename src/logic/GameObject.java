@@ -1,6 +1,5 @@
 package logic;
 
-import application.ThreadMain;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
