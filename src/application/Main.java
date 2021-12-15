@@ -38,8 +38,8 @@ public class Main extends Application {
                 case DOWN, S -> player.accZ(1);
                 case RIGHT, D -> player.accX(-1);
                 case LEFT, A -> player.accX(1);
-                case SHIFT -> player.setRunning(true);
-                case E, CAPS -> QuestObject.run();
+                case SHIFT, CAPS -> player.setRunning(true);
+                case E -> QuestObject.run();
                 case SPACE -> player.jump();
             }
         });

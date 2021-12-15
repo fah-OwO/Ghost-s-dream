@@ -1,6 +1,6 @@
 package util;
 
-public class Triple {
+public class Triple implements Cloneable {
     public double x;
     public double y;
     public double z;
@@ -15,15 +15,15 @@ public class Triple {
     }
 
     public Triple(double x, double y, double z) {
-        this.x=x;
-        this.y=y;
-        this.z=z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void set(double x, double y, double z) {
-        this.x=x;
-        this.y=y;
-        this.z=z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public Triple add(Triple t) {
@@ -104,5 +104,14 @@ public class Triple {
                 ", y=" + y +
                 ", z=" + z +
                 ')';
+    }
+
+    @Override
+    public Triple clone() {
+        try {
+            return (Triple) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

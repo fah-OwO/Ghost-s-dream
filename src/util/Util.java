@@ -1,14 +1,9 @@
 package util;
 
-import application.ThreadMain;
-import javafx.scene.image.Image;
-import javafx.scene.media.AudioClip;
 import logic.GameObject;
 import logic.Player;
 
-import java.io.File;
 import java.util.Comparator;
-import java.util.Objects;
 
 public class Util {
     public static final double k = 1;
@@ -24,9 +19,14 @@ public class Util {
 
     public static void initiate() {
         for (int i = 1; i <= 4; i++) {
-            MediaData.addTree("file:res/image/tree/3" + i + ".png");//https://www.cgchan.com/cantree
+            GameObject tree = new GameObject();
+            tree.setImage("file:res/image/tree/3" + i + ".png", 4);
+            MediaData.addDecoration(tree);//https://www.cgchan.com/cantree
 
         }
+        GameObject bush = new GameObject();
+        bush.setImage("file:res/image/bush.png", 1);
+        MediaData.addDecoration(bush);//https://www.cgchan.com/cantree
     }
 
     public static Triple pos2coordinate(Triple pos) {

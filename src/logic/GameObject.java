@@ -9,7 +9,7 @@ import util.Triple;
 
 import static util.Util.*;
 
-public class GameObject {
+public class GameObject implements Cloneable {
     protected ImageView imageView;
     protected Triple co;//coordinate
     protected Triple pos;
@@ -23,7 +23,7 @@ public class GameObject {
     private final static int maxZ = height;
 
     public GameObject() {
-        imageView = new ImageView(MediaData.getTree());
+        imageView = new ImageView(MediaData.BLACK);
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
@@ -46,8 +46,8 @@ public class GameObject {
             deploy();
         }
         if (pos.z < minZ * acceptableBorder ||
+                pos.z > maxZ / acceptableBorder ||
                 co.z < 0 ||
-                pos.z > maxZ ||
                 Math.abs((pos.x + getObjectWidth() / 2) * acceptableBorder) > width + acceptableBorder)
             despawn();
     }
@@ -202,4 +202,23 @@ public class GameObject {
     public void setPosY(double y) {
         co.y = pos.y = y;
     }
+
+    @Override
+    public GameObject clone() {
+        try {
+            GameObject clone = (GameObject) super.clone();
+            clone.imageView = new ImageView(imageView.getImage());
+            clone.co = co.clone();
+            clone.pos = pos.clone();
+            clone.objectHeight = objectHeight;
+            clone.onScreen = onScreen;
+            clone.destruct = destruct;
+            clone.respawnable = respawnable;
+            clone.imageView.setPreserveRatio(true);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
 }

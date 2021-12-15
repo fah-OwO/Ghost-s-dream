@@ -74,8 +74,7 @@ public class BaseChapter {
     public void generateDecorate(double amount) {
         ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
         for (int i = 0; i < amount; i++) {
-            GameObject decorateGameObject = new GameObject();
-            decorateGameObject.setImage(MediaData.getTree(), 4);
+            GameObject decorateGameObject = MediaData.getDecoration();
             gameObjectList.add(decorateGameObject);
         }
         spreadObject(gameObjectList);
