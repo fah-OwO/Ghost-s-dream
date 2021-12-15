@@ -1,8 +1,10 @@
 package logic;
 
+import application.ThreadMain;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import util.MediaData;
 import util.Triple;
 
 
@@ -23,7 +25,7 @@ public class GameObject {
     private final static int maxZ = height;
 
     public GameObject() {
-        imageView = new ImageView(TREE);
+        imageView = new ImageView(MediaData.getTree());
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
@@ -122,7 +124,7 @@ public class GameObject {
     }
 
     public void setImage(String url, double metre) {
-        setImage(new Image(url), metre);
+        setImage(MediaData.getImage(url), metre);
     }
 
     public void setImage(Image image, double metre) {

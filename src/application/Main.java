@@ -1,6 +1,8 @@
 package application;
 
 import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,13 +13,12 @@ import javafx.stage.Stage;
 import logic.*;
 import story.BaseChapter;
 import story.ExampleChapter;
-import util.Triple;
 
 import static util.Util.*;
 
 public class Main extends Application {
-    private static final Pane pane = new Pane();
-    private static final Image background = new Image("file:res/image/Background.png");
+
+    private static final VBox root = new VBox();
 
     public static void main(String[] args) {
         launch(args);
@@ -25,13 +26,12 @@ public class Main extends Application {
 
     public void start(Stage stage) {
         initiate();
-        VBox root = new VBox();
-        Scene scene = new Scene(root, width, height);
+        Player player = Player.getInstance();
         stage.setTitle(title);
-        root.getChildren().addAll(pane);
-        BackgroundImage backgroundImg = new BackgroundImage(background, null, null, null, null);
-        pane.setBackground(new Background(backgroundImg));
-        pane.setPrefSize(width, height);
+        BaseChapter exampleChap = new ExampleChapter();
+        exampleChap.run();
+        root.getChildren().add(exampleChap.getRoot());
+        Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP, W, G -> player.accZ(-1);
@@ -52,41 +52,14 @@ public class Main extends Application {
                 case ESCAPE -> stage.close();
             }
         });
-        BaseChapter exampleChap = new ExampleChapter();
-        exampleChap.run();
         stage.setScene(scene);
         stage.show();
 
     }
 
-    protected static void drawIMG(GameObject obj) {
-        ImageView im = obj.getImageView();
-        Triple pos = obj.getPos();
-        removeFromPane(im);
-        im.relocate((pos.x - pos.z + width) / 2, (height - horizonLine) + pos.z / 2 - obj.getObjectHeight());
-        im.setFitHeight(obj.getObjectHeight());
-        addToPane(im);
-    }
-
-    public static void clearScreen() {
-        threadMain.clear();
-        pane.getChildren().clear();
-    }
-
-    public static void addToPane(ImageView imageview) {
-        pane.getChildren().add(imageview);
-    }
-
-    public static void removeFromPane(ImageView imageview) {
-        pane.getChildren().remove(imageview);
-    }
-
-    public static void setUpperBackground(Image image) {
-        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, (int) Math.min(image.getHeight(), height - horizonLine));
-        ImageView imageView = new ImageView(newImage);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(width);
-        addToPane(imageView);
+    public static void changeRoot(Node node) {
+        root.getChildren().clear();
+        root.getChildren().add(node);
     }
 
 }

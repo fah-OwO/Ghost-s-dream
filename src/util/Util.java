@@ -9,8 +9,6 @@ import logic.Player;
 import java.util.Comparator;
 
 public class Util {
-    public static ThreadMain threadMain;
-    public static Player player;
     public static final double k = 1;
     public static final String title = "";
     public static final int width = 1920;
@@ -20,14 +18,12 @@ public class Util {
     public static final double metrePerPixels = (double) 4 / height;
     public static final int frames = 50;//100;
     public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
-    public static final Image TREE = new Image("file:res/image/Tree1.png");
     public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final CustomRandom rand = new CustomRandom();
     public final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
     public static void initiate() {
-        player = Player.getInstance();
-        threadMain = new ThreadMain();
+        MediaData.addTree("file:res/image/Tree1.png");
     }
 
     public static Triple pos2coordinate(Triple pos) {
@@ -72,14 +68,6 @@ public class Util {
         return i / (metrePerPixels);
     }
 
-    public static Triple getPlayerV() {
-        return player.getSpeed();
-    }
-
-    public static void accelerate(double x, double z) {
-        player.accX(x);
-        player.accZ(z);
-    }
 
     public static void delay(long l) {
         try {
