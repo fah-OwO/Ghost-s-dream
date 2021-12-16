@@ -17,11 +17,11 @@ public class QuestObject extends GameObject {
     private boolean triggered;
     private double activeRange = metreToCoord(1.5);//private Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
 
-    public QuestObject(String url) {
+    public QuestObject() {
         super();
         passive = false;
         triggered=false;
-        if (url != null) super.setImage(url, DEFAULT_HEIGHT);
+        //if (url != null) super.setImage(url, DEFAULT_HEIGHT);
     }
 
     public void setConsumer(Consumer<GameObject> consumer) {
@@ -79,12 +79,4 @@ public class QuestObject extends GameObject {
         activeRange = metreToCoord(metre);
     }
 
-    public static QuestObject createTrap() {
-        QuestObject trap = new QuestObject(null);
-        trap.setImage(MediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
-        trap.setPassive(true);
-        trap.setActiveRange(1);
-        trap.spawnAnywhere();
-        return trap;
-    }
 }

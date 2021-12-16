@@ -14,15 +14,19 @@ import util.MediaData;
 import static util.Util.*;
 
 public class ExampleChapter extends BaseChapter {
-    public ExampleChapter() {
+
+    @Override
+    public void setUp() {
         amount = 50;
         setUpper(MediaData.EVENING);
-        QuestObject questObject = new QuestObject("file:res/image/mystic.jpg");
+        QuestObject questObject = new QuestObject();
+        questObject.setImage("file:res/image/mystic.jpg", 0);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(new ExampleChapter()));
         setFinalQuestObject(questObject);
         for (int i = 0; i < 100; i++) {
-            QuestObject squid = new QuestObject("file:res/image/sq43.png");
+            QuestObject squid = new QuestObject();
+            squid.setImage(MediaData.SQUID, 10);
             squid.setActiveRange(7.5);
             squid.setPassive(true);
             squid.setConsumer(obj -> {
@@ -35,7 +39,7 @@ public class ExampleChapter extends BaseChapter {
                 });
                 thread.start();//threadMain.setHorizonLineMul(threadMain.getHorizonLineMul()*0.90);
             });
-            squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
+            //squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             squid.spawnAnywhere();
             addGameObject(squid);
         }
@@ -46,7 +50,7 @@ public class ExampleChapter extends BaseChapter {
         pane.getChildren().add(gameOverText);
         StackPane.setAlignment(gameOverText, Pos.CENTER);
         for (int i = 0; i < 10; i++) {
-            QuestObject trap = QuestObject.createTrap();
+            QuestObject trap = (QuestObject) MediaData.getGameObject("trap").clone();//QuestObject.createTrap();
             trap.setConsumer((obj) -> {
                 shutdown();
                 Main.changeRoot(pane);
@@ -59,5 +63,4 @@ public class ExampleChapter extends BaseChapter {
             addGameObject(trap);
         }
     }
-
 }

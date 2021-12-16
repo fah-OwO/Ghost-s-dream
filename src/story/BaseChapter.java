@@ -17,13 +17,15 @@ import util.MediaData;
 
 import static util.Util.*;
 
-public class BaseChapter {
+public abstract class BaseChapter {
     protected final VBox root = new VBox();
     protected final ThreadMain threadMain;
-    private Image upper;
-    private QuestObject finalQuestObject;
-    private final ObservableList<GameObject> gameObjectList;
-    protected static int amount = 100;
+    private Image upper = null;
+    private QuestObject finalQuestObject = null;
+    private boolean running = false;
+    private final ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
+    protected int amount = 100;
+    protected BaseChapter nextChapter = null;
 
     public BaseChapter() {
         Pane pane = new Pane();
@@ -32,12 +34,14 @@ public class BaseChapter {
         pane.setPrefSize(width, height);
         root.getChildren().addAll(pane);
         threadMain = new ThreadMain(pane, Player.getInstance());
-        upper = null;
-        finalQuestObject = null;
-        gameObjectList = FXCollections.observableArrayList();
+        setUp();
     }
 
+    public abstract void setUp();
+
     public void call() {
+        if (running) return;
+        running = true;
         threadMain.clear();
         if (upper != null) threadMain.setUpperBackground(upper);
         if (finalQuestObject != null) {
@@ -81,6 +85,8 @@ public class BaseChapter {
     }
 
     public void shutdown() {
+        if (!running) return;
+        running = false;
         threadMain.shutdown();
         gameObjectList.clear();
         root.getChildren().clear();
@@ -104,5 +110,17 @@ public class BaseChapter {
 
     public void addGameObject(GameObject gameObject) {
         gameObjectList.add(gameObject);
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setNextChapter(BaseChapter nextChapter) {
+        this.nextChapter = nextChapter;
+    }
+
+    public BaseChapter getNextChapter() {
+        return nextChapter;
     }
 }

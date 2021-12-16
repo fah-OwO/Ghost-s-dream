@@ -17,17 +17,6 @@ public class Util {
     public static final CustomRandom rand = new CustomRandom();
     public final static Comparator<GameObject> objComparator = Comparator.comparing(GameObject::getZ);
 
-    public static void initiate() {
-        for (int i = 1; i <= 4; i++) {
-            GameObject tree = new GameObject();
-            tree.setImage("file:res/image/tree/3" + i + ".png", 4);
-            MediaData.addDecoration(tree);//https://www.cgchan.com/cantree
-
-        }
-        GameObject bush = new GameObject();
-        bush.setImage("file:res/image/bush.png", 1);
-        MediaData.addDecoration(bush);//https://www.cgchan.com/cantree
-    }
 
     public static Triple pos2coordinate(Triple pos) {
         Triple realPos = new Triple();

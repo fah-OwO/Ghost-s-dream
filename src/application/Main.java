@@ -12,7 +12,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
 import story.BaseChapter;
+import story.ChapterTutorial;
 import story.ExampleChapter;
+import util.MediaData;
 
 import static util.Util.*;
 
@@ -25,13 +27,19 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        initiate();
+        MediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
-        BaseChapter exampleChap = new ExampleChapter();
-        exampleChap.run();
-        root.getChildren().add(exampleChap.getRoot());
+        BaseChapter tutorialChapter = new ChapterTutorial();
+        tutorialChapter.run();
+        root.getChildren().add(tutorialChapter.getRoot());
         Scene scene = new Scene(root);
+        scene.setOnMousePressed(mouseEvent -> {
+            switch (mouseEvent.getButton()) {
+                case PRIMARY -> QuestObject.run();
+                case SECONDARY -> player.jump();
+            }
+        });
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP, W, G -> player.accZ(-1);
