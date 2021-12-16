@@ -9,7 +9,8 @@ import static util.Util.metreToCoord;
 public class ChapterTutorial extends BaseChapter {
     @Override
     public void setUp() {
-        setNextChapter(new Chapter1());
+        setNextChapter(new Chapter1
+                ());
         QuestObject questObject = new QuestObject();
         questObject.setImage(GameMediaData.SQUID, 4);
         questObject.setConsumer((obj) -> changeChapter(getNextChapter()));

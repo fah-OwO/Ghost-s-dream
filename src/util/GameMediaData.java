@@ -1,7 +1,12 @@
 package util;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 
@@ -10,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static util.Util.rand;
-import static util.Util.width;
+import static util.Util.*;
 
 public class GameMediaData {
 
@@ -66,8 +70,6 @@ public class GameMediaData {
 
     public static List<GameObject> getDecoration(String decorationType) {
         return decoration.get(decorationType);
-//        GameObject gameObject = decoration.get(rand.nextInt(decoration.size()));
-//        return gameObject.clone();
     }
 
     public static Image getRandomImage(String decorationType) {
@@ -77,6 +79,16 @@ public class GameMediaData {
     public static GameObject getRandomDecoration(String decorationType) {
         List<GameObject> decorationList = getDecoration(decorationType);
         return decorationList.get(rand.nextInt(decorationList.size())).clone();
+    }
+
+    public static StackPane setUpPaneFromString(String s) {
+        StackPane pane = new StackPane();
+        Text text = new Text(s);
+        pane.getChildren().add(text);
+        StackPane.setAlignment(text, Pos.CENTER);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setFont(new Font(height / 3.0));
+        return pane;
     }
 
 }

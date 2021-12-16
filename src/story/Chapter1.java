@@ -1,12 +1,14 @@
 package story;
 
+import application.Main;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import logic.GameObject;
 import logic.QuestObject;
 import util.GameMediaData;
 
-import static util.Util.*;
+import static util.Util.delay;
 
 public class Chapter1 extends BaseChapter {
 
@@ -14,39 +16,33 @@ public class Chapter1 extends BaseChapter {
     public void setUp() {
         setUpper(GameMediaData.EVENING);
         QuestObject questObject = new QuestObject();
-        questObject.setImage(GameMediaData.getRandomDecoration("tree"));
+        questObject.setImage(GameMediaData.SQUID, 4);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(new Chapter2()));
         setFinalQuestObject(questObject);
         ObservableList<GameObject> objectList = FXCollections.observableArrayList();
-        int squidActiveRange = 10;
-        QuestObject squid = new QuestObject();
-        squid.setImage(GameMediaData.SQUID, 10);
-        squid.setActiveRange(squidActiveRange);
-        squid.setPassive(true);
-        squid.setConsumer(obj -> {
+        QuestObject trap = (QuestObject) GameMediaData.getGameObject("trap").clone();//QuestObject.createTrap();
+        trap.setConsumer((obj) -> {
+            shutdown();
+            Main.changeRoot(GameMediaData.setUpPaneFromString("Game Over"));
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < height * 2; j += 10) {
-                    delay(refreshPeriod);
-                    if (obj.isOnScreen()) obj.setPosY(j);
-                    else break;
-                }
-                obj.despawn();
+                delay((long) 3e3);
+                Platform.runLater(() -> changeChapter(null));
             });
             thread.start();
         });
         for (int i = 0; i < 100; i++) {
-            QuestObject newSquid = squid.clone();
-            objectList.add(newSquid);
-            addGameObject(newSquid);
+            QuestObject newTrap = trap.clone();
+            objectList.add(newTrap);
+            addGameObject(newTrap);
         }
-        GameObject.spreadObject(objectList, squid.getActiveRange());
+        GameObject.spreadObject(objectList, 4);
         objectList.clear();
-        for (int i = 0; i < 100; i++) {
-            GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
+        for (int i = 0; i < 10; i++) {
+            GameObject decorateObject = GameMediaData.getRandomDecoration("tree");
             objectList.add(decorateObject);
             addGameObject(decorateObject);
         }
-        GameObject.spreadObject(objectList, 1);
+        GameObject.spreadObject(objectList, 5);
     }
 }

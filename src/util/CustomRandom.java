@@ -7,8 +7,4 @@ public class CustomRandom extends Random {
         return r == l ? l : Math.random() * (r - l) + l;//nextDouble(r - l) + l;
     }
 
-    public double mGraphProbabilityRandom(double w) {
-        w /= 4;
-        return (nextDouble(w) + nextDouble(w)) * (nextBoolean() ? 1 : -1);
-    }
 }

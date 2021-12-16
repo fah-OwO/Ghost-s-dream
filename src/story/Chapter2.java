@@ -4,17 +4,11 @@ import application.Main;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 import util.GameMediaData;
 
-import static util.Util.delay;
-import static util.Util.height;
+import static util.Util.*;
 
 public class Chapter2 extends BaseChapter {
 
@@ -22,39 +16,47 @@ public class Chapter2 extends BaseChapter {
     public void setUp() {
         setUpper(GameMediaData.EVENING);
         QuestObject questObject = new QuestObject();
-        questObject.setImage(GameMediaData.SQUID, 4);
+        questObject.setImage(GameMediaData.getRandomDecoration("tree"));
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer((obj) -> changeChapter(null));
-        setFinalQuestObject(questObject);
-        StackPane pane = new StackPane();
-        Text gameOverText = new Text("Game Over");
-        gameOverText.setTextAlignment(TextAlignment.CENTER);
-        gameOverText.setFont(new Font(height / 3.0));
-        pane.getChildren().add(gameOverText);
-        StackPane.setAlignment(gameOverText, Pos.CENTER);
-        ObservableList<GameObject> objectList = FXCollections.observableArrayList();
-        QuestObject trap = (QuestObject) GameMediaData.getGameObject("trap").clone();//QuestObject.createTrap();
-        trap.setConsumer((obj) -> {
+        questObject.setConsumer((obj) -> {
             shutdown();
-            Main.changeRoot(pane);
+            Main.changeRoot(GameMediaData.setUpPaneFromString("You win!"));
             Thread thread = new Thread(() -> {
                 delay((long) 3e3);
                 Platform.runLater(() -> changeChapter(null));
             });
             thread.start();
         });
+        setFinalQuestObject(questObject);
+        ObservableList<GameObject> objectList = FXCollections.observableArrayList();
+        int squidActiveRange = 10;
+        QuestObject squid = new QuestObject();
+        squid.setImage(GameMediaData.SQUID, 10);
+        squid.setActiveRange(squidActiveRange);
+        squid.setPassive(true);
+        squid.setConsumer(obj -> {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < height * 2; j += 10) {
+                    delay(refreshPeriod);
+                    if (obj.isOnScreen()) obj.setPosY(j);
+                    else break;
+                }
+                obj.despawn();
+            });
+            thread.start();
+        });
         for (int i = 0; i < 100; i++) {
-            QuestObject newTrap = trap.clone();
-            objectList.add(newTrap);
-            addGameObject(newTrap);
+            QuestObject newSquid = squid.clone();
+            objectList.add(newSquid);
+            addGameObject(newSquid);
         }
-        GameObject.spreadObject(objectList, 4);
+        GameObject.spreadObject(objectList, squid.getActiveRange());
         objectList.clear();
-        for (int i = 0; i < 10; i++) {
-            GameObject decorateObject = GameMediaData.getRandomDecoration("tree");
+        for (int i = 0; i < 100; i++) {
+            GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
             objectList.add(decorateObject);
             addGameObject(decorateObject);
         }
-        GameObject.spreadObject(objectList, 5);
+        GameObject.spreadObject(objectList, 1);
     }
 }
