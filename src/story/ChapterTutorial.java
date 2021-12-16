@@ -9,8 +9,7 @@ import static util.Util.*;
 public class ChapterTutorial extends BaseChapter {
     @Override
     public void setUp() {
-        amount = 0;
-        setNextChapter(new ExampleChapter());
+        setNextChapter(new Chapter1());
         QuestObject questObject = new QuestObject();
         questObject.setImage(MediaData.SQUID, 4);
         questObject.setConsumer((obj) -> changeChapter(getNextChapter()));

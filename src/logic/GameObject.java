@@ -1,5 +1,6 @@
 package logic;
 
+import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -126,6 +127,13 @@ public class GameObject implements Cloneable {
         imageView.setPreserveRatio(true);
     }
 
+    public void setImage(GameObject gameObject) {
+        if (gameObject == null) return;
+        setObjectHeight(coordToMetre(gameObject.objectHeight));
+        imageView.setImage(gameObject.getImageView().getImage());
+        imageView.setPreserveRatio(true);
+    }
+
     public void setOnScreen(boolean onScreen) {
         if (onScreen) onAdd();
         else onRemove();
@@ -222,6 +230,13 @@ public class GameObject implements Cloneable {
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
+        }
+    }
+
+    public static void spreadObject(ObservableList<GameObject> gameObjectList) {
+        int i = 0, amount = gameObjectList.size();
+        for (GameObject object : gameObjectList) {
+            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * ++i / amount);
         }
     }
 

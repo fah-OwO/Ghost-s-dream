@@ -15,20 +15,20 @@ import util.MediaData;
 
 import static util.Util.*;
 
-public class ExampleChapter extends BaseChapter {
+public class Chapter1 extends BaseChapter {
 
     @Override
     public void setUp() {
         setUpper(MediaData.EVENING);
         QuestObject questObject = new QuestObject();
-        questObject.setImage("file:res/image/mystic.jpg", 0);
+        questObject.setImage(MediaData.getRandomDecoration("tree"));
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer((obj) -> changeChapter(new ExampleChapter()));
+        questObject.setConsumer((obj) -> changeChapter(null));
         setFinalQuestObject(questObject);
         for (int i = 0; i < 100; i++) {
             QuestObject squid = new QuestObject();
             squid.setImage(MediaData.SQUID, 10);
-            squid.setActiveRange(7.5);
+            squid.setActiveRange(10);
             squid.setPassive(true);
             squid.setConsumer(obj -> {
                 Thread thread = new Thread(() -> {
@@ -38,9 +38,8 @@ public class ExampleChapter extends BaseChapter {
                         else break;
                     }
                 });
-                thread.start();//threadMain.setHorizonLineMul(threadMain.getHorizonLineMul()*0.90);
+                thread.start();
             });
-            //squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             squid.spawnAnywhere();
             addGameObject(squid);
         }
@@ -57,7 +56,7 @@ public class ExampleChapter extends BaseChapter {
                 Main.changeRoot(pane);
                 Thread thread = new Thread(() -> {
                     delay((long) 1e4);
-                    Platform.runLater(() -> changeChapter(new ExampleChapter()));
+                    Platform.runLater(() -> changeChapter(new Chapter1()));
                 });
                 thread.start();
             });

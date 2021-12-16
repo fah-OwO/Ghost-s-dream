@@ -24,7 +24,6 @@ public abstract class BaseChapter {
     private QuestObject finalQuestObject = null;
     private boolean running = false;
     private final ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
-    protected int amount = 100;
     protected BaseChapter nextChapter = null;
 
     public BaseChapter() {
@@ -52,11 +51,11 @@ public abstract class BaseChapter {
             threadMain.create(object);
             object.deploy();
         }
-        generateDecorate(amount);
         threadMain.start();
     }
 
     public void changeChapter(BaseChapter chapter) {
+        if (chapter == null) return;
         chapter.run();
         Main.changeRoot(chapter.getRoot());
         this.shutdown();
@@ -66,23 +65,6 @@ public abstract class BaseChapter {
         call();
     }
 
-    public void spreadObject(ObservableList<GameObject> gameObjectList) {
-        int i = 0, amount = gameObjectList.size();
-        for (GameObject object : gameObjectList) {
-            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * ++i / amount);
-            threadMain.create(object);
-            object.deploy();
-        }
-    }
-
-    public void generateDecorate(double amount) {
-        ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
-        for (int i = 0; i < amount; i++) {
-            GameObject decorateGameObject = MediaData.getDecoration();
-            gameObjectList.add(decorateGameObject);
-        }
-        spreadObject(gameObjectList);
-    }
 
     public void shutdown() {
         if (!running) return;

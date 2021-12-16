@@ -13,7 +13,7 @@ public class MediaData {
 
     private static final Map<String, Image> imageDatabase = new HashMap<>();
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
-    private static final List<GameObject> decoration = new ArrayList<>();//Map<String, Set<String>> dataSet=new HashMap<>();
+    private static final Map<String, List<GameObject>> decoration = new HashMap<>();//Map<String, Set<String>> dataSet=new HashMap<>();
 
     public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
     public static final Image BLACK = new Image("file:res/image/Background.png", 1, 1, false, false);
@@ -25,17 +25,18 @@ public class MediaData {
         for (int i = 1; i <= 4; i++) {
             GameObject tree = new GameObject();
             tree.setImage("file:res/image/tree/3" + i + ".png", 4);
-            MediaData.addDecoration(tree);//https://www.cgchan.com/cantree
-
+            MediaData.addDecoration("tree", tree);//https://www.cgchan.com/cantree
+            MediaData.addDecoration("forest", tree);
         }
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
-        MediaData.addDecoration(bush);//https://www.cgchan.com/cantree
+        MediaData.addDecoration("bush", bush);//https://www.cgchan.com/cantree
+        MediaData.addDecoration("forest", bush);
 
         QuestObject trap = new QuestObject();
         trap.setImage(MediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
         trap.setPassive(true);
-        trap.setActiveRange(1);
+        trap.setActiveRange(0.5);
         trap.spawnAnywhere();
         gameObjectMap.put("trap", trap);
     }
@@ -54,13 +55,21 @@ public class MediaData {
         return gameObjectMap.get(name);
     }
 
-    public static void addDecoration(GameObject gameObject) {
-        decoration.add(gameObject);
+    public static void addDecoration(String decorationType, GameObject gameObject) {
+        if (!decoration.containsKey(decorationType)) decoration.put(decorationType, new ArrayList<>());
+        decoration.get(decorationType).add(gameObject);
     }
 
-    public static GameObject getDecoration() {
-        GameObject gameObject = decoration.get(rand.nextInt(decoration.size()));
-        return gameObject.clone();
+    public static List<GameObject> getDecoration(String decorationType) {
+        return decoration.get(decorationType);
+//        GameObject gameObject = decoration.get(rand.nextInt(decoration.size()));
+//        return gameObject.clone();
+    }
+
+    public static GameObject getRandomDecoration(String decorationType) {
+        List<GameObject> decorationList = getDecoration(decorationType);
+        return decorationList.get(rand.nextInt(decorationList.size())).clone();
+
     }
 
 }

@@ -108,12 +108,12 @@ public class ThreadMain {
     }
 
     private void drawIMG(GameObject obj) {
-        ImageView im = obj.getImageView();
+        ImageView imageView = obj.getImageView();
         Triple pos = obj.getPos();
-        removeFromPane(im);
-        im.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - obj.getObjectHeight() - pos.y);
-        im.setFitHeight(obj.getObjectHeight());
-        addToPane(im);
+        removeFromPane(imageView);
+        imageView.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - obj.getObjectHeight() - pos.y);
+        imageView.setFitHeight(obj.getObjectHeight());
+        addToPane(imageView);
     }
 
 
