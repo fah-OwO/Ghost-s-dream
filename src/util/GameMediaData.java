@@ -36,8 +36,9 @@ public class GameMediaData {
         QuestObject trap = new QuestObject();
         trap.setImage(GameMediaData.TRAP, 0.5);//trap.setObjectHeight(0.2);
         trap.setPassive(true);
-        trap.setActiveRange(0.5);
+        trap.setActiveRange(1);
         trap.spawnAnywhere();
+        GameMediaData.addDecoration("trap", trap);//https://www.cgchan.com/cantree
         gameObjectMap.put("trap", trap);
     }
 
@@ -66,10 +67,13 @@ public class GameMediaData {
 //        return gameObject.clone();
     }
 
+    public static Image getRandomImage(String decorationType) {
+        return getRandomDecoration(decorationType).getImageView().getImage();
+    }
+
     public static GameObject getRandomDecoration(String decorationType) {
         List<GameObject> decorationList = getDecoration(decorationType);
         return decorationList.get(rand.nextInt(decorationList.size())).clone();
-
     }
 
 }

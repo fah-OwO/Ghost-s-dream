@@ -2,6 +2,7 @@ package story;
 
 import application.Main;
 import application.ThreadMain;
+import gui.QuickMenu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -54,17 +55,19 @@ public abstract class BaseChapter {
         threadMain.start();
     }
 
-    public void changeChapter(BaseChapter chapter) {
-        if (chapter == null) return;
-        chapter.run();
-        Main.changeRoot(chapter.getRoot());
-        this.shutdown();
-    }
-
     public void run() {
         call();
     }
 
+    public void changeChapter(BaseChapter chapter) {
+        //if (chapter == null) return;
+        if (chapter == null) Main.changeRoot(QuickMenu.initiate(null));
+        else {
+            chapter.run();
+            Main.changeRoot(chapter.getRoot());
+        }
+        this.shutdown();
+    }
 
     public void shutdown() {
         if (!running) return;

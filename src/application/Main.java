@@ -1,5 +1,6 @@
 package application;
 
+import gui.QuickMenu;
 import javafx.application.Application;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -25,11 +26,11 @@ public class Main extends Application {
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
-        BaseChapter tutorialChapter = new ChapterTutorial();
-        tutorialChapter.run();
-        root.getChildren().add(tutorialChapter.getRoot());
+//        BaseChapter tutorialChapter = new ChapterTutorial();
+//        tutorialChapter.run();
+//        root.getChildren().add(tutorialChapter.getRoot());
         Scene scene = new Scene(root);
-        scene.setCursor(Cursor.NONE);
+        root.getChildren().add(QuickMenu.initiate(scene));
         scene.setOnMousePressed(mouseEvent -> {
             switch (mouseEvent.getButton()) {
                 case PRIMARY -> QuestObject.run();
