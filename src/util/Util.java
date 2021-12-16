@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class Util {
     public static final double k = 1e6;
-    public static final String title = "";
+    public static final String title = "Ghost's dream";
     public static final int width = 1920;
     public static final int height = 1000;
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
