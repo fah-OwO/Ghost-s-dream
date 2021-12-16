@@ -10,7 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import story.*;
+import story.BaseChapter;
+import story.Chapter1;
+import story.Chapter2;
+import story.ChapterTutorial;
 import util.GameMediaData;
 
 public class QuickMenu extends GridPane {
@@ -48,7 +51,7 @@ public class QuickMenu extends GridPane {
     }
 
     public static QuickMenu initiate(Scene scene) {
-        if (QuickMenu.scene == null)QuickMenu.scene = scene;
+        if (QuickMenu.scene == null) QuickMenu.scene = scene;
         QuickMenu.scene.setCursor(Cursor.DEFAULT);
         return new QuickMenu(QuickMenu.scene);
     }

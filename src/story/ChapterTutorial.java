@@ -4,7 +4,7 @@ import logic.QuestObject;
 import util.GameMediaData;
 import util.Triple;
 
-import static util.Util.*;
+import static util.Util.metreToCoord;
 
 public class ChapterTutorial extends BaseChapter {
     @Override

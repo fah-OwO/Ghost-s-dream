@@ -1,10 +1,10 @@
 package util;
 
 public class Triple implements Cloneable {
+    private static final double lowNum = 0.001;
     public double x;
     public double y;
     public double z;
-    private static final double lowNum = 0.001;
 
     public Triple() {
         x = y = z = 0;

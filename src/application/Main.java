@@ -2,14 +2,12 @@ package application;
 
 import gui.QuickMenu;
 import javafx.application.Application;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import logic.*;
-import story.BaseChapter;
-import story.ChapterTutorial;
+import logic.Player;
+import logic.QuestObject;
 import util.GameMediaData;
 
 import static util.Util.*;
@@ -20,6 +18,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void changeRoot(Node node) {
+        root.getChildren().clear();
+        root.getChildren().add(node);
     }
 
     public void start(Stage stage) {
@@ -65,11 +68,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public static void changeRoot(Node node) {
-        root.getChildren().clear();
-        root.getChildren().add(node);
     }
 
 }

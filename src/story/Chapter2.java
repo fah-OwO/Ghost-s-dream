@@ -13,7 +13,8 @@ import logic.GameObject;
 import logic.QuestObject;
 import util.GameMediaData;
 
-import static util.Util.*;
+import static util.Util.delay;
+import static util.Util.height;
 
 public class Chapter2 extends BaseChapter {
 

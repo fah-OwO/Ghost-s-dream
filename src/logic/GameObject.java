@@ -9,10 +9,13 @@ import javafx.scene.layout.Pane;
 import util.GameMediaData;
 import util.Triple;
 
-
 import static util.Util.*;
 
 public class GameObject implements Cloneable {
+    protected final static double DEFAULT_HEIGHT = toMetre(height);
+    private final static double acceptableBorder = 1.1;
+    private final static double minZ = 20;
+    private final static int maxZ = height;
     protected ImageView imageView;
     protected Triple co;//coordinate
     protected Triple pos;
@@ -20,10 +23,6 @@ public class GameObject implements Cloneable {
     protected boolean onScreen;
     protected boolean respawnable;
     protected boolean destruct;
-    protected final static double DEFAULT_HEIGHT = toMetre(height);
-    private final static double acceptableBorder = 1.1;
-    private final static double minZ = 20;
-    private final static int maxZ = height;
 
     public GameObject() {
         imageView = new ImageView(GameMediaData.BLACK);
@@ -36,6 +35,22 @@ public class GameObject implements Cloneable {
         respawnable = true;
         destruct = false;
         spawn();
+    }
+
+    public static double getMaxRealZ() {
+        return k / minZ;
+    }
+
+    public static double getMaxRealWidthFromRealZ(double z) {
+        return z * tanTheta;
+    }
+
+    public static void spreadObject(ObservableList<GameObject> gameObjectList, double minimumSpawningRangeInMetre) {
+        int i = 0, amount = gameObjectList.size();
+        double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
+        for (GameObject object : gameObjectList) {
+            object.spawnAnywhereFromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
+        }
     }
 
     public void move(Triple v) {
@@ -100,6 +115,9 @@ public class GameObject implements Cloneable {
         spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + metreToCoord(1), getMaxRealZ()));
     }
 
+    //https://pinetools.com/invert-image-colors
+    //https://onlinepngtools.com/create-transparent-png
+
     public void spawnAnywhereFromRealZ(double z) {
         double w = getMaxRealWidthFromRealZ(z);
         co.set(rand.randomBetween(-w, w), 0, z);
@@ -114,9 +132,6 @@ public class GameObject implements Cloneable {
     public boolean shouldBeDestructed() {
         return destruct;
     }
-
-    //https://pinetools.com/invert-image-colors
-    //https://onlinepngtools.com/create-transparent-png
 
     public void setImage(String url, double metre) {
         setImage(GameMediaData.getImage(url), metre);
@@ -136,23 +151,9 @@ public class GameObject implements Cloneable {
         imageView.setPreserveRatio(true);
     }
 
-    public void setOnScreen(boolean onScreen) {
-        if (onScreen) onAdd();
-        else onRemove();
-        this.onScreen = onScreen;
-    }
-
     public void destruct() {
         destruct = true;
         onRemove();
-    }
-
-    public static double getMaxRealZ() {
-        return k / minZ;
-    }
-
-    public static double getMaxRealWidthFromRealZ(double z) {
-        return z * tanTheta;
     }
 
     public void setRespawnable(boolean respawnable) {
@@ -166,6 +167,12 @@ public class GameObject implements Cloneable {
 
     public boolean isOnScreen() {
         return onScreen;
+    }
+
+    public void setOnScreen(boolean onScreen) {
+        if (onScreen) onAdd();
+        else onRemove();
+        this.onScreen = onScreen;
     }
 
     public double getZ() {
@@ -195,22 +202,22 @@ public class GameObject implements Cloneable {
         return objectHeight * pos.z / height;
     }
 
-    private double getObjectWidth() {
-        return getObjectHeight() / 2;
-    }
-
     public void setObjectHeight(double objectHeight) {
         if (objectHeight == 0) this.objectHeight = height;
         else this.objectHeight = toPixel(objectHeight);
     }
 
-    public void setCo(Triple triple) {
-        co = triple;
-        pos = coordinate2screenPos(co);
+    private double getObjectWidth() {
+        return getObjectHeight() / 2;
     }
 
     public Triple getCo() {
         return co;
+    }
+
+    public void setCo(Triple triple) {
+        co = triple;
+        pos = coordinate2screenPos(co);
     }
 
     public void setPosY(double y) {
@@ -232,14 +239,6 @@ public class GameObject implements Cloneable {
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
-        }
-    }
-
-    public static void spreadObject(ObservableList<GameObject> gameObjectList, double minimumSpawningRangeInMetre) {
-        int i = 0, amount = gameObjectList.size();
-        double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
-        for (GameObject object : gameObjectList) {
-            object.spawnAnywhereFromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
         }
     }
 

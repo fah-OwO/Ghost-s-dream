@@ -9,7 +9,9 @@ import javafx.scene.layout.Pane;
 import logic.GameObject;
 import logic.Player;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static util.GameMediaData.BLACK;
 import static util.GameMediaData.walkingSound;
@@ -17,13 +19,13 @@ import static util.Util.*;
 
 public class ThreadMain {
     private final Player player;
-    private double horizonLineMul = 1 / 2.0;
     private final ObservableList<GameObject> objects = FXCollections.observableArrayList();
-    private boolean pause = true;
-    private boolean start;
     private final Pane pane;
     private final ScheduledThreadPoolExecutor threadPoolExecutor;
     private final ImageView ground = new ImageView();
+    private double horizonLineMul = 1 / 2.0;
+    private boolean pause = true;
+    private boolean start;
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);

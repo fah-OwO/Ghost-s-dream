@@ -5,21 +5,24 @@ import javafx.scene.media.AudioClip;
 import logic.GameObject;
 import logic.QuestObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static util.Util.*;
+import static util.Util.rand;
+import static util.Util.width;
 
 public class GameMediaData {
-
-    private static final Map<String, Image> imageDatabase = new HashMap<>();
-    private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
-    private static final Map<String, List<GameObject>> decoration = new HashMap<>();//Map<String, Set<String>> dataSet=new HashMap<>();
 
     public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
     public static final Image BLACK = new Image("file:res/image/Background.png", 1, 1, false, false);
     public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
     public static final Image TRAP = new Image("file:res/image/Trap.png");//<a href='https://www.freepik.com/vectors/cartoon'>Cartoon vector created by pch.vector - www.freepik.com</a>
+    private static final Map<String, Image> imageDatabase = new HashMap<>();
     public static final Image SQUID = getImage("file:res/image/sq43.png");
+    private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
+    private static final Map<String, List<GameObject>> decoration = new HashMap<>();//Map<String, Set<String>> dataSet=new HashMap<>();
 
     public static void initiate() {
         for (int i = 1; i <= 4; i++) {

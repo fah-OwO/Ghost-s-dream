@@ -15,17 +15,17 @@ import logic.Player;
 import logic.QuestObject;
 import util.GameMediaData;
 
-
-import static util.Util.*;
+import static util.Util.height;
+import static util.Util.width;
 
 public abstract class BaseChapter {
     protected final VBox root = new VBox();
     protected final ThreadMain threadMain;
+    private final ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
+    protected BaseChapter nextChapter = null;
     private Image upper = null;
     private QuestObject finalQuestObject = null;
     private boolean running = false;
-    private final ObservableList<GameObject> gameObjectList = FXCollections.observableArrayList();
-    protected BaseChapter nextChapter = null;
 
     public BaseChapter() {
         Pane pane = new Pane();
@@ -101,11 +101,11 @@ public abstract class BaseChapter {
         return running;
     }
 
-    public void setNextChapter(BaseChapter nextChapter) {
-        this.nextChapter = nextChapter;
-    }
-
     public BaseChapter getNextChapter() {
         return nextChapter;
+    }
+
+    public void setNextChapter(BaseChapter nextChapter) {
+        this.nextChapter = nextChapter;
     }
 }
