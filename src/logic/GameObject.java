@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import util.gameMediaData;
+import util.GameMediaData;
 import util.Triple;
 
 
@@ -21,12 +21,12 @@ public class GameObject implements Cloneable {
     protected boolean respawnable;
     protected boolean destruct;
     protected final static double DEFAULT_HEIGHT = toMetre(height);
-    private final static double acceptableBorder = 0.5;
+    private final static double acceptableBorder = 1.1;
     private final static double minZ = 20;
     private final static int maxZ = height;
 
     public GameObject() {
-        imageView = new ImageView(gameMediaData.BLACK);
+        imageView = new ImageView(GameMediaData.BLACK);
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
@@ -48,10 +48,10 @@ public class GameObject implements Cloneable {
             spawn();
             deploy();
         }
-        if (pos.z < minZ * acceptableBorder ||
-                pos.z > maxZ / acceptableBorder ||
+        if (pos.z < minZ / acceptableBorder ||
+                pos.z > maxZ * acceptableBorder ||
                 co.z < 0 ||
-                Math.abs((pos.x + getObjectWidth() / 2) * acceptableBorder) > width + acceptableBorder)
+                Math.abs(pos.x + getObjectWidth() / 2) > width * acceptableBorder)
             despawn();
     }
 
@@ -119,7 +119,7 @@ public class GameObject implements Cloneable {
     //https://onlinepngtools.com/create-transparent-png
 
     public void setImage(String url, double metre) {
-        setImage(gameMediaData.getImage(url), metre);
+        setImage(GameMediaData.getImage(url), metre);
     }
 
     public void setImage(Image image, double metre) {
@@ -235,10 +235,11 @@ public class GameObject implements Cloneable {
         }
     }
 
-    public static void spreadObject(ObservableList<GameObject> gameObjectList) {
+    public static void spreadObject(ObservableList<GameObject> gameObjectList, double minimumSpawningRangeInMetre) {
         int i = 0, amount = gameObjectList.size();
+        double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
         for (GameObject object : gameObjectList) {
-            object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * ++i / amount);
+            object.spawnAnywhereFromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
         }
     }
 

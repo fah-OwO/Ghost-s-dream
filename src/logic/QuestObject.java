@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 import static util.Util.*;
 
-public class QuestObject extends GameObject {
+public class QuestObject extends GameObject implements Cloneable {
     private Consumer<GameObject> consumer;
     private boolean passive;
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
@@ -19,7 +19,7 @@ public class QuestObject extends GameObject {
     public QuestObject() {
         super();
         passive = false;
-        triggered=false;
+        triggered = false;
         //if (url != null) super.setImage(url, DEFAULT_HEIGHT);
     }
 
@@ -36,7 +36,7 @@ public class QuestObject extends GameObject {
     @Override
     public void deploy() {
         super.deploy();
-        triggered=false;
+        triggered = false;
     }
 
     public static void run() {
@@ -49,13 +49,13 @@ public class QuestObject extends GameObject {
     }
 
     public boolean isInActiveRangeAndNotTriggered() {
-        return getCoDistance(Player.getPlayerCo(), co) < activeRange&&!triggered;
+        return getCoDistance(Player.getPlayerCo(), co) < activeRange && !triggered;
     }
 
     public void individualRun() {
         Platform.runLater(() -> consumer.accept(this));
         questObjs.remove(this);
-        triggered=true;
+        triggered = true;
     }
 
     @Override
@@ -78,4 +78,12 @@ public class QuestObject extends GameObject {
         activeRange = metreToCoord(metre);
     }
 
+    public double getActiveRange() {
+        return coordToMetre(activeRange);
+    }
+
+    @Override
+    public QuestObject clone() {
+        return (QuestObject) super.clone();
+    }
 }

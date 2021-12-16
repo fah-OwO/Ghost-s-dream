@@ -3,19 +3,16 @@ package application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import logic.GameObject;
 import logic.Player;
-import util.Triple;
 
 import java.util.concurrent.*;
 
-import static util.gameMediaData.BLACK;
-import static util.gameMediaData.walkingSound;
+import static util.GameMediaData.BLACK;
+import static util.GameMediaData.walkingSound;
 import static util.Util.*;
 
 public class ThreadMain {

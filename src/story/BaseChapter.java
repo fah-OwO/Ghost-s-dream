@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import logic.GameObject;
 import logic.Player;
 import logic.QuestObject;
-import util.gameMediaData;
+import util.GameMediaData;
 
 
 import static util.Util.*;
@@ -28,7 +28,7 @@ public abstract class BaseChapter {
 
     public BaseChapter() {
         Pane pane = new Pane();
-        BackgroundImage backgroundImg = new BackgroundImage(gameMediaData.BLACK, null, null, null, null);
+        BackgroundImage backgroundImg = new BackgroundImage(GameMediaData.BLACK, null, null, null, null);
         pane.setBackground(new Background(backgroundImg));
         pane.setPrefSize(width, height);
         root.getChildren().addAll(pane);

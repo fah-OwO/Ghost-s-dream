@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import logic.*;
 import story.BaseChapter;
 import story.ChapterTutorial;
-import util.gameMediaData;
+import util.GameMediaData;
 
 import static util.Util.*;
 
@@ -22,7 +22,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        gameMediaData.initiate();
+        GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
         BaseChapter tutorialChapter = new ChapterTutorial();

@@ -1,17 +1,10 @@
 package story;
 
-import application.Main;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
-import util.gameMediaData;
+import util.GameMediaData;
 
 import static util.Util.*;
 
@@ -19,56 +12,41 @@ public class Chapter1 extends BaseChapter {
 
     @Override
     public void setUp() {
-        setUpper(gameMediaData.EVENING);
+        setUpper(GameMediaData.EVENING);
         QuestObject questObject = new QuestObject();
-        questObject.setImage(gameMediaData.getRandomDecoration("tree"));
+        questObject.setImage(GameMediaData.getRandomDecoration("tree"));
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer((obj) -> changeChapter(null));
+        questObject.setConsumer((obj) -> changeChapter(new Chapter2()));
         setFinalQuestObject(questObject);
-        for (int i = 0; i < 100; i++) {
-            QuestObject squid = new QuestObject();
-            squid.setImage(gameMediaData.SQUID, 10);
-            squid.setActiveRange(10);
-            squid.setPassive(true);
-            squid.setConsumer(obj -> {
-                Thread thread = new Thread(() -> {
-                    for (int j = 0; j < height*2; j += 10) {
-                        delay(refreshPeriod);
-                        if (obj.isOnScreen()) obj.setPosY(j);
-                        else break;
-                    }
-                    obj.despawn();
-                });
-                thread.start();
+        ObservableList<GameObject> objectList = FXCollections.observableArrayList();
+        int squidActiveRange=10;
+        QuestObject squid = new QuestObject();
+        squid.setImage(GameMediaData.SQUID, 10);
+        squid.setActiveRange(squidActiveRange);
+        squid.setPassive(true);
+        squid.setConsumer(obj -> {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < height*2; j += 10) {
+                    delay(refreshPeriod);
+                    if (obj.isOnScreen()) obj.setPosY(j);
+                    else break;
+                }
+                obj.despawn();
             });
-            squid.spawnAnywhere();
-            addGameObject(squid);
-        }
-        StackPane pane = new StackPane();
-        Text gameOverText = new Text("Game Over");
-        gameOverText.setTextAlignment(TextAlignment.CENTER);
-        gameOverText.setFont(new Font(height / 3.0));
-        pane.getChildren().add(gameOverText);
-        StackPane.setAlignment(gameOverText, Pos.CENTER);
-        for (int i = 0; i < 10; i++) {
-            QuestObject trap = (QuestObject) gameMediaData.getGameObject("trap").clone();//QuestObject.createTrap();
-            trap.setConsumer((obj) -> {
-                shutdown();
-                Main.changeRoot(pane);
-                Thread thread = new Thread(() -> {
-                    delay((long) 1e4);
-                    Platform.runLater(() -> changeChapter(new Chapter1()));
-                });
-                thread.start();
-            });
-            addGameObject(trap);
-        }
-        ObservableList<GameObject> decorateObjectList = FXCollections.observableArrayList();
+            thread.start();
+        });
         for (int i = 0; i < 100; i++) {
-            GameObject decorateObject = gameMediaData.getRandomDecoration("bush");
-            decorateObjectList.add(decorateObject);
+            QuestObject newSquid=squid.clone();
+            objectList.add(newSquid);
+            addGameObject(newSquid);
+        }
+        GameObject.spreadObject(objectList,squid.getActiveRange());
+        objectList.clear();
+        for (int i = 0; i < 100; i++) {
+            GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
+            objectList.add(decorateObject);
             addGameObject(decorateObject);
         }
-        GameObject.spreadObject(decorateObjectList);
+        GameObject.spreadObject(objectList,1);
     }
 }
