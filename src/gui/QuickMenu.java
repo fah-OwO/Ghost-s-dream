@@ -43,11 +43,7 @@ public class QuickMenu extends GridPane {
                 scene.setCursor(Cursor.NONE);
             });
         }
-
-        this.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-
+        this.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     public static QuickMenu initiate(Scene scene) {
@@ -55,5 +51,4 @@ public class QuickMenu extends GridPane {
         QuickMenu.scene.setCursor(Cursor.DEFAULT);
         return new QuickMenu(QuickMenu.scene);
     }
-
 }

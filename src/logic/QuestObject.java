@@ -10,17 +10,16 @@ import static util.Util.*;
 
 public class QuestObject extends GameObject implements Cloneable {
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
+    //for activate purpose so it must be on screen
     private Consumer<GameObject> consumer;
     private boolean passive;
-    //for activate purpose so it must be on screen
     private boolean triggered;
-    private double activeRange = metreToCoord(1.5);//private Triple activeRange = (new Triple(1, 0, 1)).mul(metreToCoord(1.5));
+    private double activeRange = metreToCoord(1.5);
 
     public QuestObject() {
         super();
         passive = false;
         triggered = false;
-        //if (url != null) super.setImage(url, DEFAULT_HEIGHT);
     }
 
     public static void run() {

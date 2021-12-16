@@ -4,6 +4,7 @@ import gui.QuickMenu;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.Player;
@@ -29,16 +30,11 @@ public class Main extends Application {
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
-//        BaseChapter tutorialChapter = new ChapterTutorial();
-//        tutorialChapter.run();
-//        root.getChildren().add(tutorialChapter.getRoot());
         Scene scene = new Scene(root);
         root.getChildren().add(QuickMenu.initiate(scene));
         scene.setOnMousePressed(mouseEvent -> {
-            switch (mouseEvent.getButton()) {
-                case PRIMARY -> QuestObject.run();
-                case SECONDARY -> player.jump();
-            }
+            if (mouseEvent.getButton() == MouseButton.PRIMARY)
+                QuestObject.run();
         });
         scene.setOnMouseMoved(mouseEvent -> {
             player.rotateY(mouseEvent.getY());
@@ -52,7 +48,6 @@ public class Main extends Application {
                 case LEFT, A -> player.accX(1);
                 case SHIFT, CAPS -> player.setRunning(true);
                 case E -> QuestObject.run();
-                case SPACE -> player.jump();
             }
         });
         scene.setOnKeyReleased(event -> {

@@ -37,7 +37,7 @@ public class ThreadMain {
             thread.setDaemon(true);
             return thread;
         });
-        setGroundFromImage(BLACK);//this.ground=new ImageView(BLACK);
+        setGroundFromImage(BLACK);
         //https://stackoverflow.com/questions/13883293/turning-an-executorservice-to-daemon-in-java
     }
 
@@ -69,9 +69,8 @@ public class ThreadMain {
         if (pause) return;
         updatePlayer();
         horizonLineMul = 1 - (player.getRotate().y / height);
-        //if (player.isMoving())
         updateObjectsPos();
-        Platform.runLater(this::updateScreen);//updateScreen();
+        Platform.runLater(this::updateScreen);
     }
 
     private void updateSound() {
@@ -139,7 +138,6 @@ public class ThreadMain {
         ground.setImage(image);
         ground.setPreserveRatio(true);
         ground.setFitWidth(width);
-//        removeFromPane(this.ground);
     }
 
     public void shutdown() {
@@ -152,14 +150,6 @@ public class ThreadMain {
 
     public void setPause(boolean p) {
         pause = p;
-    }
-
-    public double getHorizonLineMul() {
-        return horizonLineMul;
-    }
-
-    public void setHorizonLineMul(double horizonLineMul) {
-        this.horizonLineMul = horizonLineMul;
     }
 
     @Override

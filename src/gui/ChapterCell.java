@@ -13,7 +13,6 @@ import util.GameMediaData;
 
 import static util.Util.*;
 
-
 public class ChapterCell extends StackPane {
 
     private final BaseChapter chapter;
@@ -37,7 +36,6 @@ public class ChapterCell extends StackPane {
         setAlignment(text, Pos.BOTTOM_CENTER);
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
     }
 
     public BaseChapter getChapter() {

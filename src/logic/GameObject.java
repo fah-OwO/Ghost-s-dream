@@ -12,7 +12,6 @@ import util.Triple;
 import static util.Util.*;
 
 public class GameObject implements Cloneable {
-    protected final static double DEFAULT_HEIGHT = toMetre(height);
     private final static double acceptableBorder = 1.1;
     private final static double minZ = 20;
     private final static int maxZ = height;
@@ -82,28 +81,7 @@ public class GameObject implements Cloneable {
     }
 
     public void spawn() {
-        switch (rand.nextInt(3)) {
-            case 0 -> spawnLeft();
-            case 1 -> spawnRight();
-            case 2 -> spawnFront();
-        }
-    }
-
-    private void spawnLeft() {
-//        spawnRight();
-//        co.x *= -1;
-//        pos.x *= -1;
-    }
-
-    private void spawnRight() {
-////        co.x = 0;
-////        co.z = Math.random() * getMaxRealZ();
-////        System.out.println(co);
-////        pos = coordinate2screenPos(co);
-//        pos.z = rand.randomBetween(minZ, maxZ);
-//        pos.x = width;
-//        co = pos2coordinate(pos);
-//        System.out.println(pos);
+        spawnFront();
     }
 
     private void spawnFront() {
@@ -114,9 +92,6 @@ public class GameObject implements Cloneable {
     public void spawnAnywhere() {
         spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + metreToCoord(1), getMaxRealZ()));
     }
-
-    //https://pinetools.com/invert-image-colors
-    //https://onlinepngtools.com/create-transparent-png
 
     public void spawnAnywhereFromRealZ(double z) {
         double w = getMaxRealWidthFromRealZ(z);
@@ -156,11 +131,6 @@ public class GameObject implements Cloneable {
         onRemove();
     }
 
-    public void setRespawnable(boolean respawnable) {
-        this.respawnable = respawnable;
-    }
-
-
     public ImageView getImageView() {
         return imageView;
     }
@@ -177,10 +147,6 @@ public class GameObject implements Cloneable {
 
     public double getZ() {
         return pos.z;
-    }
-
-    public Triple getPos() {
-        return pos;
     }
 
     @Override
@@ -211,9 +177,6 @@ public class GameObject implements Cloneable {
         return getObjectHeight() / 2;
     }
 
-    public Triple getCo() {
-        return co;
-    }
 
     public void setCo(Triple triple) {
         co = triple;
@@ -248,7 +211,6 @@ public class GameObject implements Cloneable {
         imageView.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - getObjectHeight() - pos.y);
         imageView.setFitHeight(getObjectHeight());
         paneChildren.add(imageView);
-
     }
 
 }

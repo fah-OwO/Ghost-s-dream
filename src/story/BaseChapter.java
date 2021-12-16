@@ -39,8 +39,8 @@ public abstract class BaseChapter {
 
     public abstract void setUp();
 
-    public void call() {
-        if (running) return;
+    public void run() {
+        if (isRunning()) return;
         running = true;
         threadMain.clear();
         if (upper != null) threadMain.setUpperBackground(upper);
@@ -55,9 +55,6 @@ public abstract class BaseChapter {
         threadMain.start();
     }
 
-    public void run() {
-        call();
-    }
 
     public void changeChapter(BaseChapter chapter) {
         //if (chapter == null) return;
@@ -70,7 +67,7 @@ public abstract class BaseChapter {
     }
 
     public void shutdown() {
-        if (!running) return;
+        if (!isRunning()) return;
         running = false;
         threadMain.shutdown();
         gameObjectList.clear();
@@ -79,10 +76,6 @@ public abstract class BaseChapter {
 
     public VBox getRoot() {
         return root;
-    }
-
-    public GameObject getFinalQuestObject() {
-        return finalQuestObject;
     }
 
     public void setFinalQuestObject(QuestObject finalQuestObject) {

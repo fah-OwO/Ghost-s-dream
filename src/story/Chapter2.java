@@ -38,7 +38,7 @@ public class Chapter2 extends BaseChapter {
             shutdown();
             Main.changeRoot(pane);
             Thread thread = new Thread(() -> {
-                delay((long) 1e4);
+                delay((long) 3e3);
                 Platform.runLater(() -> changeChapter(null));
             });
             thread.start();

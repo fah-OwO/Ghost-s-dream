@@ -38,9 +38,8 @@ public class ExampleChapter extends BaseChapter {
                         else break;
                     }
                 });
-                thread.start();//threadMain.setHorizonLineMul(threadMain.getHorizonLineMul()*0.90);
+                thread.start();
             });
-            //squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             squid.spawnAnywhere();
             addGameObject(squid);
         }
@@ -51,7 +50,7 @@ public class ExampleChapter extends BaseChapter {
         pane.getChildren().add(gameOverText);
         StackPane.setAlignment(gameOverText, Pos.CENTER);
         for (int i = 0; i < 10; i++) {
-            QuestObject trap = (QuestObject) GameMediaData.getGameObject("trap").clone();//QuestObject.createTrap();
+            QuestObject trap = (QuestObject) GameMediaData.getGameObject("trap").clone();
             trap.setConsumer((obj) -> {
                 shutdown();
                 Main.changeRoot(pane);
