@@ -13,7 +13,7 @@ import util.Triple;
 
 import java.util.concurrent.*;
 
-import static util.MediaData.walkingSound;
+import static util.gameMediaData.walkingSound;
 import static util.Util.*;
 
 public class ThreadMain {

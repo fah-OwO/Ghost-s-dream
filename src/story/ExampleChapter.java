@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
-import util.MediaData;
+import util.gameMediaData;
 
 import static util.Util.*;
 
@@ -19,7 +19,7 @@ public class ExampleChapter extends BaseChapter {
 
     @Override
     public void setUp() {
-        setUpper(MediaData.EVENING);
+        setUpper(gameMediaData.EVENING);
         QuestObject questObject = new QuestObject();
         questObject.setImage("file:res/image/mystic.jpg", 0);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
@@ -27,7 +27,7 @@ public class ExampleChapter extends BaseChapter {
         setFinalQuestObject(questObject);
         for (int i = 0; i < 100; i++) {
             QuestObject squid = new QuestObject();
-            squid.setImage(MediaData.SQUID, 10);
+            squid.setImage(gameMediaData.SQUID, 10);
             squid.setActiveRange(7.5);
             squid.setPassive(true);
             squid.setConsumer(obj -> {
@@ -51,7 +51,7 @@ public class ExampleChapter extends BaseChapter {
         pane.getChildren().add(gameOverText);
         StackPane.setAlignment(gameOverText, Pos.CENTER);
         for (int i = 0; i < 10; i++) {
-            QuestObject trap = (QuestObject) MediaData.getGameObject("trap").clone();//QuestObject.createTrap();
+            QuestObject trap = (QuestObject) gameMediaData.getGameObject("trap").clone();//QuestObject.createTrap();
             trap.setConsumer((obj) -> {
                 shutdown();
                 Main.changeRoot(pane);
@@ -65,7 +65,7 @@ public class ExampleChapter extends BaseChapter {
         }
         ObservableList<GameObject> decorateObjectList = FXCollections.observableArrayList();
         for (int i = 0; i < 100; i++) {
-            GameObject decorateObject = MediaData.getRandomDecoration("bush");
+            GameObject decorateObject = gameMediaData.getRandomDecoration("bush");
             decorateObjectList.add(decorateObject);
             addGameObject(decorateObject);
         }

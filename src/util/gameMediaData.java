@@ -9,7 +9,7 @@ import java.util.*;
 
 import static util.Util.*;
 
-public class MediaData {
+public class gameMediaData {
 
     private static final Map<String, Image> imageDatabase = new HashMap<>();
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
@@ -25,16 +25,16 @@ public class MediaData {
         for (int i = 1; i <= 4; i++) {
             GameObject tree = new GameObject();
             tree.setImage("file:res/image/tree/3" + i + ".png", 4);
-            MediaData.addDecoration("tree", tree);//https://www.cgchan.com/cantree
-            MediaData.addDecoration("forest", tree);
+            gameMediaData.addDecoration("tree", tree);//https://www.cgchan.com/cantree
+            gameMediaData.addDecoration("forest", tree);
         }
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
-        MediaData.addDecoration("bush", bush);//https://www.cgchan.com/cantree
-        MediaData.addDecoration("forest", bush);
+        gameMediaData.addDecoration("bush", bush);//https://www.cgchan.com/cantree
+        gameMediaData.addDecoration("forest", bush);
 
         QuestObject trap = new QuestObject();
-        trap.setImage(MediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
+        trap.setImage(gameMediaData.TRAP, 0.2);//trap.setObjectHeight(0.2);
         trap.setPassive(true);
         trap.setActiveRange(0.5);
         trap.spawnAnywhere();

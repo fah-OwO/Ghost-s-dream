@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import util.MediaData;
+import util.gameMediaData;
 import util.Triple;
 
 
@@ -24,7 +24,7 @@ public class GameObject implements Cloneable {
     private final static int maxZ = height;
 
     public GameObject() {
-        imageView = new ImageView(MediaData.BLACK);
+        imageView = new ImageView(gameMediaData.BLACK);
         imageView.setPreserveRatio(true);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
@@ -117,7 +117,7 @@ public class GameObject implements Cloneable {
     //https://onlinepngtools.com/create-transparent-png
 
     public void setImage(String url, double metre) {
-        setImage(MediaData.getImage(url), metre);
+        setImage(gameMediaData.getImage(url), metre);
     }
 
     public void setImage(Image image, double metre) {

@@ -2,19 +2,13 @@ package application;
 
 import javafx.application.Application;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
 import story.BaseChapter;
 import story.ChapterTutorial;
-import story.ExampleChapter;
-import util.MediaData;
+import util.gameMediaData;
 
 import static util.Util.*;
 
@@ -27,7 +21,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        MediaData.initiate();
+        gameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
         BaseChapter tutorialChapter = new ChapterTutorial();
