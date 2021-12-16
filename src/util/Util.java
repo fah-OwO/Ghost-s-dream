@@ -6,7 +6,7 @@ import logic.Player;
 import java.util.Comparator;
 
 public class Util {
-    public static final double k = 1;
+    public static final double k = 1e6;
     public static final String title = "";
     public static final int width = 1920;
     public static final int height = 1000;
@@ -50,11 +50,11 @@ public class Util {
     }//convert between pos and co
 
     public static double coordToMetre(double z) {
-        return z * height;
+        return z * height / k;
     }
 
     public static double metreToCoord(double z) {
-        return z / height;
+        return z * k / height;
     }
 
     public static Triple toMetre(Triple pos) {

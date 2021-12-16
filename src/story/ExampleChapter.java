@@ -25,7 +25,7 @@ public class ExampleChapter extends BaseChapter {
             QuestObject squid = new QuestObject("file:res/image/sq43.png");
             squid.setActiveRange(7.5);
             squid.setPassive(true);
-            squid.setConsumer((obj) -> {
+            squid.setConsumer(obj -> {
                 Thread thread = new Thread(() -> {
                     for (int j = 0; j < height; j += 10) {
                         delay(refreshPeriod);
@@ -33,7 +33,7 @@ public class ExampleChapter extends BaseChapter {
                         else break;
                     }
                 });
-                thread.start();
+                thread.start();//threadMain.setHorizonLineMul(threadMain.getHorizonLineMul()*0.90);
             });
             squid.setObjectHeight(10);//gameObject.setImage(image, 10);//setImage("file:res/image/62872.jpg",1);
             squid.spawnAnywhere();

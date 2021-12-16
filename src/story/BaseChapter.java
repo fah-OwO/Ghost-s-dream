@@ -18,8 +18,8 @@ import util.MediaData;
 import static util.Util.*;
 
 public class BaseChapter {
-    private final VBox root = new VBox();
-    private final ThreadMain threadMain;
+    protected final VBox root = new VBox();
+    protected final ThreadMain threadMain;
     private Image upper;
     private QuestObject finalQuestObject;
     private final ObservableList<GameObject> gameObjectList;
@@ -53,9 +53,9 @@ public class BaseChapter {
     }
 
     public void changeChapter(BaseChapter chapter) {
-        this.shutdown();
         chapter.run();
         Main.changeRoot(chapter.getRoot());
+        this.shutdown();
     }
 
     public void run() {

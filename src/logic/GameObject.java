@@ -199,6 +199,10 @@ public class GameObject implements Cloneable {
         pos = coordinate2screenPos(co);
     }
 
+    public Triple getCo() {
+        return co;
+    }
+
     public void setPosY(double y) {
         co.y = pos.y = y;
     }

@@ -18,7 +18,7 @@ import static util.Util.*;
 
 public class ThreadMain {
     private final Player player;
-    private double horizonLine = height / 2.0;
+    private double horizonLineMul = 1 / 2.0;
     private final ObservableList<GameObject> objects = FXCollections.observableArrayList();
     private boolean pause = true;
     private boolean start;
@@ -65,7 +65,8 @@ public class ThreadMain {
     private void updateObj() {
         if (pause) return;
         updatePlayer();
-        if (player.isMoving()) updateObjectsPos();
+        //if (player.isMoving())
+        updateObjectsPos();
         Platform.runLater(this::updateScreen);//updateScreen();
     }
 
@@ -82,9 +83,9 @@ public class ThreadMain {
 
     private void updatePlayer() {
         player.update();
-        Triple speed = player.getSpeed();
-        horizonLine -= speed.y;
-        speed.y = 0;
+//        Triple speed = player.getSpeed();
+//        horizonLine -= speed.y;
+//        speed.y = 0;
     }
 
     private void updateObjectsPos() {
@@ -110,7 +111,7 @@ public class ThreadMain {
         ImageView im = obj.getImageView();
         Triple pos = obj.getPos();
         removeFromPane(im);
-        im.relocate((pos.x - pos.z + width) / 2, (height - horizonLine) + pos.z / 2 - obj.getObjectHeight() - pos.y);
+        im.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - obj.getObjectHeight() - pos.y);
         im.setFitHeight(obj.getObjectHeight());
         addToPane(im);
     }
@@ -125,7 +126,7 @@ public class ThreadMain {
     }
 
     public void setUpperBackground(Image image) {
-        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, (int) Math.min(image.getHeight(), height - horizonLine));
+        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, (int) Math.min(image.getHeight(), height * horizonLineMul));
         ImageView imageView = new ImageView(newImage);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
@@ -142,6 +143,14 @@ public class ThreadMain {
 
     public void setPause(boolean p) {
         pause = p;
+    }
+
+    public double getHorizonLineMul() {
+        return horizonLineMul;
+    }
+
+    public void setHorizonLineMul(double horizonLineMul) {
+        this.horizonLineMul = horizonLineMul;
     }
 
     @Override
