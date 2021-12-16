@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -28,11 +29,16 @@ public class Main extends Application {
         tutorialChapter.run();
         root.getChildren().add(tutorialChapter.getRoot());
         Scene scene = new Scene(root);
+        scene.setCursor(Cursor.NONE);
         scene.setOnMousePressed(mouseEvent -> {
             switch (mouseEvent.getButton()) {
                 case PRIMARY -> QuestObject.run();
                 case SECONDARY -> player.jump();
             }
+        });
+        scene.setOnMouseMoved(mouseEvent -> {
+            player.rotateY(mouseEvent.getY());
+            player.rotateX(mouseEvent.getX());
         });
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -53,6 +59,8 @@ public class Main extends Application {
                 case ESCAPE -> stage.close();
             }
         });
+        stage.setHeight(height);
+        stage.setWidth(width);
         stage.setScene(scene);
         stage.show();
 

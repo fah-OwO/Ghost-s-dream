@@ -14,6 +14,7 @@ public class Player {
     private boolean running;
     //    private boolean onGround;
     private Triple speed = new Triple();
+    private final Triple rotate = new Triple();
     private final Triple acceleration = new Triple();
     private static Player instance;
 
@@ -44,6 +45,18 @@ public class Player {
 
     public void accZ(double z) {
         acceleration.z = z;
+    }
+
+    public void rotateX(double x) {
+        rotate.x = x;
+    }
+
+    public void rotateY(double y) {
+        rotate.y = y;
+    }
+
+    public Triple getRotate() {
+        return rotate;
     }
 
     public Triple getSpeed() {
@@ -90,6 +103,7 @@ public class Player {
     public static Triple getPlayerCo() {
         return playerCo;
     }
+
     public boolean isWalkLeft() {
         return speed.x > 0.0;
     }

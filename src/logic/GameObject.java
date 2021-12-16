@@ -2,8 +2,10 @@ package logic;
 
 import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import util.gameMediaData;
 import util.Triple;
 
@@ -189,11 +191,11 @@ public class GameObject implements Cloneable {
     protected void onRemove() {
     }
 
-    public double getObjectHeight() {
+    private double getObjectHeight() {
         return objectHeight * pos.z / height;
     }
 
-    public double getObjectWidth() {
+    private double getObjectWidth() {
         return getObjectHeight() / 2;
     }
 
@@ -238,6 +240,15 @@ public class GameObject implements Cloneable {
         for (GameObject object : gameObjectList) {
             object.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() * ++i / amount);
         }
+    }
+
+    public void draw(Pane pane, double horizonLineMul) {
+        ObservableList<Node> paneChildren = pane.getChildren();
+        paneChildren.remove(imageView);
+        imageView.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - getObjectHeight() - pos.y);
+        imageView.setFitHeight(getObjectHeight());
+        paneChildren.add(imageView);
+
     }
 
 }

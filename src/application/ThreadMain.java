@@ -3,6 +3,7 @@ package application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -13,6 +14,7 @@ import util.Triple;
 
 import java.util.concurrent.*;
 
+import static util.gameMediaData.BLACK;
 import static util.gameMediaData.walkingSound;
 import static util.Util.*;
 
@@ -24,6 +26,7 @@ public class ThreadMain {
     private boolean start;
     private final Pane pane;
     private final ScheduledThreadPoolExecutor threadPoolExecutor;
+    private final ImageView ground = new ImageView();
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);
@@ -35,6 +38,7 @@ public class ThreadMain {
             thread.setDaemon(true);
             return thread;
         });
+        setGroundFromImage(BLACK);//this.ground=new ImageView(BLACK);
         //https://stackoverflow.com/questions/13883293/turning-an-executorservice-to-daemon-in-java
     }
 
@@ -65,6 +69,7 @@ public class ThreadMain {
     private void updateObj() {
         if (pause) return;
         updatePlayer();
+        horizonLineMul = 1 - (player.getRotate().y / height);
         //if (player.isMoving())
         updateObjectsPos();
         Platform.runLater(this::updateScreen);//updateScreen();
@@ -83,9 +88,6 @@ public class ThreadMain {
 
     private void updatePlayer() {
         player.update();
-//        Triple speed = player.getSpeed();
-//        horizonLine -= speed.y;
-//        speed.y = 0;
     }
 
     private void updateObjectsPos() {
@@ -97,6 +99,7 @@ public class ThreadMain {
     }
 
     private void updateScreen() {
+        drawGround();
         objects.sort(objComparator);
         for (GameObject obj : objects) {
             if (obj.shouldBeDestructed()) {
@@ -107,13 +110,14 @@ public class ThreadMain {
         }
     }
 
+    private void drawGround() {
+        removeFromPane(ground);
+        ground.relocate(0, height * horizonLineMul);
+        addToPane(ground);
+    }
+
     private void drawIMG(GameObject obj) {
-        ImageView imageView = obj.getImageView();
-        Triple pos = obj.getPos();
-        removeFromPane(imageView);
-        imageView.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - obj.getObjectHeight() - pos.y);
-        imageView.setFitHeight(obj.getObjectHeight());
-        addToPane(imageView);
+        obj.draw(pane, horizonLineMul);
     }
 
 
@@ -126,11 +130,17 @@ public class ThreadMain {
     }
 
     public void setUpperBackground(Image image) {
-        WritableImage newImage = new WritableImage(image.getPixelReader(), 0, 0, width, (int) Math.min(image.getHeight(), height * horizonLineMul));
-        ImageView imageView = new ImageView(newImage);
+        ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         addToPane(imageView);
+    }
+
+    public void setGroundFromImage(Image image) {
+        ground.setImage(image);
+        ground.setPreserveRatio(true);
+        ground.setFitWidth(width);
+//        removeFromPane(this.ground);
     }
 
     public void shutdown() {

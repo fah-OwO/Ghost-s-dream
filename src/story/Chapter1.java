@@ -32,11 +32,12 @@ public class Chapter1 extends BaseChapter {
             squid.setPassive(true);
             squid.setConsumer(obj -> {
                 Thread thread = new Thread(() -> {
-                    for (int j = 0; j < height; j += 10) {
+                    for (int j = 0; j < height*2; j += 10) {
                         delay(refreshPeriod);
                         if (obj.isOnScreen()) obj.setPosY(j);
                         else break;
                     }
+                    obj.despawn();
                 });
                 thread.start();
             });
