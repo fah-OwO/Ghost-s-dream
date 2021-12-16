@@ -2,7 +2,8 @@ package logic;
 
 import util.Triple;
 
-import static util.Util.*;
+import static util.Util.frames;
+import static util.Util.metreToCoord;
 
 public class Player {
     private static final Triple playerCo = new Triple(0, 0, metreToCoord(0));
