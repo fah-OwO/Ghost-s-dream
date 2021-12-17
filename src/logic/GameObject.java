@@ -12,7 +12,7 @@ import util.Triple;
 import static util.Util.*;
 
 public class GameObject implements Cloneable {
-    private final static double acceptableBorder = 1.1;
+    private final static double acceptableBorder = 1.2;
     private final static double minZ = 20;
     private final static int maxZ = height;
     protected ImageView imageView;
@@ -22,6 +22,7 @@ public class GameObject implements Cloneable {
     protected boolean onScreen;
     protected boolean respawnable;
     protected boolean destruct;
+    private double minSpawningRange = metreToCoord(1);
 
     public GameObject() {
         imageView = new ImageView(GameMediaData.BLACK);
@@ -48,6 +49,7 @@ public class GameObject implements Cloneable {
         int i = 0, amount = gameObjectList.size();
         double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
         for (GameObject object : gameObjectList) {
+            object.setMinSpawningRange(minimumSpawningRangeInMetre);
             object.spawnAnywhereFromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
         }
     }
@@ -65,7 +67,7 @@ public class GameObject implements Cloneable {
         if (pos.z < minZ / acceptableBorder ||
                 pos.z > maxZ * acceptableBorder ||
                 co.z < 0 ||
-                Math.abs(pos.x + getObjectWidth() / 2) > width * acceptableBorder)
+                Math.abs(pos.x) * 2 - getObjectWidth() > width * acceptableBorder)
             despawn();
     }
 
@@ -81,16 +83,32 @@ public class GameObject implements Cloneable {
     }
 
     public void spawn() {
-        spawnFront();
+        switch (rand.nextInt(3)) {
+            case 0 -> spawnFront();
+            case 1 -> spawnLeft();
+            case 2 -> spawnRight();
+        }
+        co = pos2coordinate(pos);
+    }
+
+    private void spawnLeft() {
+        Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
+        pos = coordinate2screenPos(tmp);
+        pos.x = -(width + getObjectWidth()) / 2;
+    }
+
+    private void spawnRight() {
+        Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
+        pos = coordinate2screenPos(tmp);
+        pos.x = (width + getObjectWidth()) / 2;
     }
 
     private void spawnFront() {
         pos.set(rand.randomBetween(-width, width), 0, minZ);
-        co = pos2coordinate(pos);
     }
 
     public void spawnAnywhere() {
-        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + metreToCoord(1), getMaxRealZ()));
+        spawnAnywhereFromRealZ(convertZ(rand.randomBetween(convertZ(maxZ) + minSpawningRange, getMaxRealZ())));
     }
 
     public void spawnAnywhereFromRealZ(double z) {
@@ -98,6 +116,11 @@ public class GameObject implements Cloneable {
         co.set(rand.randomBetween(-w, w), 0, z);
         pos = coordinate2screenPos(co);
     }
+
+//    public void spawnAnywhereFromPosZ(double z) {
+//        pos.set(rand.randomBetween(-width, width), 0, z);
+//        co = pos2coordinate(pos);
+//    }
 
     public void spawnAtCoord(Triple coord) {
         co = coord;
@@ -140,6 +163,7 @@ public class GameObject implements Cloneable {
     }
 
     public void setOnScreen(boolean onScreen) {
+        if (this.onScreen == onScreen) return;
         if (onScreen) onAdd();
         else onRemove();
         this.onScreen = onScreen;
@@ -174,7 +198,7 @@ public class GameObject implements Cloneable {
     }
 
     private double getObjectWidth() {
-        return getObjectHeight() / 2;
+        return getObjectHeight() * getImageRatioWpH();
     }
 
 
@@ -208,9 +232,21 @@ public class GameObject implements Cloneable {
     public void draw(Pane pane, double horizonLineMul) {
         ObservableList<Node> paneChildren = pane.getChildren();
         paneChildren.remove(imageView);
-        imageView.relocate((pos.x - pos.z + width) / 2, height * (horizonLineMul) + pos.z / 2 - getObjectHeight() - pos.y);
+        imageView.relocate(pos.x + (-getObjectWidth() + width) / 2, height * (horizonLineMul) + pos.z / 2 - getObjectHeight() - pos.y);
         imageView.setFitHeight(getObjectHeight());
         paneChildren.add(imageView);
+    }
+
+    public void setMinSpawningRange(double minSpawningRangeInMetre) {
+        this.minSpawningRange = metreToCoord(minSpawningRangeInMetre);
+    }
+
+    private Image getImage() {
+        return getImageView().getImage();
+    }
+
+    private double getImageRatioWpH() {
+        return getImage().getWidth() / getImage().getHeight();
     }
 
 }

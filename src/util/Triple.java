@@ -54,9 +54,9 @@ public class Triple implements Cloneable {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    public Triple resizeTo(double size) {
-        return this.mul(size / getSize());
-    }
+//    public Triple resizeTo(double size) {
+//        return getSize() != 0 ? this.mul(size / getSize()) : new Triple(0);
+//    }
 
     public void near0() {
         if (x < lowNum && x > -lowNum) x = 0;
@@ -64,9 +64,9 @@ public class Triple implements Cloneable {
         if (z < lowNum && z > -lowNum) z = 0;
     }
 
-    public boolean isBetween(Triple bottom_left, Triple top_right) {
-        return !(x < bottom_left.x) && !(y < bottom_left.y) && !(z < bottom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
-    }
+//    public boolean isBetween(Triple bottom_left, Triple top_right) {
+//        return !(x < bottom_left.x) && !(y < bottom_left.y) && !(z < bottom_left.z) && !(x > top_right.x) && !(y > top_right.y) && !(z > top_right.z);
+//    }
 
     public boolean is0() {
         return x == 0 && y == 0 && z == 0;
