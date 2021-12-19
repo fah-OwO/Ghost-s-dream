@@ -34,6 +34,14 @@ public class Triple implements Cloneable {
         return newTriple;
     }
 
+    public Triple subtract(Triple t) { //tho u can use add(t.mul(-1)) but creating this method is easier
+        Triple newTriple = new Triple(x, y, z);
+        newTriple.x -= t.x;
+        newTriple.y -= t.y;
+        newTriple.z -= t.z;
+        return newTriple;
+    }
+
     public Triple mul(Triple t) {
         Triple newTriple = new Triple(x, y, z);
         newTriple.x *= t.x;

@@ -2,20 +2,24 @@ package application;
 
 import gui.QuickMenu;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 import logic.Player;
 import logic.QuestObject;
 import util.GameMediaData;
+import util.Util;
 
 import static util.Util.*;
 
 public class Main extends Application {
 
     private static final VBox root = new VBox();
+    private static final Robot robot = new Robot();
 
     public static void main(String[] args) {
         launch(args);
@@ -27,6 +31,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
+        Util.initiate();
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
@@ -65,4 +70,13 @@ public class Main extends Application {
 
     }
 
+    public static void setMouse(double x, double y) {
+        Platform.runLater(() -> robot.mouseMove(x, y));
+    }
+
+    public static double setMouseX(double x) {
+            double tmp = robot.getMouseX();
+            robot.mouseMove(x, robot.getMouseY());
+            return tmp-x-0.5;
+    }
 }

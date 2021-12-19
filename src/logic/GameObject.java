@@ -12,7 +12,7 @@ import util.Triple;
 import static util.Util.*;
 
 public class GameObject implements Cloneable {
-    private final static double acceptableBorder = 1.2;
+    private final static double acceptableBorder = 1.1;
     private final static double minZ = 20;
     private final static int maxZ = height;
     protected ImageView imageView;
@@ -208,7 +208,7 @@ public class GameObject implements Cloneable {
     }
 
     public void setPosY(double y) {
-        co.y = pos.y = y;
+        co.y = y;
     }
 
     @Override
@@ -249,4 +249,12 @@ public class GameObject implements Cloneable {
         return getImage().getWidth() / getImage().getHeight();
     }
 
+    public Triple getPos() {
+        return pos;
+    }
+
+    public void rotate(double x) {
+        co = rotateAaroundY(co, x);
+        pos = coordinate2screenPos(co);
+    }
 }

@@ -36,9 +36,9 @@ public class Chapter2 extends BaseChapter {
         squid.setPassive(true);
         squid.setConsumer(obj -> {
             Thread thread = new Thread(() -> {
-                for (int j = 0; j < height * 2; j += 10) {
+                for (double j = 0; obj.getPos().y<height; j += 0.001) {
                     delay(refreshPeriod);
-                    if (obj.isOnScreen()) obj.setPosY(j);
+                    if (obj.isOnScreen()) obj.setPosY(metreToCoord(j)/refreshPeriod);
                     else break;
                 }
                 obj.despawn();

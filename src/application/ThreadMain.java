@@ -26,6 +26,7 @@ public class ThreadMain {
     private double horizonLineMul = 1 / 2.0;
     private boolean pause = true;
     private boolean start;
+    private static double midWidth = width / 2.0;
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);
@@ -46,13 +47,17 @@ public class ThreadMain {
     }
 
     public void start() {
-        if (!start) {
-            threadPoolExecutor.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
-            threadPoolExecutor.scheduleAtFixedRate(this::updateSound, 0, refreshPeriod, TimeUnit.MILLISECONDS);
-            start = true;
-        }
-        updateObjectsPos();
-        setPause(false);
+        Platform.runLater(() -> {
+            midWidth = Main.setMouseX(0);
+            Main.setMouseX(midWidth);
+            updateObjectsPos();
+            setPause(false);
+            if (!start) {
+                threadPoolExecutor.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+                threadPoolExecutor.scheduleAtFixedRate(this::updateSound, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+                start = true;
+            }
+        });
     }
 
     public void clear() {
@@ -69,8 +74,10 @@ public class ThreadMain {
         if (pause) return;
         updatePlayer();
         horizonLineMul = 1 - (player.getRotate().y / height);
-        updateObjectsPos();
-        Platform.runLater(this::updateScreen);
+        Platform.runLater(() -> {
+            updateObjectsPos();
+            updateScreen();
+        });
     }
 
     private void updateSound() {
@@ -90,8 +97,12 @@ public class ThreadMain {
 
     private void updateObjectsPos() {
         player.update();
+        double x = Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
+//        System.out.println(x);
+        x /= -frames;
         for (GameObject obj : objects) {
             obj.move(player.getSpeed());
+            obj.rotate(x);
             obj.update();
         }
     }
