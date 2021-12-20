@@ -48,16 +48,20 @@ public class ThreadMain {
 
     public void start() {
         Platform.runLater(() -> {
-            midWidth = Main.setMouseX(0);
-            Main.setMouseX(midWidth);
+            refocusMouse();
             updateObjectsPos();
             setPause(false);
             if (!start) {
-                threadPoolExecutor.scheduleAtFixedRate(this::updateObj, 0, refreshPeriod, TimeUnit.MILLISECONDS);
-                threadPoolExecutor.scheduleAtFixedRate(this::updateSound, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+                addThread(this::updateObj);
+                addThread(this::updateSound);
                 start = true;
             }
         });
+    }
+
+    private void refocusMouse() {
+        midWidth = Main.setMouseX(0);
+        Main.setMouseX(midWidth);
     }
 
     public void clear() {
@@ -98,13 +102,15 @@ public class ThreadMain {
     private void updateObjectsPos() {
         player.update();
         double x = Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
-//        System.out.println(x);
-        x /= -frames;
+        System.out.println(x);
+        x /= -60;
+        if (x > 5) x = 5;
         for (GameObject obj : objects) {
             obj.move(player.getSpeed());
             obj.rotate(x);
             obj.update();
         }
+        clearSinCos();
     }
 
     private void updateScreen() {
@@ -159,8 +165,18 @@ public class ThreadMain {
         clear();
     }
 
+    public boolean isPause() {
+        return pause;
+    }
+
     public void setPause(boolean p) {
+        if (!p) refocusMouse();
         pause = p;
+        Main.setMouseVisible(p);
+    }
+
+    public void addThread(Runnable runnable) {
+        threadPoolExecutor.scheduleAtFixedRate(runnable, 0, refreshPeriod, TimeUnit.MILLISECONDS);
     }
 
     @Override

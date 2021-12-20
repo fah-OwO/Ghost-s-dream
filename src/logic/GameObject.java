@@ -12,7 +12,7 @@ import util.Triple;
 import static util.Util.*;
 
 public class GameObject implements Cloneable {
-    private final static double acceptableBorder = 1.1;
+    private final static double acceptableBorder = 1.01;
     private final static double minZ = 20;
     private final static int maxZ = height;
     protected ImageView imageView;
@@ -64,7 +64,7 @@ public class GameObject implements Cloneable {
             spawn();
             deploy();
         }
-        if (pos.z < minZ / acceptableBorder ||
+        if (co.z > convertZ(minZ) * acceptableBorder ||
                 pos.z > maxZ * acceptableBorder ||
                 co.z < 0 ||
                 Math.abs(pos.x) * 2 - getObjectWidth() > width * acceptableBorder)

@@ -17,9 +17,9 @@ import story.ChapterTutorial;
 import util.GameMediaData;
 
 public class QuickMenu extends GridPane {
-    private static Scene scene;
 
-    private QuickMenu(Scene scene) {
+    private QuickMenu() {
+        Main.setMouseVisible(true);
         setAlignment(Pos.CENTER);
         setVgap(8);
         setHgap(8);
@@ -39,16 +39,13 @@ public class QuickMenu extends GridPane {
             cell.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 BaseChapter chapter = cell.getChapter();
                 chapter.run();
-                Main.changeRoot(chapter.getRoot());
-                scene.setCursor(Cursor.NONE);
+                Main.setMouseVisible(false);
             });
         }
         this.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     public static QuickMenu initiate(Scene scene) {
-        if (QuickMenu.scene == null) QuickMenu.scene = scene;
-        QuickMenu.scene.setCursor(Cursor.DEFAULT);
-        return new QuickMenu(QuickMenu.scene);
+        return new QuickMenu();
     }
 }

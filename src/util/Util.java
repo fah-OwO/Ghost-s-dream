@@ -40,6 +40,11 @@ public class Util {
         return cos.get(i % 360);
     }
 
+    public static void clearSinCos(){
+        sin.clear();
+        cos.clear();
+    }
+
 //    public static double tan(double i) {
 //        return tan.get(i % 360);
 //    }

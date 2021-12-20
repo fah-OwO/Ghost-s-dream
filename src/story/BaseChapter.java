@@ -53,16 +53,15 @@ public abstract class BaseChapter {
             object.deploy();
         }
         threadMain.start();
+        Main.changeRoot(getRoot());
+        Main.setThreadMain(threadMain);
     }
 
 
     public void changeChapter(BaseChapter chapter) {
         //if (chapter == null) return;
         if (chapter == null) Main.changeRoot(QuickMenu.initiate(null));
-        else {
-            chapter.run();
-            Main.changeRoot(chapter.getRoot());
-        }
+        else chapter.run();
         this.shutdown();
     }
 
