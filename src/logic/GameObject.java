@@ -38,7 +38,7 @@ public class GameObject implements Cloneable {
     }
 
     public static double getMaxRealZ() {
-        return k / minZ;
+        return convertZ(minZ)/cosTheta;
     }
 
     public static double getMaxRealWidthFromRealZ(double z) {
@@ -54,17 +54,20 @@ public class GameObject implements Cloneable {
         }
     }
 
+    public void checkForSpawn() {
+        if (respawnable && !onScreen) {
+            spawn();
+            deploy();
+        }
+    }
+
     public void move(Triple v) {
         co = co.add(v);
         pos = coordinate2screenPos(co);
     }
 
-    public void update() {
-        if (respawnable && !onScreen) {
-            spawn();
-            deploy();
-        }
-        if (co.z > convertZ(minZ) * acceptableBorder ||
+    public void checkForDespawn() {
+        if (co.z > convertZ(minZ) / cosTheta ||
                 pos.z > maxZ * acceptableBorder ||
                 co.z < 0 ||
                 Math.abs(pos.x) * 2 - getObjectWidth() > width * acceptableBorder)
@@ -104,7 +107,8 @@ public class GameObject implements Cloneable {
     }
 
     private void spawnFront() {
-        pos.set(rand.randomBetween(-width, width), 0, minZ);
+        double tmp = sinTheta * convertZ(minZ);
+        co.set(rand.randomBetween(-tmp, tmp), 0, getMaxRealZ());
     }
 
     public void spawnAnywhere() {

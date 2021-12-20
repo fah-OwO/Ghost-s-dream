@@ -36,9 +36,9 @@ public class QuestObject extends GameObject implements Cloneable {
     }
 
     @Override
-    public void update() {
+    public void checkForDespawn() {
         if (passive && isInActiveRangeAndNotTriggered()) individualRun();
-        super.update();
+        super.checkForDespawn();
     }
 
     @Override
