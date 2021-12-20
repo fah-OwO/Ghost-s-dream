@@ -260,7 +260,7 @@ public class GameObject implements Cloneable {
     }
 
     public void rotate(double x) {
-        co = rotateAaroundY(co, x);
-        pos = coordinate2screenPos(co);
+        pos.x += x;
+        co = pos2coordinate(pos);
     }
 }

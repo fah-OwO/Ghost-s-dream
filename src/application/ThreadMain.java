@@ -101,19 +101,13 @@ public class ThreadMain {
 
     private void updateObjectsPos() {
         player.update();
-        double x = Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
-        System.out.println(x);
-        x /= -50;
-        double maxRadian = 3;
-        if (x > maxRadian) x = maxRadian;
-        if (x < -maxRadian) x = -maxRadian;
+        double x = -Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
         for (GameObject obj : objects) {
             obj.checkForSpawn();
             obj.move(player.getSpeed());
             obj.rotate(x);
             obj.checkForDespawn();
         }
-        clearSinCos();
     }
 
     private void updateScreen() {

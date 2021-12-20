@@ -34,7 +34,6 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        Util.initiate();
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
