@@ -29,10 +29,10 @@ public class QuickMenu extends GridPane {
         ObservableList<ChapterCell> chapterCells = FXCollections.observableArrayList();
         chapterCells.add(chapterTutorial);
         this.add(chapterTutorial, i++, 0);
-        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getRandomImage("trap"));
+        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getRandomImage("tree"));
         chapterCells.add(chapter1);
         this.add(chapter1, i++, 0);
-        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getRandomImage("tree"));
+        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getRandomImage("trap"));
         chapterCells.add(chapter2);
         this.add(chapter2, i, 0);
         for (ChapterCell cell : chapterCells) {

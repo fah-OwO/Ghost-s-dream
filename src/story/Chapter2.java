@@ -16,41 +16,17 @@ public class Chapter2 extends BaseChapter {
     public void setUp() {
         setUpper(GameMediaData.EVENING);
         QuestObject questObject = new QuestObject();
-        questObject.setImage(GameMediaData.getRandomDecoration("tree"));
+        questObject.setImage(GameMediaData.SQUID, 4);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer((obj) -> {
-            shutdown();
-            Main.changeRoot(GameMediaData.setUpPaneFromString("You win!"));
-            Thread thread = new Thread(() -> {
-                delay((long) 3e3);
-                Platform.runLater(() -> changeChapter(null));
-            });
-            thread.start();
-        });
+        questObject.setConsumer((obj) -> changeChapter(null));
         setFinalQuestObject(questObject);
         ObservableList<GameObject> objectList = FXCollections.observableArrayList();
-        int squidActiveRange = 10;
-        QuestObject squid = new QuestObject();
-        squid.setImage(GameMediaData.SQUID, 10);
-        squid.setActiveRange(squidActiveRange);
-        squid.setPassive(true);
-        squid.setConsumer(obj -> {
-            Thread thread = new Thread(() -> {
-                for (double j = 0.0001; obj.getPos().y<height; j *=1.5) {
-                    delay(refreshPeriod);
-                    if (obj.isOnScreen()) obj.setPosY(metreToCoord(j)/refreshPeriod);
-                    else break;
-                }
-                obj.despawn();
-            });
-            thread.start();
-        });
         for (int i = 0; i < 100; i++) {
-            QuestObject newSquid = squid.clone();
-            objectList.add(newSquid);
-            addGameObject(newSquid);
+            GameObject decorateObject = GameMediaData.getRandomDecoration("tree");
+            objectList.add(decorateObject);
+            addGameObject(decorateObject);
         }
-        GameObject.spreadObject(objectList, squid.getActiveRange());
+        GameObject.spreadObject(objectList, 5);
         objectList.clear();
         for (int i = 0; i < 100; i++) {
             GameObject decorateObject = GameMediaData.getRandomDecoration("bush");

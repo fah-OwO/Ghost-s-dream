@@ -38,7 +38,7 @@ public class GameObject implements Cloneable {
     }
 
     public static double getMaxRealZ() {
-        return convertZ(minZ)/cosTheta;
+        return convertZ(minZ) / cosTheta;
     }
 
     public static double getMaxRealWidthFromRealZ(double z) {
@@ -50,7 +50,7 @@ public class GameObject implements Cloneable {
         double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
         for (GameObject object : gameObjectList) {
             object.setMinSpawningRange(minimumSpawningRangeInMetre);
-            object.spawnAnywhereFromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
+            object.spawnAnywhere();//FromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
         }
     }
 
@@ -67,7 +67,7 @@ public class GameObject implements Cloneable {
     }
 
     public void checkForDespawn() {
-        if (co.z > convertZ(minZ) / cosTheta ||
+        if (co.z > getMaxRealZ() ||
                 pos.z > maxZ * acceptableBorder ||
                 co.z < 0 ||
                 Math.abs(pos.x) * 2 - getObjectWidth() > width * acceptableBorder)
@@ -91,28 +91,30 @@ public class GameObject implements Cloneable {
             case 1 -> spawnLeft();
             case 2 -> spawnRight();
         }
-        co = pos2coordinate(pos);
     }
 
     private void spawnLeft() {
         Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
         pos = coordinate2screenPos(tmp);
         pos.x = -(width + getObjectWidth()) / 2;
+        co = pos2coordinate(pos);
     }
 
     private void spawnRight() {
         Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
         pos = coordinate2screenPos(tmp);
         pos.x = (width + getObjectWidth()) / 2;
+        co = pos2coordinate(pos);
     }
 
     private void spawnFront() {
-        double tmp = sinTheta * convertZ(minZ);
+        double tmp = getMaxRealWidthFromRealZ(getMaxRealZ());
         co.set(rand.randomBetween(-tmp, tmp), 0, getMaxRealZ());
+        pos = coordinate2screenPos(co);
     }
 
     public void spawnAnywhere() {
-        spawnAnywhereFromRealZ(convertZ(rand.randomBetween(convertZ(maxZ) + minSpawningRange, getMaxRealZ())));
+        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + minSpawningRange, getMaxRealZ()));
     }
 
     public void spawnAnywhereFromRealZ(double z) {

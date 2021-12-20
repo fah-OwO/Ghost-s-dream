@@ -27,13 +27,13 @@ public class ChapterCell extends StackPane {
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(100);
         this.getChildren().add(imageView);
-        setAlignment(imageView, Pos.CENTER);
+        setAlignment(imageView, Pos.BOTTOM_CENTER);
         this.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         Text text = new Text(name);
         text.setFont(font);
         text.setTextAlignment(TextAlignment.CENTER);
         this.getChildren().add(text);
-        setAlignment(text, Pos.BOTTOM_CENTER);
+        setAlignment(text, Pos.TOP_CENTER);
         this.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
