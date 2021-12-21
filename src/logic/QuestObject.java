@@ -11,7 +11,7 @@ import static util.Util.*;
 public class QuestObject extends GameObject implements Cloneable {
     private static final ObservableList<QuestObject> questObjs = FXCollections.observableArrayList();
     //for activate purpose so it must be on screen
-    private Consumer<GameObject> consumer;
+    private Consumer<QuestObject> consumer;
     private boolean passive;
     private boolean triggered;
     private double activeRange = metreToCoord(1.5);
@@ -31,7 +31,7 @@ public class QuestObject extends GameObject implements Cloneable {
         }
     }
 
-    public void setConsumer(Consumer<GameObject> consumer) {
+    public void setConsumer(Consumer<QuestObject> consumer) {
         this.consumer = consumer;
     }
 

@@ -25,7 +25,7 @@ public class ChapterCell extends StackPane {
         this.setPadding(new Insets(8, 8, 8, 8));
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
-        imageView.setFitWidth(100);
+        imageView.setFitWidth(300);
         this.getChildren().add(imageView);
         setAlignment(imageView, Pos.BOTTOM_CENTER);
         this.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));

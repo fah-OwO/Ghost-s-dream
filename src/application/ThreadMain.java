@@ -103,7 +103,7 @@ public class ThreadMain {
         player.update();
         double x = -Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
         for (GameObject obj : objects) {
-            obj.checkForSpawn();
+            obj.checkForSpawn(x);
             obj.move(player.getSpeed());
             obj.rotate(x);
             obj.checkForDespawn();

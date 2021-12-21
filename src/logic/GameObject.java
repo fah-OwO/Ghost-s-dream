@@ -54,9 +54,11 @@ public class GameObject implements Cloneable {
         }
     }
 
-    public void checkForSpawn() {
+    public void checkForSpawn(double x) {
         if (respawnable && !onScreen) {
             spawn();
+            pos.x-=rand.randomBetween(0,x);
+            co=pos2coordinate(pos);
             deploy();
         }
     }
