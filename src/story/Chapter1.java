@@ -34,6 +34,7 @@ public class Chapter1 extends BaseChapter {
                 }
                 obj.despawn();
             });
+            thread.setDaemon(true);
             thread.start();
         });
         for (int i = 0; i < 100; i++) {
