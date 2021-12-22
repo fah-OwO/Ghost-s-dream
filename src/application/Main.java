@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import logic.Player;
 import logic.QuestObject;
 import util.GameMediaData;
-import util.Util;
 
 import static util.Util.*;
 
@@ -21,7 +20,7 @@ public class Main extends Application {
 
     private static final VBox root = new VBox();
     private static final Robot robot = new Robot();
-    private static ThreadMain threadMain ;
+    private static ThreadMain threadMain;
     private static Scene scene;
 
     public static void main(String[] args) {
@@ -62,7 +61,7 @@ public class Main extends Application {
                 case DOWN, UP, W, S -> player.accZ(0);
                 case RIGHT, LEFT, A, D -> player.accX(0);
                 case SHIFT -> player.setRunning(false);
-                case ESCAPE -> getThreadMain().setPause(!getThreadMain().isPause());
+                case ESCAPE -> togglePause();
             }
         });
         stage.setHeight(height);
@@ -77,22 +76,26 @@ public class Main extends Application {
     }
 
     public static double setMouseX(double x) {
-            double tmp = robot.getMouseX();
-            robot.mouseMove(x, robot.getMouseY());
-            tmp=tmp-x;
-            return tmp<=2&&tmp>=-2?0:tmp;
+        double tmp = robot.getMouseX();
+        robot.mouseMove(x, robot.getMouseY());
+        tmp = tmp - x;
+        return tmp <= 2 && tmp >= -2 ? 0 : tmp;
     }
 
     public static ThreadMain getThreadMain() {
         return threadMain;
     }
 
+    public static void togglePause() {
+        if (getThreadMain() != null) getThreadMain().setPause(!getThreadMain().isPause());
+    }
+
     public static void setThreadMain(ThreadMain threadMain) {
         Main.threadMain = threadMain;
     }
 
-    public static void setMouseVisible(boolean visibility){
-        if(visibility)scene.setCursor(Cursor.DEFAULT);
+    public static void setMouseVisible(boolean visibility) {
+        if (visibility) scene.setCursor(Cursor.DEFAULT);
         else scene.setCursor(Cursor.NONE);
     }
 }
