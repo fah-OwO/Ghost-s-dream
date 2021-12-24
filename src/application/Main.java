@@ -19,7 +19,7 @@ import static util.Util.*;
 public class Main extends Application {
 
     private static final VBox root = new VBox();
-    private static final Robot robot = new Robot();
+    private static Robot robot;
     private static ThreadMain threadMain;
     private static Scene scene;
 
@@ -33,6 +33,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
+        Platform.runLater(()-> robot=new Robot());
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);

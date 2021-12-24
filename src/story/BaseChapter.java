@@ -35,7 +35,6 @@ public abstract class BaseChapter {
         pane.setPrefSize(width, height);
         root.getChildren().addAll(pane);
         threadMain = new ThreadMain(pane, Player.getInstance());
-        setUp();
     }
 
     public abstract void setUp();
@@ -44,6 +43,7 @@ public abstract class BaseChapter {
         if (isRunning()) return;
         running = true;
         threadMain.clear();
+        setUp();
         if (upper != null) threadMain.setUpperBackground(upper);
         if (finalQuestObject != null) {
             threadMain.create(finalQuestObject);

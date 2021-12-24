@@ -10,50 +10,53 @@ import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static util.Util.*;
 
 public class GameMediaData {
 
-    public static final AudioClip walkingSound = new AudioClip("file:res/sound/walkingSound.mp3");//https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
-    public static final Image BLACK = new Image("file:res/image/Background.png", 1, 1, false, false);
-    public static final Image EVENING = new Image("file:res/image/EveningBg.jpg", width, 9999999999D, true, true);
-    public static final Image TRAP = new Image("file:res/image/Trap.png");//<a href='https://www.freepik.com/vectors/cartoon'>Cartoon vector created by pch.vector - www.freepik.com</a>
+    public static final AudioClip walkingSound = new AudioClip(getRes("file:res/sound/walkingSound.mp3"));// https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
+    public static final Image BLACK = new Image(getRes("file:res/image/Background.png"), 1, 1, false, false);
+    public static final Image EVENING = new Image(getRes("file:res/image/EveningBg.jpg"), width, 9999999999D, true, true);
     private static final Map<String, Image> imageDatabase = new HashMap<>();
+    public static final Image TRAP = getImage("file:res/image/Trap.png");
     public static final Image SQUID = getImage("file:res/image/sq43.png");
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
-    private static final Map<String, List<GameObject>> decoration = new HashMap<>();//Map<String, Set<String>> dataSet=new HashMap<>();
+    private static final Map<String, List<GameObject>> decoration = new HashMap<>();
+
+    private static String getRes(String s) {
+        return Objects.requireNonNull(GameMediaData.class.getClassLoader().getResource(s.replace("file:", ""))).toString();
+    }
 
     public static void initiate() {
         for (int i = 1; i <= 4; i++) {
             GameObject tree = new GameObject();
             tree.setImage("file:res/image/tree/3" + i + ".png", 4);
-            GameMediaData.addDecoration("tree", tree);//https://www.cgchan.com/cantree
+            GameMediaData.addDecoration("tree", tree);// https://www.cgchan.com/cantree
             GameMediaData.addDecoration("forest", tree);
         }
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
-        GameMediaData.addDecoration("bush", bush);//https://www.cgchan.com/cantree
+        GameMediaData.addDecoration("bush", bush);// https://www.cgchan.com/cantree
         GameMediaData.addDecoration("forest", bush);
 
         QuestObject trap = new QuestObject();
-        trap.setImage(GameMediaData.TRAP, 0.5);//trap.setObjectHeight(0.2);
+        trap.setImage(GameMediaData.TRAP, 0.5);// trap.setObjectHeight(0.2);
         trap.setPassive(true);
         trap.setActiveRange(1);
         trap.spawnAnywhere();
-        GameMediaData.addDecoration("trap", trap);//https://www.cgchan.com/cantree
+        GameMediaData.addDecoration("trap", trap);// https://www.cgchan.com/cantree
         gameObjectMap.put("trap", trap);
     }
 
     public static Image getImage(String url) {
+        url = getRes(url);
         if (!imageDatabase.containsKey(url)) {
             Image image = new Image(url);
             Image image1 = new Image(url, width, 0, true, true);
-            if (image1.getHeight() < image.getHeight()) image = image1;
+            if (image1.getHeight() < image.getHeight())
+                image = image1;
             imageDatabase.put(url, image);
         }
         return imageDatabase.get(url);
@@ -64,7 +67,8 @@ public class GameMediaData {
     }
 
     public static void addDecoration(String decorationType, GameObject gameObject) {
-        if (!decoration.containsKey(decorationType)) decoration.put(decorationType, new ArrayList<>());
+        if (!decoration.containsKey(decorationType))
+            decoration.put(decorationType, new ArrayList<>());
         decoration.get(decorationType).add(gameObject);
     }
 
