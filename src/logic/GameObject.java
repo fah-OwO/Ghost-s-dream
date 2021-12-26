@@ -101,7 +101,8 @@ public class GameObject implements Cloneable {
     }
 
     public void spawnAnywhere() {
-        spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + minSpawningRange, getMaxRealZ()));
+        //spawnAnywhereFromRealZ(rand.randomBetween(convertZ(maxZ) + minSpawningRange, getMaxRealZ()));
+        spawnAnywhereFromPosZ(convertZ(rand.randomBetween(minSpawningRange, getMaxRealZ())));
     }
 
     public void spawnAnywhereFromRealZ(double z) {

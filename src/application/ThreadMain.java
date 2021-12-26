@@ -30,7 +30,7 @@ public class ThreadMain {
     private boolean start;
     private static double midWidth = width / 2.0;
     private final List<Runnable> preRun = new LinkedList<>();
-    private boolean compiling;
+    private volatile boolean compiling;
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);
@@ -81,12 +81,10 @@ public class ThreadMain {
     private void updateObj() {
         if (pause) return;
         compiling = true;
-        for (Runnable runnable : preRun)
-            runnable.run();
-        preRun.clear();
         updatePlayer();
-        horizonLineMul = 1 - (player.getRotate().y / height);
+        horizonLineMul = 1 - (Main.getMouseY() / height);
         Platform.runLater(() -> {
+            runPreRun();
             updateObjectsPos();
             updateScreen();
         });
@@ -106,6 +104,12 @@ public class ThreadMain {
 
     private void updatePlayer() {
         player.update();
+    }
+
+    private void runPreRun() {
+        for (Runnable runnable : preRun)
+            runnable.run();
+        preRun.clear();
     }
 
     private void updateObjectsPos() {
@@ -166,6 +170,7 @@ public class ThreadMain {
     }
 
     public void shutdown() {
+        if (Main.getThreadMain() == this) Main.setThreadMain(null);
         setPause(true);
         threadPoolExecutor.shutdown();
         updateObj();
@@ -189,7 +194,7 @@ public class ThreadMain {
 
     public void addPreRun(Runnable runnable) {
         Thread thread = new Thread(() -> {
-            while (compiling) delay(refreshPeriod / 2);
+            while (compiling) delay(1);
             preRun.add(runnable);
         });
         thread.setDaemon(true);

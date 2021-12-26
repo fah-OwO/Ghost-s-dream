@@ -12,7 +12,6 @@ public class Player {
     private static final double runningMul = 1.5;
     private static final double PerspectiveRadians = Math.toRadians(50 >> 1);
     private static Player instance;
-    private final Triple rotate = new Triple();
     private final Triple acceleration = new Triple();
     private boolean running;
     private Triple speed = new Triple();
@@ -57,17 +56,6 @@ public class Player {
         acceleration.z = z;
     }
 
-    public void rotateX(double x) {
-        rotate.x = x;
-    }
-
-    public void rotateY(double y) {
-        rotate.y = y;
-    }
-
-    public Triple getRotate() {
-        return rotate;
-    }
 
     public Triple getSpeed() {
         return speed.mul(speedMul);

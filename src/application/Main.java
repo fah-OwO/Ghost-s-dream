@@ -22,6 +22,7 @@ public class Main extends Application {
     private static Robot robot;
     private static ThreadMain threadMain;
     private static Scene scene;
+    private static double onScreenY;
 
     public static void main(String[] args) {
         launch(args);
@@ -43,10 +44,7 @@ public class Main extends Application {
             if (mouseEvent.getButton() == MouseButton.PRIMARY)
                 QuestObject.run();
         });
-        scene.setOnMouseMoved(mouseEvent -> {
-            player.rotateY(mouseEvent.getY());
-            player.rotateX(mouseEvent.getX());
-        });
+        scene.setOnMouseMoved(mouseEvent -> onScreenY = mouseEvent.getY());
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP, W, G -> player.accZ(-1);
@@ -81,6 +79,10 @@ public class Main extends Application {
         robot.mouseMove(x, robot.getMouseY());
         tmp = tmp - x;
         return tmp <= 2 && tmp >= -2 ? 0 : tmp;
+    }
+
+    public static double getMouseY() {
+        return onScreenY;
     }
 
     public static ThreadMain getThreadMain() {
