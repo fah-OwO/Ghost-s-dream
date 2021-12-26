@@ -79,7 +79,7 @@ public class QuestObject extends GameObject implements Cloneable {
 
     public void setActiveRange(double metre) {
         activeRange = metreToCoord(metre);
-        setMinSpawningRange(activeRange);
+        setMinSpawningRange(metre);
     }
 
     public boolean isTriggered() {

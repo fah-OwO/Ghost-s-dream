@@ -1,6 +1,5 @@
 package logic;
 
-import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,18 +38,6 @@ public class GameObject implements Cloneable {
         return convertZ(minZ) / cosTheta;
     }
 
-    public static double getMaxRealWidthFromRealZ(double z) {
-        return z * tanTheta;
-    }
-
-    public static void spreadObject(ObservableList<GameObject> gameObjectList, double minimumSpawningRangeInMetre) {
-        int i = 0, amount = gameObjectList.size();
-        double minRealZ = metreToCoord(minimumSpawningRangeInMetre);
-        for (GameObject object : gameObjectList) {
-            object.setMinSpawningRange(minimumSpawningRangeInMetre);
-            object.spawnAnywhere();//FromRealZ((GameObject.getMaxRealZ() - minRealZ) * ++i / amount + minRealZ);
-        }
-    }
 
     public void checkForSpawn(double x) {
         if (respawnable && !onScreen) {
@@ -118,15 +105,15 @@ public class GameObject implements Cloneable {
     }
 
     public void spawnAnywhereFromRealZ(double z) {
-        double w = getMaxRealWidthFromRealZ(z);
+        double w = getMaxRealWidthFromRealZ(z) / 2;
         co.set(rand.randomBetween(-w, w), 0, z);
         pos = coordinate2screenPos(co);
     }
 
-//    public void spawnAnywhereFromPosZ(double z) {
-//        pos.set(rand.randomBetween(-width, width), 0, z);
-//        co = pos2coordinate(pos);
-//    }
+    public void spawnAnywhereFromPosZ(double z) {
+        pos.set(rand.randomBetween(-width / 2.0, width / 2.0), 0, z);
+        co = pos2coordinate(pos);
+    }
 
     public void spawnAtCoord(Triple coord) {
         co = coord;

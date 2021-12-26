@@ -20,9 +20,9 @@ public class Chapter2 extends BaseChapter {
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(null));
         setFinalQuestObject(questObject);
-        ObservableList<GameObject> objectList = FXCollections.observableArrayList();
         QuestObject eye = (QuestObject) GameMediaData.getGameObject("eye");
         eye.setPassive(true);
+        eye.setActiveRange(10);
         eye.setConsumer((obj) -> {
             for (int j = 1; j < 5; j++) {
                 if (obj.isTriggered()) {
@@ -37,16 +37,13 @@ public class Chapter2 extends BaseChapter {
         });
         for (int i = 0; i < 100; i++) {
             QuestObject newEye = eye.clone();
-            objectList.add(newEye);
+            newEye.spawnAnywhere();
             addGameObject(newEye);
         }
-        GameObject.spreadObject(objectList, eye.getActiveRange());
-        objectList.clear();
         for (int i = 0; i < 100; i++) {
             GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
-            objectList.add(decorateObject);
+            decorateObject.spawnAnywhere();
             addGameObject(decorateObject);
         }
-        GameObject.spreadObject(objectList, 1);
     }
 }

@@ -18,7 +18,6 @@ public class Chapter1 extends BaseChapter {
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(new Chapter2()));
         setFinalQuestObject(questObject);
-        ObservableList<GameObject> objectList = FXCollections.observableArrayList();
         QuestObject squid = new QuestObject();
         squid.setImage(GameMediaData.SQUID, 10);
         squid.setActiveRange(10);
@@ -33,10 +32,8 @@ public class Chapter1 extends BaseChapter {
         });
         for (int i = 0; i < 100; i++) {
             QuestObject newSquid = squid.clone();
-            objectList.add(newSquid);
+            newSquid.spawnAnywhere();
             addGameObject(newSquid);
         }
-        GameObject.spreadObject(objectList, squid.getActiveRange());
-        objectList.clear();
     }
 }

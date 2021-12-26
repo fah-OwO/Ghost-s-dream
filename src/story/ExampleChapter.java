@@ -65,9 +65,9 @@ public class ExampleChapter extends BaseChapter {
         ObservableList<GameObject> decorateObjectList = FXCollections.observableArrayList();
         for (int i = 0; i < 100; i++) {
             GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
+            decorateObject.spawnAnywhere();
             decorateObjectList.add(decorateObject);
             addGameObject(decorateObject);
         }
-        GameObject.spreadObject(decorateObjectList, 1);
     }
 }

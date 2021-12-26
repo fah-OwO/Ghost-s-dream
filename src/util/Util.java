@@ -5,8 +5,6 @@ import logic.GameObject;
 import logic.Player;
 
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Util {
     public static final double k = 1e6;
@@ -68,6 +66,9 @@ public class Util {
         return i / (metrePerPixels);
     }
 
+    public static double getMaxRealWidthFromRealZ(double z) {
+        return z * tanTheta;
+    }
 
     public static void delay(long l) {
         try {
