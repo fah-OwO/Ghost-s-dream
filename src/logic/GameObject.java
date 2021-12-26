@@ -2,10 +2,8 @@ package logic;
 
 import javafx.collections.ObservableList;
 import javafx.scene.CacheHint;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import util.GameMediaData;
 import util.Triple;
 
@@ -57,8 +55,8 @@ public class GameObject implements Cloneable {
     public void checkForSpawn(double x) {
         if (respawnable && !onScreen) {
             spawn();
-            pos.x-=rand.randomBetween(0,x);
-            co=pos2coordinate(pos);
+            pos.x -= rand.randomBetween(0, x);
+            co = pos2coordinate(pos);
             deploy();
         }
     }
@@ -144,11 +142,16 @@ public class GameObject implements Cloneable {
     }
 
     public void setImage(Image image, double metre) {
+        setImage(image);
+        setObjectHeight(metre);
+    }
+
+    public void setImage(Image image) {
         if (image != null)
             imageView.setImage(image);
-        setObjectHeight(metre);
         imageView.setPreserveRatio(true);
     }
+
 
     public void setImage(GameObject gameObject) {
         if (gameObject == null) return;
@@ -237,19 +240,16 @@ public class GameObject implements Cloneable {
         }
     }
 
-    public void draw(Pane pane, double horizonLineMul) {
-        ObservableList<Node> paneChildren = pane.getChildren();
-        paneChildren.remove(imageView);
+    public void draw(double horizonLineMul) {
         imageView.relocate(pos.x + (-getObjectWidth() + width) / 2, height * (horizonLineMul) + pos.z / 2 - getObjectHeight() - pos.y);
         imageView.setFitHeight(getObjectHeight());
-        paneChildren.add(imageView);
     }
 
     public void setMinSpawningRange(double minSpawningRangeInMetre) {
         this.minSpawningRange = metreToCoord(minSpawningRangeInMetre);
     }
 
-    private Image getImage() {
+    public Image getImage() {
         return getImageView().getImage();
     }
 

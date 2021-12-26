@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import logic.GameObject;
 import logic.Player;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +29,8 @@ public class ThreadMain {
     private boolean pause = true;
     private boolean start;
     private static double midWidth = width / 2.0;
+    private final List<Runnable> preRun = new LinkedList<>();
+    private boolean compiling;
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);
@@ -76,12 +80,17 @@ public class ThreadMain {
 
     private void updateObj() {
         if (pause) return;
+        compiling = true;
+        for (Runnable runnable : preRun)
+            runnable.run();
+        preRun.clear();
         updatePlayer();
         horizonLineMul = 1 - (player.getRotate().y / height);
         Platform.runLater(() -> {
             updateObjectsPos();
             updateScreen();
         });
+        compiling = false;
     }
 
     private void updateSound() {
@@ -101,7 +110,7 @@ public class ThreadMain {
 
     private void updateObjectsPos() {
         player.update();
-        double x = -Main.setMouseX(midWidth);//player.getRotate().x - midWidth + 8;
+        double x = -Main.setMouseX(midWidth);
         for (GameObject obj : objects) {
             obj.checkForSpawn(x);
             obj.move(player.getSpeed());
@@ -129,7 +138,9 @@ public class ThreadMain {
     }
 
     private void drawIMG(GameObject obj) {
-        obj.draw(pane, horizonLineMul);
+        removeFromPane(obj.getImageView());
+        obj.draw(horizonLineMul);
+        addToPane(obj.getImageView());
     }
 
 
@@ -174,6 +185,15 @@ public class ThreadMain {
 
     public void addThread(Runnable runnable) {
         threadPoolExecutor.scheduleAtFixedRate(runnable, 0, refreshPeriod, TimeUnit.MILLISECONDS);
+    }
+
+    public void addPreRun(Runnable runnable) {
+        Thread thread = new Thread(() -> {
+            while (compiling) delay(refreshPeriod / 2);
+            preRun.add(runnable);
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @Override

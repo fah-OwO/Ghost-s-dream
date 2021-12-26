@@ -33,7 +33,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) {
-        Platform.runLater(()-> robot=new Robot());
+        Platform.runLater(() -> robot = new Robot());
         GameMediaData.initiate();
         Player player = Player.getInstance();
         stage.setTitle(title);
@@ -62,7 +62,7 @@ public class Main extends Application {
                 case DOWN, UP, W, S -> player.accZ(0);
                 case RIGHT, LEFT, A, D -> player.accX(0);
                 case SHIFT -> player.setRunning(false);
-                case ESCAPE -> togglePause();
+                case ESCAPE, P -> togglePause();
             }
         });
         stage.setHeight(height);

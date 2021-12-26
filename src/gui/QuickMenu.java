@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -29,10 +28,10 @@ public class QuickMenu extends GridPane {
         ObservableList<ChapterCell> chapterCells = FXCollections.observableArrayList();
         chapterCells.add(chapterTutorial);
         this.add(chapterTutorial, i++, 0);
-        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getRandomImage("tree"));
+        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getGameObject("eye").getImage());
         chapterCells.add(chapter1);
         this.add(chapter1, i++, 0);
-        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getRandomImage("trap"));
+        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getGameObject("eye").getImage());
         chapterCells.add(chapter2);
         this.add(chapter2, i, 0);
         for (ChapterCell cell : chapterCells) {

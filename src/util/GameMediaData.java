@@ -10,7 +10,10 @@ import javafx.scene.text.TextAlignment;
 import logic.GameObject;
 import logic.QuestObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static util.Util.*;
 
@@ -20,34 +23,25 @@ public class GameMediaData {
     public static final Image BLACK = new Image(getRes("file:res/image/Background.png"), 1, 1, false, false);
     public static final Image EVENING = new Image(getRes("file:res/image/EveningBg.jpg"), width, 9999999999D, true, true);
     private static final Map<String, Image> imageDatabase = new HashMap<>();
-    public static final Image TRAP = getImage("file:res/image/Trap.png");
+    private static final Map<String, List<Image>> animationDatabase = new HashMap<>();
     public static final Image SQUID = getImage("file:res/image/sq43.png");
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
     private static final Map<String, List<GameObject>> decoration = new HashMap<>();
 
     private static String getRes(String s) {
-        return Objects.requireNonNull(GameMediaData.class.getClassLoader().getResource(s.replace("file:", ""))).toString();
+        return s;//return Objects.requireNonNull(GameMediaData.class.getClassLoader().getResource(s.replace("file:", ""))).toString();
     }
 
     public static void initiate() {
-        for (int i = 1; i <= 4; i++) {
-            GameObject tree = new GameObject();
-            tree.setImage("file:res/image/tree/3" + i + ".png", 4);
-            GameMediaData.addDecoration("tree", tree);// https://www.cgchan.com/cantree
-            GameMediaData.addDecoration("forest", tree);
-        }
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
         GameMediaData.addDecoration("bush", bush);// https://www.cgchan.com/cantree
-        GameMediaData.addDecoration("forest", bush);
-
-        QuestObject trap = new QuestObject();
-        trap.setImage(GameMediaData.TRAP, 0.5);// trap.setObjectHeight(0.2);
-        trap.setPassive(true);
-        trap.setActiveRange(1);
-        trap.spawnAnywhere();
-        GameMediaData.addDecoration("trap", trap);// https://www.cgchan.com/cantree
-        gameObjectMap.put("trap", trap);
+        for (int i = 0; i < 5; i++)
+            addAnimation("eye", GameMediaData.getImage("file:res/image/eye/eye" + i + ".png"));
+        QuestObject eye = new QuestObject();
+        eye.setImage(getAnimation("eye").get(0),3);
+        eye.setActiveRange(10);
+        gameObjectMap.put("eye", eye);
     }
 
     public static Image getImage(String url) {
@@ -63,7 +57,7 @@ public class GameMediaData {
     }
 
     public static GameObject getGameObject(String name) {
-        return gameObjectMap.get(name);
+        return gameObjectMap.get(name).clone();
     }
 
     public static void addDecoration(String decorationType, GameObject gameObject) {
@@ -95,4 +89,13 @@ public class GameMediaData {
         return pane;
     }
 
+    public static void addAnimation(String s, Image image) {
+        if (!animationDatabase.containsKey(s))
+            animationDatabase.put(s, new ArrayList<>());
+        animationDatabase.get(s).add(image);
+    }
+
+    public static List<Image> getAnimation(String s) {
+        return animationDatabase.get(s);
+    }
 }

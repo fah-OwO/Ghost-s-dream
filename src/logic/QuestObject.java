@@ -1,6 +1,5 @@
 package logic;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,12 +22,11 @@ public class QuestObject extends GameObject implements Cloneable {
     }
 
     public static void run() {
-        for (QuestObject obj : questObjs) {
+        for (QuestObject obj : questObjs)
             if (obj.isInActiveRangeAndNotTriggered()) {
                 obj.individualRun();
                 break;
             }
-        }
     }
 
     public void setConsumer(Consumer<QuestObject> consumer) {
@@ -52,9 +50,11 @@ public class QuestObject extends GameObject implements Cloneable {
     }
 
     public void individualRun() {
-        Platform.runLater(() -> consumer.accept(this));
         questObjs.remove(this);
         triggered = true;
+        Thread thread = new Thread(() -> consumer.accept(this));
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @Override
@@ -80,6 +80,10 @@ public class QuestObject extends GameObject implements Cloneable {
     public void setActiveRange(double metre) {
         activeRange = metreToCoord(metre);
         setMinSpawningRange(activeRange);
+    }
+
+    public boolean isTriggered() {
+        return triggered;
     }
 
     @Override
