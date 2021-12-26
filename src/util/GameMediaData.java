@@ -24,7 +24,6 @@ public class GameMediaData {
     public static final Image EVENING = new Image(getRes("file:res/image/EveningBg.jpg"), width, 9999999999D, true, true);
     private static final Map<String, Image> imageDatabase = new HashMap<>();
     private static final Map<String, List<Image>> animationDatabase = new HashMap<>();
-    public static final Image SQUID = getImage("file:res/image/sq43.png");
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
     private static final Map<String, List<GameObject>> decoration = new HashMap<>();
 
@@ -33,15 +32,32 @@ public class GameMediaData {
     }
 
     public static void initiate() {
+        QuestObject squid = new QuestObject();
+        squid.setImage("file:res/image/sq43.png", 10);
+        squid.setActiveRange(10);
+        squid.setPassive(true);
+        squid.setConsumer(obj -> {
+            for (double j = 0.0001; obj.getPos().y < height; j *= 1.1) {
+                if (obj.isTriggered()) obj.setPosY(metreToCoord(j) / refreshPeriod);
+                else break;
+                delay(refreshPeriod);
+            }
+            obj.despawn();
+        });
+        addGameObject("squid", squid);
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
         GameMediaData.addDecoration("bush", bush);// https://www.cgchan.com/cantree
         for (int i = 0; i < 5; i++)
             addAnimation("eye", GameMediaData.getImage("file:res/image/eye/eye" + i + ".png"));
         QuestObject eye = new QuestObject();
-        eye.setImage(getAnimation("eye").get(0),3);
+        eye.setImage(getAnimation("eye").get(0), 3);
         eye.setActiveRange(10);
-        gameObjectMap.put("eye", eye);
+        addGameObject("eye", eye);
+    }
+    private static void addGameObject(String s, GameObject gameObject) {
+        gameObjectMap.put(s, gameObject);
+        addDecoration(s, gameObject);
     }
 
     public static Image getImage(String url) {

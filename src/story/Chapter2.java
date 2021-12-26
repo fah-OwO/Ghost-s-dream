@@ -1,7 +1,6 @@
 package story;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import logic.Cloud;
 import logic.GameObject;
 import logic.QuestObject;
 import util.GameMediaData;
@@ -15,8 +14,9 @@ public class Chapter2 extends BaseChapter {
     @Override
     public void setUp() {
         setUpper(GameMediaData.EVENING);
-        QuestObject questObject = new QuestObject();
-        questObject.setImage(GameMediaData.SQUID, 4);
+        QuestObject questObject = (QuestObject) GameMediaData.getGameObject("squid");
+        questObject.setPassive(false);
+        questObject.setActiveRange(5);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(null));
         setFinalQuestObject(questObject);
@@ -44,6 +44,14 @@ public class Chapter2 extends BaseChapter {
             GameObject decorateObject = GameMediaData.getRandomDecoration("bush");
             decorateObject.spawnAnywhere();
             addGameObject(decorateObject);
+        }
+        Cloud cloud = new Cloud();
+        cloud.setImage(GameMediaData.getRandomImage("bush"), 4);
+        cloud.setMinSpawningRange(7);
+        for (int i = 0; i < 20; i++) {
+            Cloud newSquid = cloud.clone();
+            newSquid.spawnAnywhere();
+            addGameObject(newSquid);
         }
     }
 }

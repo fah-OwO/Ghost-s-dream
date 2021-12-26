@@ -27,7 +27,6 @@ public class ExampleChapter extends BaseChapter {
         setFinalQuestObject(questObject);
         for (int i = 0; i < 100; i++) {
             QuestObject squid = new QuestObject();
-            squid.setImage(GameMediaData.SQUID, 10);
             squid.setActiveRange(7.5);
             squid.setPassive(true);
             squid.setConsumer(obj -> {

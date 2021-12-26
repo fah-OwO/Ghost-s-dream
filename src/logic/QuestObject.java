@@ -33,6 +33,10 @@ public class QuestObject extends GameObject implements Cloneable {
         this.consumer = consumer;
     }
 
+    public Consumer<QuestObject> getConsumer() {
+        return consumer;
+    }
+
     @Override
     public void checkForDespawn() {
         if (passive && isInActiveRangeAndNotTriggered()) individualRun();

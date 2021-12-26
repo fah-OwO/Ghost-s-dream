@@ -80,21 +80,21 @@ public class GameObject implements Cloneable {
         }
     }
 
-    private void spawnLeft() {
+    protected void spawnLeft() {
         Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
         pos = coordinate2screenPos(tmp);
         pos.x = -(width + getObjectWidth()) / 2;
         co = pos2coordinate(pos);
     }
 
-    private void spawnRight() {
+    protected void spawnRight() {
         Triple tmp = new Triple(0, 0, rand.randomBetween(minSpawningRange, getMaxRealZ()));
         pos = coordinate2screenPos(tmp);
         pos.x = (width + getObjectWidth()) / 2;
         co = pos2coordinate(pos);
     }
 
-    private void spawnFront() {
+    protected void spawnFront() {
         double tmp = getMaxRealWidthFromRealZ(getMaxRealZ());
         co.set(rand.randomBetween(-tmp, tmp), 0, getMaxRealZ());
         pos = coordinate2screenPos(co);
@@ -186,7 +186,7 @@ public class GameObject implements Cloneable {
     protected void onRemove() {
     }
 
-    private double getObjectHeight() {
+    protected double getObjectHeight() {
         return objectHeight * pos.z / height;
     }
 
@@ -195,7 +195,7 @@ public class GameObject implements Cloneable {
         else this.objectHeight = toPixel(objectHeight);
     }
 
-    private double getObjectWidth() {
+    protected double getObjectWidth() {
         return getObjectHeight() * getImageRatioWpH();
     }
 

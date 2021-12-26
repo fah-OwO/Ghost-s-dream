@@ -18,20 +18,8 @@ public class Chapter1 extends BaseChapter {
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
         questObject.setConsumer((obj) -> changeChapter(new Chapter2()));
         setFinalQuestObject(questObject);
-        QuestObject squid = new QuestObject();
-        squid.setImage(GameMediaData.SQUID, 10);
-        squid.setActiveRange(10);
-        squid.setPassive(true);
-        squid.setConsumer(obj -> {
-            for (double j = 0.0001; obj.getPos().y < height; j *= 1.1) {
-                if (obj.isTriggered()) obj.setPosY(metreToCoord(j) / refreshPeriod);
-                else break;
-                delay(refreshPeriod);
-            }
-            obj.despawn();
-        });
         for (int i = 0; i < 100; i++) {
-            QuestObject newSquid = squid.clone();
+            QuestObject newSquid = (QuestObject) GameMediaData.getGameObject("squid").clone();
             newSquid.spawnAnywhere();
             addGameObject(newSquid);
         }
