@@ -25,8 +25,9 @@ public class ThreadMain {
     private final Pane pane;
     private final ScheduledThreadPoolExecutor threadPoolExecutor;
     private final ImageView ground = new ImageView();
+    private final ImageView backGround = new ImageView();
     private double horizonLineMul = 1 / 2.0;
-    private boolean pause = true;
+    private volatile boolean pause = true;
     private boolean start;
     private static double midWidth = width / 2.0;
     private final List<Runnable> preRun = new LinkedList<>();
@@ -136,6 +137,9 @@ public class ThreadMain {
     }
 
     private void drawGround() {
+        removeFromPane(backGround);
+        backGround.relocate(0, height * horizonLineMul - backGround.getFitHeight());
+        addToPane(backGround);
         removeFromPane(ground);
         ground.relocate(0, height * horizonLineMul);
         addToPane(ground);
@@ -157,10 +161,11 @@ public class ThreadMain {
     }
 
     public void setUpperBackground(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(width);
-        addToPane(imageView);
+        backGround.setImage(image);
+        backGround.setPreserveRatio(true);
+        backGround.setFitWidth(width);
+        backGround.setFitHeight(image.getHeight() / image.getWidth() * width);
+        addToPane(backGround);
     }
 
     public void setGroundFromImage(Image image) {

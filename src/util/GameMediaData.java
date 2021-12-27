@@ -7,6 +7,7 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import logic.Cloud;
 import logic.GameObject;
 import logic.QuestObject;
 
@@ -47,7 +48,11 @@ public class GameMediaData {
         addGameObject("squid", squid);
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 1);
-        GameMediaData.addDecoration("bush", bush);// https://www.cgchan.com/cantree
+        addGameObject("bush", bush);// https://www.cgchan.com/cantree
+        Cloud cloud = new Cloud();
+        cloud.setImage("file:res/image/bush.png", 4);
+        cloud.setMinSpawningRange(7);
+        addGameObject("cloud", cloud);// https://www.cgchan.com/cantree
         for (int i = 0; i < 5; i++)
             addAnimation("eye", GameMediaData.getImage("file:res/image/eye/eye" + i + ".png"));
         QuestObject eye = new QuestObject();
@@ -55,6 +60,7 @@ public class GameMediaData {
         eye.setActiveRange(10);
         addGameObject("eye", eye);
     }
+
     private static void addGameObject(String s, GameObject gameObject) {
         gameObjectMap.put(s, gameObject);
         addDecoration(s, gameObject);

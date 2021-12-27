@@ -14,7 +14,7 @@ public class Util {
     public static final double tanTheta = Math.tan(Player.getPerspectiveRadians());
     public static final double cosTheta = Math.cos(Player.getPerspectiveRadians());
     public static final double sinTheta = Math.sin(Player.getPerspectiveRadians());
-    public static final double metrePerPixels = (double) 2 / height;
+    public static final double metrePerPixels = 1.6 / height;
     public static final int frames = 50;
     public static final long refreshPeriod = (1000 / (frames));
     public static final Font font = new Font(72);
