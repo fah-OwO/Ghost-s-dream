@@ -13,10 +13,7 @@ public class ChapterTutorial extends BaseChapter {
         QuestObject questObject = (QuestObject) GameMediaData.getGameObject("squid");
         questObject.setPassive(false);
         questObject.setActiveRange(5);
-        questObject.setConsumer((obj) -> {
-            ((QuestObject) GameMediaData.getGameObject("squid")).getConsumer().accept(obj);
-            changeChapter(getNextChapter());
-        });
+        questObject.setConsumer((obj) -> changeChapter(getNextChapter()));
         questObject.setCo(new Triple(0, 0, metreToCoord(5)));
         setFinalQuestObject(questObject);
     }

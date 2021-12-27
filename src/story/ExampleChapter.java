@@ -19,7 +19,7 @@ public class ExampleChapter extends BaseChapter {
 
     @Override
     public void setUp() {
-        setUpper(GameMediaData.EVENING);
+        setUpper(GameMediaData.BACKGROUND);
         QuestObject questObject = new QuestObject();
         questObject.setImage("file:res/image/mystic.jpg", 0);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);

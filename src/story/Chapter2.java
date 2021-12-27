@@ -1,5 +1,7 @@
 package story;
 
+import application.Main;
+import javafx.application.Platform;
 import logic.Cloud;
 import logic.GameObject;
 import logic.QuestObject;
@@ -12,19 +14,26 @@ public class Chapter2 extends BaseChapter {
 
     @Override
     public void setUp() {
-        setUpper(GameMediaData.EVENING);
+        setUpper(GameMediaData.BACKGROUND);
         QuestObject questObject = (QuestObject) GameMediaData.getGameObject("squid");
         questObject.setPassive(false);
         questObject.setActiveRange(5);
         questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer((obj) -> changeChapter(null));
+        questObject.setConsumer(obj -> {
+            Platform.runLater(() -> Main.changeRoot(GameMediaData.setUpPaneFromString("Thx for playing\n\n\nto be continued \n(as if I will)")));
+            Main.togglePause();
+            delay(5000);
+            changeChapter(null);
+        });
         setFinalQuestObject(questObject);
         QuestObject eye = (QuestObject) GameMediaData.getGameObject("eye");
         eye.setPassive(true);
         eye.setConsumer((obj) -> {
             for (int j = 1; j < 5; j++) {
-                if (obj.isTriggered()) obj.setImage(GameMediaData.getAnimation("eye").get(j));
-                else break;
+                if (obj.isTriggered()) {
+                    int finalJ = j;
+                    threadMain.addPreRun(() -> obj.setImage(GameMediaData.getAnimation("eye").get(finalJ)));
+                } else break;
                 delay(100);
             }
             threadMain.addPreRun(() -> {

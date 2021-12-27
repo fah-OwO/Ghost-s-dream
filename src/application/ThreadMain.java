@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import logic.GameObject;
 import logic.Player;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -30,8 +30,7 @@ public class ThreadMain {
     private volatile boolean pause = true;
     private boolean start;
     private static double midWidth = width / 2.0;
-    private final List<Runnable> preRun = new LinkedList<>();
-    private volatile boolean compiling;
+    private final List<Runnable> preRun = new ArrayList<>();
 
     public ThreadMain(Pane pane, Player player) {
         setPause(true);
@@ -81,7 +80,6 @@ public class ThreadMain {
 
     private void updateObj() {
         if (pause) return;
-        compiling = true;
         updatePlayer();
         horizonLineMul = 1 - (Main.getMouseY() / height);
         Platform.runLater(() -> {
@@ -89,7 +87,6 @@ public class ThreadMain {
             updateObjectsPos();
             updateScreen();
         });
-        compiling = false;
     }
 
     private void updateSound() {
@@ -108,6 +105,7 @@ public class ThreadMain {
     }
 
     private void runPreRun() {
+        if (preRun.isEmpty()) return;
         for (Runnable runnable : preRun)
             runnable.run();
         preRun.clear();
@@ -198,12 +196,7 @@ public class ThreadMain {
     }
 
     public void addPreRun(Runnable runnable) {
-        Thread thread = new Thread(() -> {
-            while (compiling) delay(1);
-            preRun.add(runnable);
-        });
-        thread.setDaemon(true);
-        thread.start();
+        Platform.runLater(() -> preRun.add(runnable));
     }
 
     @Override

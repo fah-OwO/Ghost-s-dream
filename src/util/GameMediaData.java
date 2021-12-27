@@ -1,5 +1,6 @@
 package util;
 
+import application.Main;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -21,9 +22,9 @@ import static util.Util.*;
 public class GameMediaData {
 
     public static final AudioClip walkingSound = new AudioClip(getRes("file:res/sound/walkingSound.mp3"));// https://nofilmschool.com/best-royalty-free-sound-effects//https://gamesounds.xyz/?dir=BBC%20Sound%20Effects%20Library/BBC%2055%20-%20Footsteps%201
-    public static final Image BLACK = new Image(getRes("file:res/image/Background.png"), 1, 1, false, false);
-    public static final Image EVENING = new Image(getRes("file:res/image/EveningBg.jpg"), width, 9999999999D, true, true);
+    public static final Image BLACK = new Image(getRes("file:res/image/Black.png"), 1, 1, false, false);
     private static final Map<String, Image> imageDatabase = new HashMap<>();
+    public static final Image BACKGROUND = getImage("file:res/image/Background.png");
     private static final Map<String, List<Image>> animationDatabase = new HashMap<>();
     private static final Map<String, GameObject> gameObjectMap = new HashMap<>();
     private static final Map<String, List<GameObject>> decoration = new HashMap<>();
@@ -37,17 +38,9 @@ public class GameMediaData {
         squid.setImage("file:res/image/sq43.png", 10);
         squid.setActiveRange(10);
         squid.setPassive(true);
-        squid.setConsumer(obj -> {
-            for (double j = 0.0001; obj.getPos().y < height; j *= 1.1) {
-                if (obj.isTriggered()) obj.setPosY(metreToCoord(j) / refreshPeriod);
-                else break;
-                delay(refreshPeriod);
-            }
-            obj.despawn();
-        });
         addGameObject("squid", squid);
         GameObject bush = new GameObject();
-        bush.setImage("file:res/image/bush.png", 1);
+        bush.setImage("file:res/image/bush.png", 0.6);
         addGameObject("bush", bush);// https://www.cgchan.com/cantree
         Cloud cloud = new Cloud();
         cloud.setImage("file:res/image/bush.png", 4);
@@ -107,7 +100,7 @@ public class GameMediaData {
         pane.getChildren().add(text);
         StackPane.setAlignment(text, Pos.CENTER);
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(new Font(height / 3.0));
+        text.setFont(new Font(height / 8.0));
         return pane;
     }
 
