@@ -24,14 +24,14 @@ public class QuickMenu extends GridPane {
         setHgap(8);
         setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         int i = 0;
-        ChapterCell chapterTutorial = new ChapterCell(new ChapterTutorial(), "tutorial", GameMediaData.getRandomImage("squid"));
+        ChapterCell chapterTutorial = new ChapterCell(new ChapterTutorial(), "tutorial", GameMediaData.getImage("squid"));
         ObservableList<ChapterCell> chapterCells = FXCollections.observableArrayList();
         chapterCells.add(chapterTutorial);
         this.add(chapterTutorial, i++, 0);
-        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getGameObject("eye").getImage());
+        ChapterCell chapter1 = new ChapterCell(new Chapter1(), "chapter 1", GameMediaData.getImage("eye"));
         chapterCells.add(chapter1);
         this.add(chapter1, i++, 0);
-        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getRandomImage("bush"));
+        ChapterCell chapter2 = new ChapterCell(new Chapter2(), "chapter 2", GameMediaData.getImage("table"));
         chapterCells.add(chapter2);
         this.add(chapter2, i, 0);
         for (ChapterCell cell : chapterCells) {

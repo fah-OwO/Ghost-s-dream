@@ -15,17 +15,14 @@ public class Chapter2 extends BaseChapter {
     @Override
     public void setUp() {
         setUpper(GameMediaData.BACKGROUND);
-        QuestObject questObject = (QuestObject) GameMediaData.getGameObject("squid");
-        questObject.setPassive(false);
-        questObject.setActiveRange(5);
-        questObject.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
-        questObject.setConsumer(obj -> {
-            Platform.runLater(() -> Main.changeRoot(GameMediaData.setUpPaneFromString("Thx for playing\n\n\nto be continued \n(as if I will)")));
+        QuestObject table = (QuestObject) GameMediaData.getGameObject("table");
+        table.setConsumer(obj -> {
+            Platform.runLater(() -> Main.changeRoot(GameMediaData.setUpPaneFromString("\n\nThx for playing\n\nto be continued \n(as if I will)")));
             Main.togglePause();
             delay(5000);
             changeChapter(null);
         });
-        setFinalQuestObject(questObject);
+        setFinalQuestObject(table);
         QuestObject eye = (QuestObject) GameMediaData.getGameObject("eye");
         eye.setPassive(true);
         eye.setConsumer((obj) -> {

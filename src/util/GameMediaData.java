@@ -1,6 +1,5 @@
 package util;
 
-import application.Main;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -44,7 +43,7 @@ public class GameMediaData {
         addGameObject("bush", bush);// https://www.cgchan.com/cantree
         for (int i = 0; i < 2; i++) {
             Cloud cloud = new Cloud();
-            cloud.setImage("file:res/image/cloud/cloud"+i+".png", 4);
+            cloud.setImage("file:res/image/cloud/cloud" + i + ".png", 4);
             cloud.setMinSpawningRange(7);
             addDecoration("cloud", cloud);// https://www.cgchan.com/cantree
         }
@@ -54,11 +53,17 @@ public class GameMediaData {
         eye.setImage(getAnimation("eye").get(0), 3);
         eye.setActiveRange(10);
         addGameObject("eye", eye);
+        QuestObject table=new QuestObject();
+        table.setImage(GameMediaData.getImage("file:res/image/table.png"),0.8);
+        table.setActiveRange(3);
+        table.spawnAnywhereFromRealZ(GameObject.getMaxRealZ() / 2);
+        addGameObject("table",table);
     }
 
     private static void addGameObject(String s, GameObject gameObject) {
         gameObjectMap.put(s, gameObject);
         addDecoration(s, gameObject);
+        addImage2Database(s, gameObject.getImage());
     }
 
     public static Image getImage(String url) {
@@ -71,6 +76,10 @@ public class GameMediaData {
             imageDatabase.put(url, image);
         }
         return imageDatabase.get(url);
+    }
+
+    public static void addImage2Database(String s, Image image) {
+        imageDatabase.put(s, image);
     }
 
     public static GameObject getGameObject(String name) {
