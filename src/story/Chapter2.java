@@ -53,7 +53,7 @@ public class Chapter2 extends BaseChapter {
         }
 
         for (int i = 0; i < 20; i++) {
-            Cloud cloud = (Cloud) GameMediaData.getGameObject("cloud");
+            Cloud cloud = (Cloud) GameMediaData.getRandomDecoration("cloud");
             cloud.spawnAnywhere();
             addGameObject(cloud);
         }

@@ -18,7 +18,7 @@ public class Cloud extends GameObject implements Cloneable {
     @Override
     public void deploy() {
         super.deploy();
-        pos.y = rand.randomBetween(pos.z / 2, height);
+        pos.y = rand.randomBetween(pos.z , height);
         co = pos2coordinate(pos);
     }
 

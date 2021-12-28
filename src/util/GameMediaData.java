@@ -42,10 +42,12 @@ public class GameMediaData {
         GameObject bush = new GameObject();
         bush.setImage("file:res/image/bush.png", 0.6);
         addGameObject("bush", bush);// https://www.cgchan.com/cantree
-        Cloud cloud = new Cloud();
-        cloud.setImage("file:res/image/bush.png", 4);
-        cloud.setMinSpawningRange(7);
-        addGameObject("cloud", cloud);// https://www.cgchan.com/cantree
+        for (int i = 0; i < 2; i++) {
+            Cloud cloud = new Cloud();
+            cloud.setImage("file:res/image/cloud/cloud"+i+".png", 4);
+            cloud.setMinSpawningRange(7);
+            addDecoration("cloud", cloud);// https://www.cgchan.com/cantree
+        }
         for (int i = 0; i < 5; i++)
             addAnimation("eye", GameMediaData.getImage("file:res/image/eye/eye" + i + ".png"));
         QuestObject eye = new QuestObject();
